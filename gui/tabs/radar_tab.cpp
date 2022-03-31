@@ -45,7 +45,7 @@ namespace RadarTab {
 			}
 			if (ImGui::ColorEdit4("Radar Color",
 				(float*)&State.SelectedColor,
-				ImGuiColorEditFlags__OptionsDefault
+				ImGuiColorEditFlags_DefaultOptions_
 				| ImGuiColorEditFlags_NoInputs
 				| ImGuiColorEditFlags_AlphaBar
 				| ImGuiColorEditFlags_AlphaPreview)) {

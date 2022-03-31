@@ -80,7 +80,7 @@ bool CustomListBoxIntMultiple(const char* label, std::vector<std::pair<const cha
 		SameLine(0, spacing);
 		const bool resetResponse = Button(buttonLabel.c_str());
 		if (resetResponse) {
-			for (int i = 0; i < list->size(); i++)
+			for (size_t i = 0; i < list->size(); i++)
 				list->at(i).second = false;
 			return resetResponse;
 		}
@@ -154,7 +154,7 @@ bool CustomListBoxPlayerSelectionMultiple(const char* label, std::vector<std::pa
 		SameLine(0, spacing);
 		const bool resetResponse = Button(buttonLabel.c_str());
 		if (resetResponse) {
-			for (int i = 0; i < list->size(); i++)
+			for (size_t i = 0; i < list->size(); i++)
 				list->at(i).second = false;
 			return resetResponse;
 		}
@@ -223,13 +223,13 @@ bool SliderChrono(const char* label, void* p_data, const void* p_min, const void
 	{
 		const bool focus_requested = temp_input_allowed && FocusableItemRegister(window, id);
 		clicked = (hovered && g.IO.MouseClicked[0]);
-		if (focus_requested || clicked || g.NavActivateId == id || g.NavInputId == id)
+		if (focus_requested || clicked || g.NavActivateId == id || g.NavActivateInputId == id)
 		{
 			SetActiveID(id, window);
 			SetFocusID(id, window);
 			FocusWindow(window);
 			g.ActiveIdUsingNavDirMask |= (1 << ImGuiDir_Left) | (1 << ImGuiDir_Right);
-			if (temp_input_allowed && (focus_requested || (clicked && g.IO.KeyCtrl) || g.NavInputId == id))
+			if (temp_input_allowed && (focus_requested || (clicked && g.IO.KeyCtrl) || g.NavActivateInputId == id))
 			{
 				temp_input_is_active = true;
 				FocusableItemUnregister(window);

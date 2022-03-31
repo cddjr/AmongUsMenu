@@ -49,7 +49,7 @@ void ApplyTheme()
 	style.Colors[ImGuiCol_PlotHistogram] = IMGUI_TEXT(0.63f);
 	style.Colors[ImGuiCol_PlotHistogramHovered] = MED(1.00f);
 	style.Colors[ImGuiCol_TextSelectedBg] = MED(0.43f);
-	style.Colors[ImGuiCol_ModalWindowDarkening] = BG(0.73f);
+	style.Colors[ImGuiCol_ModalWindowDimBg] = BG(0.73f);
 
 	style.WindowPadding = ImVec2(6, 4);
 	style.WindowRounding = 0.0f;
