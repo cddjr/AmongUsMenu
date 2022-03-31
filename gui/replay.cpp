@@ -449,24 +449,24 @@ namespace Replay
 		Replay::Init();
 
 		int MapType = State.mapType;
-		ImGui::SetNextWindowSize(ImVec2((maps[MapType].mapImage.imageWidth * 0.5f) + 50.0f, (maps[MapType].mapImage.imageHeight * 0.5f) + 90.f), ImGuiCond_None);
+		ImGui::SetNextWindowSize(ImVec2((maps[MapType].mapImage.imageWidth * 0.5f) + 50.0f, (maps[MapType].mapImage.imageHeight * 0.5f) + 90.f) * State.dpiScale, ImGuiCond_None);
 
 		ImGui::Begin("Replay", &State.ShowReplay, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse);
 
-		ImGui::BeginChild("replay#filter", ImVec2(0, 20), true);
+		ImGui::BeginChild("replay#filter", ImVec2(0, 20) * State.dpiScale, true);
 		ImGui::Text("Event Filter: ");
 		ImGui::SameLine();
-		CustomListBoxIntMultiple("Event Types", &Replay::event_filter, 100.f);
+		CustomListBoxIntMultiple("Event Types", &Replay::event_filter, 100.f * State.dpiScale);
 		if (IsInGame()) {
-			ImGui::SameLine(0.f, 5.f);
+			ImGui::SameLine(0.f * State.dpiScale, 5.f * State.dpiScale);
 			ImGui::Text("Player Filter: ");
 			ImGui::SameLine();
-			CustomListBoxPlayerSelectionMultiple("Players", &Replay::player_filter, 150.f);
+			CustomListBoxPlayerSelectionMultiple("Players", &Replay::player_filter, 150.f * State.dpiScale);
 		}
 		ImGui::EndChild();
 		ImGui::Separator();
 
-		ImGui::BeginChild("replay#map", ImVec2((maps[MapType].mapImage.imageWidth * 0.5f) + 50.f, (maps[MapType].mapImage.imageHeight * 0.5f) + 15.f));
+		ImGui::BeginChild("replay#map", ImVec2((maps[MapType].mapImage.imageWidth * 0.5f) + 50.f, (maps[MapType].mapImage.imageHeight * 0.5f) + 15.f) * State.dpiScale);
 		ImDrawList* drawList = ImGui::GetWindowDrawList();
 		ImVec2 winSize = ImGui::GetWindowSize();
 		ImVec2 winPos = ImGui::GetWindowPos();
@@ -518,7 +518,7 @@ namespace Replay
 		ImGui::EndChild();
 
 		ImGui::Separator();
-		ImGui::Dummy(ImVec2(1.0f, 5.0f));
+		ImGui::Dummy(ImVec2(1.0f, 5.0f) * State.dpiScale);
 
 		ImGui::BeginChild("replay#control");
 		
