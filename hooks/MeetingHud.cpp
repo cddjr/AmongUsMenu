@@ -84,6 +84,11 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 				roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->ImpostorRed, NULL);
 			}
 
+			if (std::find(State.aumUsers.begin(), State.aumUsers.end(), playerData->fields.PlayerId) != State.aumUsers.end()) {
+				// 同道中人
+				playerName += "\n<size=50%><Hacker>";
+			}
+
 			String* playerNameStr = convert_to_string(playerName);
 			app::TMP_Text_set_text((app::TMP_Text*)playerNameTMP, playerNameStr, NULL);
 			app::TextMeshPro_SetFaceColor(playerNameTMP, roleColor, NULL);

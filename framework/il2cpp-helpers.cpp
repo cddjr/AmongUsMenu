@@ -9,6 +9,7 @@
 void new_console() {
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	SetConsoleOutputCP(CP_UTF8);
 }
 
 std::string utf16_to_utf8(std::u16string u16_string) {
