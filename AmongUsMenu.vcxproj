@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug_Version|Win32">
@@ -70,6 +70,7 @@
     <ClCompile Include="hooks\PlayerPhysics.cpp" />
     <ClCompile Include="hooks\PolusShipStatus.cpp" />
     <ClCompile Include="hooks\RoleManager.cpp" />
+    <ClCompile Include="hooks\SaveManager.cpp" />
     <ClCompile Include="hooks\UnityDebug.cpp" />
     <ClCompile Include="profiler.cpp" />
     <ClCompile Include="rpc\CustomRpcHandler.cpp" />
@@ -187,7 +188,6 @@
     </ClCompile>
     <ClCompile Include="hooks\Chat.cpp" />
     <ClCompile Include="hooks\Doors.cpp" />
-    <ClCompile Include="hooks\HatManager.cpp" />
     <ClCompile Include="hooks\KeyboardJoystick.cpp" />
     <ClCompile Include="hooks\MeetingHud.cpp" />
     <ClCompile Include="hooks\PlayerControl.cpp" />
