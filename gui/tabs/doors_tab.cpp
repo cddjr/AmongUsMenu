@@ -11,7 +11,7 @@ namespace DoorsTab {
 		if (IsInGame() && !State.mapDoors.empty()) {
 			if (ImGui::BeginTabItem("Doors")) {
 				ImGui::BeginChild("doors#list", ImVec2(200, 0) * State.dpiScale, true);
-				ImGui::ListBoxHeader("", ImVec2(200, 150) * State.dpiScale);
+				ImGui::BeginListBox("###doors#list", ImVec2(200, 150) * State.dpiScale);
 				for (size_t i = 0; i < State.mapDoors.size(); i++) {
 					auto systemType = State.mapDoors[i];
 					if (systemType == SystemTypes__Enum::Decontamination || systemType == SystemTypes__Enum::Decontamination2) continue;
@@ -36,7 +36,7 @@ namespace DoorsTab {
 							State.selectedDoor = systemType;
 					}
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 				ImGui::EndChild();
 
 				ImGui::SameLine();

@@ -13,7 +13,7 @@ namespace PlayersTab {
 		if (IsInGame() || IsInLobby()) {
 			if (ImGui::BeginTabItem("Players")) {
 				ImGui::BeginChild("players#list", ImVec2(200, 0) * State.dpiScale, true);
-				ImGui::ListBoxHeader("", ImVec2(200, 150) * State.dpiScale);
+				ImGui::BeginListBox("###players#list", ImVec2(200, 150) * State.dpiScale);
 				auto localData = GetPlayerData(*Game::pLocalPlayer);
 				for (auto playerData : GetAllPlayerData()) {
 					if (playerData->fields.Disconnected)
@@ -49,7 +49,7 @@ namespace PlayersTab {
 
 					ImGui::TextColored(nameColor, playerName.c_str());
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 
 				if (State.selectedPlayer.has_value() && State.selectedPlayer.get_PlayerData() != NULL) //Upon first startup no player is selected.  Also rare case where the playerdata is deleted before the next gui cycle
 				{
@@ -208,7 +208,7 @@ namespace PlayersTab {
 							ImGui::Text("Tasks:");
 						}
 
-						ImGui::ListBoxHeader("", ImVec2(181, 94) * State.dpiScale);
+						ImGui::BeginListBox("###tasks#list", ImVec2(181, 94) * State.dpiScale);
 
 						if (State.selectedPlayer.get_PlayerControl()->fields.myTasks == NULL)
 						{
@@ -224,7 +224,7 @@ namespace PlayersTab {
 									ImGui::Text((std::string(TranslateTaskTypes(task->fields._.TaskType))).c_str());
 							}
 						}
-						ImGui::ListBoxFooter();
+						ImGui::EndListBox();
 					}
 				}
 

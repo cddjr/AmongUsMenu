@@ -11,7 +11,7 @@ namespace HostTab {
 			if (ImGui::BeginTabItem("Host")) {
 				ImGui::Text("Select Roles:");
 				ImGui::BeginChild("host#list", ImVec2(200, 0) * State.dpiScale, true);
-				ImGui::ListBoxHeader("Choose Roles", ImVec2(200, 150) * State.dpiScale);
+				ImGui::BeginListBox("Choose Roles", ImVec2(200, 150) * State.dpiScale);
 				auto allPlayers = GetAllPlayerData();
 				auto playerAmount = allPlayers.size();
 				auto maxImposterAmount = GetMaxImposterAmount(playerAmount);
@@ -77,7 +77,7 @@ namespace HostTab {
 						}
 					}
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 				ImGui::EndChild();
 				ImGui::SameLine();
 				ImGui::BeginChild("host#actions", ImVec2(200, 0) * State.dpiScale, true);

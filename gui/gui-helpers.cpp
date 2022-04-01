@@ -211,7 +211,7 @@ bool SliderChrono(const char* label, void* p_data, const void* p_min, const void
 	const ImRect total_bb(frame_bb.Min, frame_bb.Max + ImVec2(label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f, 0.0f));
 
 	ItemSize(total_bb, style.FramePadding.y);
-	if (!ItemAdd(total_bb, id, &frame_bb))
+	if (!ItemAdd(total_bb, id, &frame_bb, ImGuiItemFlags_Inputable))
 		return false;
 
 	// Tabbing or CTRL-clicking on Slider turns it into an input box
@@ -221,7 +221,7 @@ bool SliderChrono(const char* label, void* p_data, const void* p_min, const void
 	bool temp_input_is_active = temp_input_allowed && TempInputIsActive(id);
 	if (!temp_input_is_active)
 	{
-		const bool focus_requested = temp_input_allowed && FocusableItemRegister(window, id);
+		const bool focus_requested = temp_input_allowed && (GetItemStatusFlags() & ImGuiItemStatusFlags_FocusedByTabbing) != 0;
 		clicked = (hovered && g.IO.MouseClicked[0]);
 		if (focus_requested || clicked || g.NavActivateId == id || g.NavActivateInputId == id)
 		{
@@ -232,7 +232,6 @@ bool SliderChrono(const char* label, void* p_data, const void* p_min, const void
 			if (temp_input_allowed && (focus_requested || (clicked && g.IO.KeyCtrl) || g.NavActivateInputId == id))
 			{
 				temp_input_is_active = true;
-				FocusableItemUnregister(window);
 			}
 		}
 	}
