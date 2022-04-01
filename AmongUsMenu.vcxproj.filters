@@ -70,9 +70,6 @@
     <ClCompile Include="hooks\GameOptionsData.cpp">
       <Filter>hooks</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\HatManager.cpp">
-      <Filter>hooks</Filter>
-    </ClCompile>
     <ClCompile Include="hooks\HudManager.cpp">
       <Filter>hooks</Filter>
     </ClCompile>
@@ -291,6 +288,9 @@
     </ClCompile>
     <ClCompile Include="includes\imgui\imgui_tables.cpp">
       <Filter>includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks\SaveManager.cpp">
+      <Filter>hooks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
