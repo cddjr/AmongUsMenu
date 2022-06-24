@@ -165,9 +165,9 @@ bool CustomListBoxPlayerSelectionMultiple(const char* label, std::array<std::pai
 			ImVec4 nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->White);
 			if (State.RevealRoles)
 			{
-				std::string roleName = GetRoleName(playerData->fields.Role);
+				std::string roleName = GetRoleName(playerData->fields.RoleType);
 				playerName = playerName + " (" + roleName + ")";
-				nameColor = AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
+				nameColor = AmongUsColorToImVec4(GetRoleColor(playerData->fields.RoleType));
 			}
 			else if (PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
 				nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->ImpostorRed);

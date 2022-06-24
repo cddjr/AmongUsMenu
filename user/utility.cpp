@@ -683,12 +683,14 @@ bool PlayerIsImpostor(GameData_PlayerInfo* player) {
 	return role->fields.TeamType == RoleTeamTypes__Enum::Impostor;
 }
 
-
 Color GetRoleColor(RoleBehaviour* roleBehaviour) {
 	if (roleBehaviour == nullptr) return Palette__TypeInfo->static_fields->White;
+	return GetRoleColor(roleBehaviour->fields.Role);
+}
 
+Color GetRoleColor(RoleTypes__Enum role) {
 	app::Color c;
-	switch (roleBehaviour->fields.Role) {
+	switch (role) {
 	default:
 	case RoleTypes__Enum::Crewmate:
 		c = Palette__TypeInfo->static_fields->White;
@@ -709,23 +711,26 @@ Color GetRoleColor(RoleBehaviour* roleBehaviour) {
 std::string GetRoleName(RoleBehaviour* roleBehaviour, bool abbreviated /* = false */)
 {
 	if (roleBehaviour == nullptr) return (abbreviated ? "Unk" : "Unknown");
+	return GetRoleName(roleBehaviour->fields.Role, abbreviated);
+}
 
-	switch (roleBehaviour->fields.Role)
+std::string GetRoleName(RoleTypes__Enum role, bool abbreviated /* = false */) {
+	switch (role)
 	{
-		case RoleTypes__Enum::Engineer:
-			return (abbreviated ? "Eng" : "Engineer");
-		case RoleTypes__Enum::GuardianAngel:
-			return (abbreviated ? "GA" : "GuardianAngel");
-		case RoleTypes__Enum::Impostor:
-			return (abbreviated ? "Imp" : "Impostor");
-		case RoleTypes__Enum::Scientist:
-			return (abbreviated ? "Sci" : "Scientist");
-		case RoleTypes__Enum::Shapeshifter:
-			return (abbreviated ? "SH" : "Shapeshifter");
-		case RoleTypes__Enum::Crewmate:
-			return (abbreviated ? "Crew" : "Crewmate");
-		default:
-			return (abbreviated ? "Unk" : "Unknown");
+	case RoleTypes__Enum::Engineer:
+		return (abbreviated ? "Eng" : "Engineer");
+	case RoleTypes__Enum::GuardianAngel:
+		return (abbreviated ? "GA" : "GuardianAngel");
+	case RoleTypes__Enum::Impostor:
+		return (abbreviated ? "Imp" : "Impostor");
+	case RoleTypes__Enum::Scientist:
+		return (abbreviated ? "Sci" : "Scientist");
+	case RoleTypes__Enum::Shapeshifter:
+		return (abbreviated ? "SH" : "Shapeshifter");
+	case RoleTypes__Enum::Crewmate:
+		return (abbreviated ? "Crew" : "Crewmate");
+	default:
+		return (abbreviated ? "Unk" : "Unknown");
 	}
 }
 

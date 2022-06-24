@@ -147,9 +147,9 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 			std::string playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 			if (State.RevealRoles)
 			{
-				std::string roleName = GetRoleName(playerData->fields.Role, State.AbbreviatedRoleNames);
+				std::string roleName = GetRoleName(playerData->fields.RoleType, State.AbbreviatedRoleNames);
 				playerName += "\n<size=50%>(" + roleName + ")";
-				roleColor = app::Color32_op_Implicit(GetRoleColor(playerData->fields.Role), NULL);
+				roleColor = app::Color32_op_Implicit(GetRoleColor(playerData->fields.RoleType), NULL);
 			}
 			else if (PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
 			{
