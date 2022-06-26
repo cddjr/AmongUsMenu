@@ -42,32 +42,29 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 		auto playerData = GetPlayerData(__this);
 		auto localData = GetPlayerData(*Game::pLocalPlayer);
 		assert(Object_1_IsNotNull((Object_1*)__this->fields.cosmetics));
-		auto nameTextTMP = __this->fields.cosmetics->fields.nameText;
 
 		if (!playerData || !localData)
 			return;
 
-		Color32 faceColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->Black, NULL);
-		Color32 roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->White, NULL);
+		auto roleColor = Palette__TypeInfo->static_fields->White;
 		app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData, true);
 		std::string playerName = "<Unknown>";
 		if (outfit != NULL)
 			playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 		if (State.RevealRoles)
 		{
-			std::string roleName = GetRoleName(playerData->fields.RoleType, State.AbbreviatedRoleNames);
+			const auto& roleName = GetRoleName(playerData->fields.RoleType, State.AbbreviatedRoleNames);
 			playerName += "\n<size=50%>(" + roleName + ")";
-			roleColor = app::Color32_op_Implicit(GetRoleColor(playerData->fields.RoleType), NULL);
+			roleColor = GetRoleColor(playerData->fields.RoleType);
 		}
 		else if (PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
 		{
-			roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->ImpostorRed, NULL);
+			roleColor = Palette__TypeInfo->static_fields->ImpostorRed;
 		}
 
 		String* playerNameStr = convert_to_string(playerName);
-		app::TMP_Text_set_text((app::TMP_Text*)nameTextTMP, playerNameStr, NULL);
-		app::TextMeshPro_SetFaceColor(nameTextTMP, roleColor, NULL);
-		app::TextMeshPro_SetOutlineColor(nameTextTMP, faceColor, NULL);
+		app::CosmeticsLayer_SetName_1(__this->fields.cosmetics, playerNameStr, nullptr);
+		app::CosmeticsLayer_SetNameColor(__this->fields.cosmetics, roleColor, nullptr);
 
 		if (State.Wallhack && __this == *Game::pLocalPlayer && !State.FreeCam && !State.playerToFollow.has_value()) {
 			auto mainCamera = Camera_get_main(NULL);

@@ -218,6 +218,8 @@ DO_APP_FUNC(GameData_PlayerOutfit*, GameData_PlayerInfo_get_DefaultOutfit, (Game
 DO_APP_FUNC(String*, GameData_PlayerOutfit_get_PlayerName, (GameData_PlayerOutfit* __this, MethodInfo* method), "Assembly-CSharp, System.String GameData+PlayerOutfit::get_PlayerName()");
 DO_APP_FUNC(String*, GameData_PlayerInfo_get_PlayerName, (GameData_PlayerInfo* __this, MethodInfo* method), "Assembly-CSharp, System.String GameData+PlayerInfo::get_PlayerName()");
 
+DO_APP_FUNC(void, CosmeticsLayer_SetNameColor, (CosmeticsLayer* __this, Color color, MethodInfo* method), "Assembly-CSharp, System.Void CosmeticsLayer::SetNameColor(UnityEngine.Color)");
+DO_APP_FUNC(void, CosmeticsLayer_SetName_1, (CosmeticsLayer* __this, String* nameStr, MethodInfo* method), "Assembly-CSharp, System.Void CosmeticsLayer::SetName(System.String)");
 DO_APP_FUNC(void, AccountManager_UpdateKidAccountDisplay, (AccountManager* __this, MethodInfo* method), "Assembly-CSharp, System.Void AccountManager::UpdateKidAccountDisplay()");
 DO_APP_FUNC(void, PlayerStorageManager_OnReadPlayerPrefsComplete, (PlayerStorageManager* __this, void* data, MethodInfo* method), "Assembly-CSharp, System.Void PlayerStorageManager::OnReadPlayerPrefsComplete(Epic.OnlineServices.PlayerDataStorage.ReadFileCallbackInfo)");
 DO_APP_FUNC(String*, String_Substring_1, (String* __this, int32_t startIndex, int32_t length, MethodInfo* method), "mscorlib, System.String System.String::Substring(System.Int32, System.Int32)");
