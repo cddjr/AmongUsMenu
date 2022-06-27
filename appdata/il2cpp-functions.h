@@ -220,6 +220,8 @@ DO_APP_FUNC(String*, GameData_PlayerInfo_get_PlayerName, (GameData_PlayerInfo* _
 
 DO_APP_FUNC(void, CosmeticsLayer_SetNameColor, (CosmeticsLayer* __this, Color color, MethodInfo* method), "Assembly-CSharp, System.Void CosmeticsLayer::SetNameColor(UnityEngine.Color)");
 DO_APP_FUNC(void, CosmeticsLayer_SetName_1, (CosmeticsLayer* __this, String* nameStr, MethodInfo* method), "Assembly-CSharp, System.Void CosmeticsLayer::SetName(System.String)");
+DO_APP_FUNC(void, UdpConnection_HandleKeepAlive, (UdpConnection* __this, Object* state, MethodInfo* method), "Hazel, System.Void Hazel.Udp.UdpConnection::HandleKeepAlive(System.Object)");
+DO_APP_FUNC(void, UnityUdpClientConnection_ConnectAsync, (void* __this, Byte__Array* bytes, MethodInfo* method), "Hazel, System.Void Hazel.Udp.UnityUdpClientConnection::ConnectAsync(System.Byte[])");
 DO_APP_FUNC(void, AccountManager_UpdateKidAccountDisplay, (AccountManager* __this, MethodInfo* method), "Assembly-CSharp, System.Void AccountManager::UpdateKidAccountDisplay()");
 DO_APP_FUNC(void, PlayerStorageManager_OnReadPlayerPrefsComplete, (PlayerStorageManager* __this, void* data, MethodInfo* method), "Assembly-CSharp, System.Void PlayerStorageManager::OnReadPlayerPrefsComplete(Epic.OnlineServices.PlayerDataStorage.ReadFileCallbackInfo)");
 DO_APP_FUNC(String*, String_Substring_1, (String* __this, int32_t startIndex, int32_t length, MethodInfo* method), "mscorlib, System.String System.String::Substring(System.Int32, System.Int32)");

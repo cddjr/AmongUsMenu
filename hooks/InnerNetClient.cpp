@@ -244,3 +244,19 @@ void dInnerNetClient_EnqueueDisconnect(InnerNetClient* __this, DisconnectReasons
         LOG_INFO("Blocked ban");
     }
 }
+
+void dUdpConnection_HandleKeepAlive(UdpConnection* __this, Object* state, MethodInfo* method) {
+    if (__this->fields._._._state == (int32_t)ConnectionState__Enum::Connected
+        && (std::this_thread::yield(), __this->fields.pingsSinceAck >= 3)) {
+        std::this_thread::yield();
+        LOG_INFO(std::format("pingsSinceAck {}", __this->fields.pingsSinceAck));
+    }
+    app::UdpConnection_HandleKeepAlive(__this, state, method);
+}
+
+void dUnityUdpClientConnection_ConnectAsync(void* __this, Byte__Array* bytes, MethodInfo* method) {
+    auto conn = reinterpret_cast<UdpConnection*>(__this);
+    conn->fields._MissingPingsUntilDisconnect_k__BackingField = 18;
+    conn->fields.DisconnectTimeoutMs = (std::min)(30000, 1500 * conn->fields._MissingPingsUntilDisconnect_k__BackingField);
+    app::UnityUdpClientConnection_ConnectAsync(__this, bytes, method);
+}

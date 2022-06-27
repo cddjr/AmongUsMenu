@@ -12530,4 +12530,81 @@ struct RoleEffectAnimation__Array {
 #endif
 #pragma endregion
 
+#pragma region Hazel.Connection
+#if defined(_CPLUSPLUS_)
+    enum class ConnectionState__Enum : int32_t {
+        NotConnected = 0x00000000,
+        Connecting = 0x00000001,
+        Connected = 0x00000002,
+    };
+
+#else
+    enum ConnectionState__Enum {
+        ConnectionState__Enum_NotConnected = 0x00000000,
+        ConnectionState__Enum_Connecting = 0x00000001,
+        ConnectionState__Enum_Connected = 0x00000002,
+    };
+
+#endif
+
+    struct __declspec(align(4)) Connection__Fields {
+        void* DataReceived;
+        int32_t TestLagMs;
+        int32_t TestDropRate;
+        int32_t testDropCount;
+        void* Disconnected;
+        void* _EndPoint_k__BackingField;
+        int32_t _IPMode_k__BackingField;
+        void* _Statistics_k__BackingField;
+        int32_t _state;
+    };
+    
+    struct Connection {
+        void* klass;
+        MonitorData* monitor;
+        struct Connection__Fields fields;
+    };
+#pragma endregion
+
+#pragma region Hazel.NetworkConnection
+    struct NetworkConnection__Fields {
+        struct Connection__Fields _;
+        void* OnInternalDisconnect;
+        float _AveragePingMs_k__BackingField;
+    };
+
+    struct NetworkConnection {
+        void* klass;
+        MonitorData* monitor;
+        struct NetworkConnection__Fields fields;
+    };
+#pragma endregion
+
+#pragma region Hazel.Udp.UdpConnection
+    struct UdpConnection__Fields {
+        struct NetworkConnection__Fields _;
+        void* activePingPackets;
+        int32_t keepAliveInterval;
+        int32_t _MissingPingsUntilDisconnect_k__BackingField;
+        int32_t pingsSinceAck;
+        void* keepAliveTimer;
+        void* PacketPool;
+        int32_t ResendTimeoutMs;
+        int32_t ResendLimit;
+        float ResendPingMultiplier;
+        int32_t lastIDAllocated;
+        void* reliableDataPacketsSent;
+        void* reliableDataPacketsMissing;
+        uint16_t reliableReceiveLast;
+        struct Object* PingLock;
+        float _pingMs;
+        int32_t DisconnectTimeoutMs;
+    };
+
+    struct UdpConnection {
+        void* klass;
+        MonitorData* monitor;
+        struct UdpConnection__Fields fields;
+    };
+#pragma endregion
 }
