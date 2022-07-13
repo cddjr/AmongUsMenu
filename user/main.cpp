@@ -118,7 +118,7 @@ void Run(LPVOID lpParam) {
 	GAME_STATIC_POINTER(Game::pLobbyBehaviour, app::LobbyBehaviour, Instance);
 	//GAME_STATIC_POINTER(Game::pRoleManager, app::DestroyableSingleton_1_RoleManager_, _instance);
 	assert(cctor_finished(app::SaveManager__TypeInfo->_0.klass));
-	State.userName = convert_from_string(app::SaveManager__TypeInfo->static_fields->lastPlayerName);
+	//State.userName = convert_from_string(app::SaveManager_get_PlayerName(nullptr));
 
 	Game::scanGameFunctions();
 	DetourInitilization();

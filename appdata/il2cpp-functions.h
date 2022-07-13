@@ -203,6 +203,9 @@ DO_APP_FUNC(void, InnerNetClient_DisconnectInternal, (InnerNetClient* __this, Di
 DO_APP_FUNC(void, PlayerPhysics_FixedUpdate, (PlayerPhysics* __this, MethodInfo* method), "Assembly-CSharp, System.Void PlayerPhysics::FixedUpdate()");
 
 DO_APP_FUNC(bool, SaveManager_GetPurchase, (String* itemKey, String* bundleKey, MethodInfo* method), "Assembly-CSharp, System.Boolean SaveManager::GetPurchase(System.String, System.String)");
+DO_APP_FUNC(String*, SaveManager_get_PlayerName, (MethodInfo* method), "Assembly-CSharp, System.String SaveManager::get_PlayerName()");
+DO_APP_FUNC(void, SaveManager_set_PlayerName, (String* value, MethodInfo* method), "Assembly-CSharp, System.Void SaveManager::set_PlayerName(System.String)");
+DO_APP_FUNC(void, SaveManager_set_AccountLoginStatus, (EOSManager_AccountLoginStatus__Enum value, MethodInfo* method), "Assembly-CSharp, System.Void SaveManager::set_AccountLoginStatus(EOSManager.AccountLoginStatus)");
 
 DO_APP_FUNC(void, PlayerControl_TurnOnProtection, (PlayerControl* __this, bool visible, int32_t colorId, MethodInfo* method), "Assembly-CSharp, System.Void PlayerControl::TurnOnProtection(System.Boolean, System.Int32)");
 DO_APP_FUNC(void, PlayerControl_RemoveProtection, (PlayerControl* __this, MethodInfo* method), "Assembly-CSharp, System.Void PlayerControl::RemoveProtection()");
@@ -217,3 +220,9 @@ DO_APP_FUNC(String*, GameData_PlayerInfo_get_PlayerName, (GameData_PlayerInfo* _
 
 DO_APP_FUNC(void, AccountManager_UpdateKidAccountDisplay, (AccountManager* __this, MethodInfo* method), "Assembly-CSharp, System.Void AccountManager::UpdateKidAccountDisplay()");
 DO_APP_FUNC(void, PlayerStorageManager_OnReadPlayerPrefsComplete, (PlayerStorageManager* __this, void* data, MethodInfo* method), "Assembly-CSharp, System.Void PlayerStorageManager::OnReadPlayerPrefsComplete(Epic.OnlineServices.PlayerDataStorage.ReadFileCallbackInfo)");
+DO_APP_FUNC(String*, String_Substring_1, (String* __this, int32_t startIndex, int32_t length, MethodInfo* method), "mscorlib, System.String System.String::Substring(System.Int32, System.Int32)");
+DO_APP_FUNC(int32_t, String_get_Length, (String* __this, MethodInfo* method), "mscorlib, System.Int32 System.String::get_Length()");
+DO_APP_FUNC(IMECompositionMode__Enum, Input_get_imeCompositionMode, (MethodInfo* method), "UnityEngine.InputLegacyModule, UnityEngine.IMECompositionMode UnityEngine.Input::get_imeCompositionMode()");
+DO_APP_FUNC(void, Input_set_imeCompositionMode, (IMECompositionMode__Enum value, MethodInfo* method), "UnityEngine.InputLegacyModule, System.Void UnityEngine.Input::set_imeCompositionMode(UnityEngine.IMECompositionMode)");
+DO_APP_FUNC(String*, Input_get_compositionString, (MethodInfo* method), "UnityEngine.InputLegacyModule, System.String UnityEngine.Input::get_compositionString()");
+DO_APP_FUNC(String*, Input_get_inputString, (MethodInfo* method), "UnityEngine.InputLegacyModule, System.String UnityEngine.Input::get_inputString()");

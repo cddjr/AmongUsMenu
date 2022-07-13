@@ -41,6 +41,8 @@ void dShipStatus_OnEnable(ShipStatus* __this, MethodInfo* method) {
 
 	State.mapType = (Settings::MapType)(__this->fields.Type);
 
-	State.userName = convert_from_string(SaveManager__TypeInfo->static_fields->lastPlayerName);
+	synchronized(State.nameMutex) {
+		State.userName = convert_from_string(app::SaveManager_get_PlayerName(nullptr));
+	}
 	ResetOriginalAppearance();
 }

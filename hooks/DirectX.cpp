@@ -79,14 +79,16 @@ LRESULT __stdcall dWndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     if (!State.ImGuiInitialized)
         return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 
-    if (uMsg == WM_DPICHANGED && State.AdjustByDPI) {
-        float dpi = HIWORD(wParam);
-        State.dpiScale = dpi / 96.0f;
-        State.dpiChanged = true;
-        STREAM_DEBUG("DPI Scale: " << State.dpiScale);
-    }
-
-    if (uMsg == WM_SIZE) {
+    switch (uMsg) {
+    case WM_DPICHANGED:
+        if (State.AdjustByDPI) {
+            float dpi = HIWORD(wParam);
+            State.dpiScale = dpi / 96.0f;
+            State.dpiChanged = true;
+            STREAM_DEBUG("DPI Scale: " << State.dpiScale);
+        }
+        break;
+    case WM_SIZE: {
         // RenderTarget needs to be released because the resolution has changed 
         WaitForSingleObject(DirectX::hRenderSemaphore, INFINITE);
         if (pRenderTargetView) {
@@ -94,6 +96,19 @@ LRESULT __stdcall dWndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             pRenderTargetView = nullptr;
         }
         ReleaseSemaphore(DirectX::hRenderSemaphore, 1, NULL);
+        break;
+    }
+    case WM_IME_ENDCOMPOSITION:
+        if (auto ctx = ImGui::GetCurrentContext();
+            ctx->ActiveId != 0 && ctx->ActiveId == ctx->InputTextState.ID) {
+            if (auto input = app::Input_get_inputString(nullptr)) {
+                for (int32_t i = 0; i < app::String_get_Length(input, nullptr); i++) {
+                    auto ch = static_cast<ImWchar16>((&input->fields.m_firstChar)[i]);
+                    ImGui::GetIO().AddInputCharacterUTF16(ch);
+                }
+            }
+        }
+        break;
     }
 
     if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))

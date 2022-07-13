@@ -1,5 +1,6 @@
 #include "pch-il2cpp.h"
 #include "utility.h"
+#include "imgui/imgui_internal.h"
 #include "state.hpp"
 #include "game.h"
 #include "gitparams.h"
@@ -816,4 +817,16 @@ bool Object_1_IsNotNull(app::Object_1* obj)
 bool Object_1_IsNull(app::Object_1* obj)
 {
 	return !Object_1_IsNotNull(obj);
+}
+
+void EnableImeIfNeeded() {
+	static ImGuiID lastId = 0;
+	if (ImGui::IsItemActivated()) {
+		lastId = ImGui::GetActiveID();
+		app::Input_set_imeCompositionMode(IMECompositionMode__Enum::On, nullptr);
+	}
+	else if (auto ctx = ImGui::GetCurrentContext(); 
+		ctx->ActiveIdPreviousFrame == lastId && ImGui::IsItemDeactivated()) {
+		app::Input_set_imeCompositionMode(IMECompositionMode__Enum::Off, nullptr);
+	}
 }
