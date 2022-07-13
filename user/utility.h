@@ -93,6 +93,9 @@ class PlayerSelection {
 		constexpr bool has_value() const {
 			return _has_value;
 		}
+		operator bool() const {
+			return _has_value;
+		}
 	private:
 		friend class PlayerSelection;
 		PlayerControl* _playerControl;
@@ -206,3 +209,6 @@ float getMapXOffsetSkeld(float x);
 
 bool Object_1_IsNotNull(app::Object_1* unity_object);
 bool Object_1_IsNull(app::Object_1* unity_object);
+
+// Enable IME when the last item of ImGui is activated.
+void EnableImeIfNeeded();

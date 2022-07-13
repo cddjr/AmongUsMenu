@@ -57,10 +57,30 @@ namespace SettingsTab {
 #endif
 			//Change this to in game only once account is overridden
 			{
-				char* nameBuffer[12]{ const_cast<char*>(State.userName.c_str()) };
-				if (ImGui::InputText("PlayerName", *nameBuffer, IM_ARRAYSIZE(nameBuffer))) {
-					State.userName = std::string(*nameBuffer);
+				constexpr size_t kMaxLen = 10;
+				static auto callback = [](ImGuiInputTextCallbackData* data) -> int {
+					if (data->BufTextLen <= kMaxLen) return 0;
+					// for CJK characters
+					if (auto name = convert_to_string({ data->Buf, (size_t)data->BufTextLen });
+						app::String_get_Length(name, nullptr) > kMaxLen) {
+						data->BufTextLen = convert_from_string(app::String_Substring_1(name, 0, kMaxLen, nullptr)).length();
+						data->Buf[data->BufTextLen] = 0;
+						data->BufDirty = true;
+					}
+					return 0;
+				};
+				std::string userName;
+				synchronized(State.nameMutex) {
+					userName = State.userName;
 				}
+				userName.reserve(kMaxLen * 4);
+				if (ImGui::InputText("PlayerName", userName.data(), userName.capacity() + 1, ImGuiInputTextFlags_CallbackAlways, callback)) {
+					userName.resize(strlen(userName.data()));
+					synchronized(State.nameMutex) {
+						State.userName = std::move(userName);
+					}
+				}
+				EnableImeIfNeeded();
 			}
 
 			ImGui::Dummy(ImVec2(7, 7) * State.dpiScale);

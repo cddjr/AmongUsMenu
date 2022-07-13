@@ -12512,4 +12512,22 @@ struct RoleEffectAnimation__Array {
     };
 #pragma endregion
 
+#pragma region UnityEngine.IMECompositionMode
+#if defined(_CPLUSPLUS_)
+    enum class IMECompositionMode__Enum : int32_t {
+        Auto = 0x00000000,
+        On = 0x00000001,
+        Off = 0x00000002,
+    };
+
+#else
+    enum IMECompositionMode__Enum {
+        IMECompositionMode__Enum_Auto = 0x00000000,
+        IMECompositionMode__Enum_On = 0x00000001,
+        IMECompositionMode__Enum_Off = 0x00000002,
+    };
+
+#endif
+#pragma endregion
+
 }

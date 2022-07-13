@@ -166,6 +166,7 @@ public:
     int LobbyTimer = -1;
 
     std::string userName = "";
+    std::mutex nameMutex;
 
     enum class MapType : uint8_t
     {

@@ -110,13 +110,17 @@ void dInnerNetClient_Update(InnerNetClient* __this, MethodInfo* method)
     static int nameChangeCycleDelay = 0; //If we spam too many name changes, we're banned
 
     if (nameChangeCycleDelay <= 0 && !State.activeImpersonation) {
-        if ((convert_from_string(SaveManager__TypeInfo->static_fields->lastPlayerName) != State.userName) && !State.userName.empty()) {
-            SaveManager__TypeInfo->static_fields->lastPlayerName = convert_to_string(State.userName);
-            LOG_INFO("Name mismatch, setting name to \"" + State.userName + "\"");
+        std::string userName;
+        synchronized(State.nameMutex) {
+            userName = State.userName;
+        }
+        if ((convert_from_string(app::SaveManager_get_PlayerName(nullptr)) != userName) && !userName.empty()) {
+            app::SaveManager_set_PlayerName(convert_to_string(userName), nullptr);
+            LOG_INFO("Name mismatch, setting name to \"" + userName + "\"");
             if (IsInGame())
-                State.rpcQueue.push(new RpcSetName(State.userName));
+                State.rpcQueue.push(new RpcSetName(userName));
             else if (IsInLobby())
-                State.lobbyRpcQueue.push(new RpcSetName(State.userName));
+                State.lobbyRpcQueue.push(new RpcSetName(userName));
             nameChangeCycleDelay = 100; //Should be approximately two second
         }
     }

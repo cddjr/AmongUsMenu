@@ -158,6 +158,8 @@ void DetourInitilization() {
 	HOOKFUNC(AccountManager_UpdateKidAccountDisplay);
 	HOOKFUNC(PlayerStorageManager_OnReadPlayerPrefsComplete);
 	HOOKFUNC(EOSManager_UpdatePermissionKeys);
+	HOOKFUNC(SaveManager_set_AccountLoginStatus);
+	HOOKFUNC(SaveManager_set_PlayerName);
 
 
 	if (!HookFunction(&(PVOID&)oPresent, dPresent, "D3D_PRESENT_FUNCTION")) return;
@@ -240,6 +242,8 @@ void DetourUninitialization()
 	UNHOOKFUNC(AccountManager_UpdateKidAccountDisplay);
 	UNHOOKFUNC(PlayerStorageManager_OnReadPlayerPrefsComplete);
 	UNHOOKFUNC(EOSManager_UpdatePermissionKeys);
+	UNHOOKFUNC(SaveManager_set_AccountLoginStatus);
+	UNHOOKFUNC(SaveManager_set_PlayerName);
 
 	if (DetourDetach(&(PVOID&)oPresent, dPresent) != 0) return;
 

@@ -70,6 +70,8 @@ void dRoleManager_AssignRolesForTeam(List_1_GameData_PlayerInfo_* players, RoleO
 void dRoleManager_AssignRolesFromList(List_1_GameData_PlayerInfo_* players, int32_t teamMax, List_1_RoleTypes_* roleList, int32_t* rolesAssigned, MethodInfo* method);
 void dPlayerPhysics_FixedUpdate (PlayerPhysics* __this, MethodInfo* method);
 bool dSaveManager_GetPurchase(String* itemKey, String* bundleKey, MethodInfo* method);
+void dSaveManager_set_AccountLoginStatus(EOSManager_AccountLoginStatus__Enum value, MethodInfo* method);
+void dSaveManager_set_PlayerName(String* value, MethodInfo* method);
 void dPlayerControl_TurnOnProtection(PlayerControl* __this, bool visible, int32_t colorId, MethodInfo* method);
 void dAmongUsClient_OnGameEnd(AmongUsClient* __this, Object* endGameResult, MethodInfo* method);
 void dAccountManager_UpdateKidAccountDisplay(AccountManager* __this, MethodInfo* method);
