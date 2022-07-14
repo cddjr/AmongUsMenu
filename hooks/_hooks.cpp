@@ -30,7 +30,7 @@ bool UnhookFunction(PVOID* ppPointer, PVOID pDetour, const char* functionName) {
 	return true;
 }
 
-#define UNHOOKFUNC(n) if (!UnhookFunction(&(PVOID&)n, d ## n, #n)) return;
+#define UNHOOKFUNC(n) if (n) UnhookFunction(&(PVOID&)n, d ## n, #n);
 
 void DetourInitilization() {
 	DetourTransactionBegin();
@@ -56,9 +56,8 @@ void DetourInitilization() {
 				L"Error",
 				MB_YESNO | MB_ICONWARNING) == IDNO)
 			{
-#ifndef _VERSION
-				SetEvent(hUnloadEvent); //Might as well unload the DLL if we're not going to render anything
-#endif
+				if (hUnloadEvent)
+					SetEvent(hUnloadEvent); //Might as well unload the DLL if we're not going to render anything
 				return;
 			}
 			oPresent = d3d11.presentFunction;
@@ -78,9 +77,8 @@ void DetourInitilization() {
 				L"Error",
 				MB_YESNO | MB_ICONWARNING) == IDNO)
 			{
-#ifndef _VERSION
-				SetEvent(hUnloadEvent); //Might as well unload the DLL if we're not going to render anything
-#endif
+				if (hUnloadEvent)
+					SetEvent(hUnloadEvent); //Might as well unload the DLL if we're not going to render anything
 				return;
 			}
 			oPresent = d3d11.presentFunction;
@@ -250,7 +248,8 @@ void DetourUninitialization()
 	UNHOOKFUNC(SaveManager_set_AccountLoginStatus);
 	UNHOOKFUNC(SaveManager_set_PlayerName);
 
-	if (DetourDetach(&(PVOID&)oPresent, dPresent) != 0) return;
+	if (oPresent)
+		HookFunction(&(PVOID&)oPresent, dPresent, "D3D_PRESENT_FUNCTION");
 
 	DetourTransactionCommit();
 	DirectX::Shutdown();

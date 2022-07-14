@@ -30,6 +30,11 @@ void new_console() {
 	SetConsoleOutputCP(CP_UTF8);
 }
 
+void free_console() {
+	fclose(stdout);
+	FreeConsole();
+}
+
 std::string utf16_to_utf8(std::u16string_view u16_string) {
 	std::wstring wide_string(u16_string.begin(), u16_string.end());
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;

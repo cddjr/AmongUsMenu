@@ -15,13 +15,15 @@ namespace DebugTab {
 	void Render() {
 		if (ImGui::BeginTabItem("Debug")) {
 			ImGui::Dummy(ImVec2(4, 4) * State.dpiScale);
-#ifndef _VERSION
-			if (ImGui::Button("Unload DLL"))
-			{
-				SetEvent(hUnloadEvent);
+
+			if (hUnloadEvent) {
+				if (ImGui::Button("Unload DLL"))
+				{
+					SetEvent(hUnloadEvent);
+				}
+				ImGui::Dummy(ImVec2(4, 4) * State.dpiScale);
 			}
-			ImGui::Dummy(ImVec2(4, 4) * State.dpiScale);
-#endif
+
 			ImGui::Checkbox("Enable Occlusion Culling", &State.OcclusionCulling);
 			ImGui::Dummy(ImVec2(4, 4) * State.dpiScale);
 

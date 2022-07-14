@@ -1,6 +1,7 @@
 #pragma once
 
 void new_console();
+void free_console();
 std::string convert_from_string(Il2CppString* input);
 std::string convert_from_string(app::String* input);
 app::String* convert_to_string(std::string_view input);

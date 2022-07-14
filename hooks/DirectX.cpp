@@ -30,9 +30,9 @@ ID3D11Device* pDevice = NULL;
 ID3D11DeviceContext* pContext = NULL;
 ID3D11RenderTargetView* pRenderTargetView = NULL;
 D3D_PRESENT_FUNCTION oPresent = nullptr;
-WNDPROC oWndProc;
+WNDPROC oWndProc = nullptr;
 
-HANDLE DirectX::hRenderSemaphore;
+HANDLE DirectX::hRenderSemaphore = nullptr;
 constexpr DWORD MAX_RENDER_THREAD_COUNT = 5; //Should be overkill for our purposes
 
 std::vector<MapTexture> maps = std::vector<MapTexture>();
@@ -383,14 +383,16 @@ HRESULT __stdcall dPresent(IDXGISwapChain* __this, UINT SyncInterval, UINT Flags
 }
 
 void DirectX::Shutdown() {
-    assert(hRenderSemaphore != NULL); //Initialization is now in a hook, so we might as well guard against this
+    if (!State.ImGuiInitialized) return; //Initialization is now in a hook, so we might as well guard against this
     for (uint8_t i = 0; i < MAX_RENDER_THREAD_COUNT; i++) //This ugly little hack means we use up all the render queues so we can end everything
     {
         assert(WaitForSingleObject(hRenderSemaphore, INFINITE) == WAIT_OBJECT_0); //Since this is only used on debug builds, we'll leave this for now
     }
-    oWndProc = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)oWndProc);
+    SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)oWndProc);
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
     CloseHandle(hRenderSemaphore);
+    hRenderSemaphore = nullptr;
+    State.ImGuiInitialized = false;
 }

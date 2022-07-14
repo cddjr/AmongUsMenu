@@ -16,8 +16,8 @@
 
 // test autoRelease main ver increment
 
-HMODULE hModule;
-HANDLE hUnloadEvent;
+HMODULE hModule = nullptr;
+HANDLE hUnloadEvent = nullptr;
 
 std::string GetCRC32(std::filesystem::path filePath) {
 	CRC32 crc32;
@@ -76,8 +76,15 @@ void Run(LPVOID lpParam) {
 #endif
 	Log.Create();
 	if (!GameVersionCheck()) {
-		fclose(stdout);
-		FreeConsole();
+#ifdef _VERSION
+		if (hUnloadEvent) {
+			CloseHandle(hUnloadEvent);
+			hUnloadEvent = nullptr;
+		}
+#endif
+#ifdef _DEBUG
+		free_console();
+#endif
 		FreeLibraryAndExitThread((HMODULE)lpParam, 0);
 		return;
 	}
@@ -92,7 +99,7 @@ void Run(LPVOID lpParam) {
 		LOG_INFO(ss.str());
 	}
 	State.Load();
-#if _DEBUG
+#ifndef _VERSION
 	hUnloadEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 #endif
 	#define DO_APP_CLASS(n, s) if(!n ## __TypeInfo) LOG_ERROR("Unable to locate " #n  "__TypeInfo")
@@ -116,17 +123,19 @@ void Run(LPVOID lpParam) {
 
 	Game::scanGameFunctions();
 	DetourInitilization();
-#if _DEBUG
-	DWORD dwWaitResult = WaitForSingleObject(hUnloadEvent, INFINITE);
-	if (dwWaitResult != WAIT_OBJECT_0) {
-		STREAM_ERROR("Failed to watch unload signal! dwWaitResult = " << dwWaitResult << " Error " << GetLastError());
-		return;
-	}
-	
-	DetourUninitialization();
-	fclose(stdout);
-	FreeConsole();
-	CloseHandle(hUnloadEvent);
-	FreeLibraryAndExitThread(hModule, 0);
+
+	if (hUnloadEvent) {
+		DWORD dwWaitResult = WaitForSingleObject(hUnloadEvent, INFINITE);
+		if (dwWaitResult != WAIT_OBJECT_0) {
+			STREAM_ERROR("Failed to watch unload signal! dwWaitResult = " << dwWaitResult << " Error " << GetLastError());
+			return;
+		}
+		DetourUninitialization();
+		CloseHandle(hUnloadEvent);
+		hUnloadEvent = nullptr;
+#ifdef _DEBUG
+		free_console();
 #endif
+		FreeLibraryAndExitThread(hModule, 0);
+	}
 }

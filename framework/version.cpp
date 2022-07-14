@@ -4,7 +4,7 @@
 #include "main.h"
 #include <filesystem>
 
-HMODULE version_dll;
+HMODULE version_dll = nullptr;
 
 #define WRAPPER_GENFUNC(name) \
 	FARPROC o##name; \
@@ -76,9 +76,17 @@ std::filesystem::path getApplicationPath() {
 DWORD WINAPI Load(LPVOID lpParam) {
 	auto applicationPath = getApplicationPath();
 
-	load_version();
-	if (!version_dll)
-		return 0;
+	HMODULE hVersion = GetModuleHandleA("version.dll");
+	if (hVersion == static_cast<HMODULE>(lpParam)) {
+		// Version proxy
+		load_version();
+		if (!version_dll)
+			return 0;
+	}
+	else {
+		// DLL injection
+		hUnloadEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+	}
 
 	if (applicationPath.filename() != "Among Us.exe") return 0;
 

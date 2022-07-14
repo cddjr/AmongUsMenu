@@ -6,6 +6,8 @@
 #include "version.h"
 #endif
 
+static HANDLE s_hThread = nullptr;
+
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call)
@@ -13,14 +15,24 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	case DLL_PROCESS_ATTACH:
 		DisableThreadLibraryCalls(hModule);
 #if _VERSION
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Load, hModule, NULL, NULL);
+		s_hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Load, hModule, NULL, NULL);
 #else
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Run, hModule, NULL, NULL);
+		s_hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Run, hModule, NULL, NULL);
 #endif
 		break;
 	case DLL_PROCESS_DETACH:
+		if (hUnloadEvent) {
+			SetEvent(hUnloadEvent);
+		}
+		if (s_hThread) {
+			// FIXME: Don't wait too long(100ms should be enough)
+			WaitForSingleObject(s_hThread, 100);
+			CloseHandle(s_hThread);
+			s_hThread = nullptr;
+		}
 #if _VERSION
-		FreeLibrary(version_dll);
+		if (version_dll)
+			FreeLibrary(version_dll);
 #endif
 		break;
 	}
