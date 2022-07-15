@@ -69,6 +69,7 @@
   <Type Name="app::Dictionary_2_PlayerOutfitType_GameData_PlayerOutfit_">
     <AlternativeType Name="app::Dictionary_2_RoleTypes_RoleOptionsData_RoleRate_"/>
     <AlternativeType Name="app::Dictionary_2_SystemTypes_ISystemType_"/>
+    <AlternativeType Name="app::Dictionary_2_System_Byte_System_Byte_"/>
     <DisplayString>{{ size = {fields.count - fields.freeCount} }}</DisplayString>
     <Expand>
       <Item Name="[size]">fields.count - fields.freeCount</Item>

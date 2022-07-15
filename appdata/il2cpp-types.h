@@ -12607,4 +12607,78 @@ struct RoleEffectAnimation__Array {
         struct UdpConnection__Fields fields;
     };
 #pragma endregion
+
+#pragma region Dictionary_2_System_Byte_System_Byte_
+    struct Dictionary_2_TKey_TValue_Entry_System_Byte_System_Byte_ {
+        int32_t hashCode;
+        int32_t next;
+        uint8_t key;
+        uint8_t value;
+    };
+
+    struct Dictionary_2_TKey_TValue_Entry_System_Byte_System_Byte___Array {
+        void* klass;
+        MonitorData* monitor;
+        Il2CppArrayBounds* bounds;
+        il2cpp_array_size_t max_length;
+        struct Dictionary_2_TKey_TValue_Entry_System_Byte_System_Byte_ vector[32];
+    };
+
+    struct __declspec(align(4)) Dictionary_2_System_Byte_System_Byte___Fields {
+        struct Int32__Array* buckets;
+        struct Dictionary_2_TKey_TValue_Entry_System_Byte_System_Byte___Array* entries;
+        int32_t count;
+        int32_t version;
+        int32_t freeList;
+        int32_t freeCount;
+        struct IEqualityComparer_1_System_Byte_* comparer;
+        void* keys;
+        void* values;
+        struct Object* _syncRoot;
+    };
+
+    struct Dictionary_2_System_Byte_System_Byte_ {
+        void* klass;
+        MonitorData* monitor;
+        struct Dictionary_2_System_Byte_System_Byte___Fields fields;
+    };
+#pragma endregion
+
+#pragma region VentilationSystem
+#if defined(_CPLUSPLUS_)
+    enum class VentilationSystem_Operation__Enum : int32_t {
+        StartCleaning = 0x00000000,
+        StopCleaning = 0x00000001,
+        Enter = 0x00000002,
+        Exit = 0x00000003,
+        Move = 0x00000004,
+        BootImpostors = 0x00000005,
+    };
+
+#else
+    enum VentilationSystem_Operation__Enum {
+        VentilationSystem_Operation__Enum_StartCleaning = 0x00000000,
+        VentilationSystem_Operation__Enum_StopCleaning = 0x00000001,
+        VentilationSystem_Operation__Enum_Enter = 0x00000002,
+        VentilationSystem_Operation__Enum_Exit = 0x00000003,
+        VentilationSystem_Operation__Enum_Move = 0x00000004,
+        VentilationSystem_Operation__Enum_BootImpostors = 0x00000005,
+    };
+
+#endif
+
+    struct __declspec(align(4)) VentilationSystem__Fields {
+        void* SeqBuffers;
+        struct Dictionary_2_System_Byte_System_Byte_* PlayersCleaningVents;
+        struct Dictionary_2_System_Byte_System_Byte_* PlayersInsideVents;
+        void* ToRemove;
+        bool _IsDirty_k__BackingField;
+    };
+
+    struct VentilationSystem {
+        void* klass;
+        MonitorData* monitor;
+        struct VentilationSystem__Fields fields;
+    };
+#pragma endregion
 }

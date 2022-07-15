@@ -220,6 +220,9 @@ DO_APP_FUNC(String*, GameData_PlayerInfo_get_PlayerName, (GameData_PlayerInfo* _
 
 DO_APP_FUNC(void, CosmeticsLayer_SetNameColor, (CosmeticsLayer* __this, Color color, MethodInfo* method), "Assembly-CSharp, System.Void CosmeticsLayer::SetNameColor(UnityEngine.Color)");
 DO_APP_FUNC(void, CosmeticsLayer_SetName_1, (CosmeticsLayer* __this, String* nameStr, MethodInfo* method), "Assembly-CSharp, System.Void CosmeticsLayer::SetName(System.String)");
+DO_APP_FUNC(void, VentilationSystem_Update, (VentilationSystem_Operation__Enum op, int32_t ventId, MethodInfo* method), "Assembly-CSharp, System.Void VentilationSystem::Update(VentilationSystem.Operation, System.Int32)");
+DO_APP_FUNC(void, VentilationSystem_Deserialize, (VentilationSystem* __this, MessageReader* reader, bool initialState, MethodInfo* method), "Assembly-CSharp, System.Void VentilationSystem::Deserialize(Hazel.MessageReader, System.Boolean)");
+
 DO_APP_FUNC(void, UdpConnection_HandleKeepAlive, (UdpConnection* __this, Object* state, MethodInfo* method), "Hazel, System.Void Hazel.Udp.UdpConnection::HandleKeepAlive(System.Object)");
 DO_APP_FUNC(void, UnityUdpClientConnection_ConnectAsync, (void* __this, Byte__Array* bytes, MethodInfo* method), "Hazel, System.Void Hazel.Udp.UnityUdpClientConnection::ConnectAsync(System.Byte[])");
 DO_APP_FUNC(void, AccountManager_UpdateKidAccountDisplay, (AccountManager* __this, MethodInfo* method), "Assembly-CSharp, System.Void AccountManager::UpdateKidAccountDisplay()");

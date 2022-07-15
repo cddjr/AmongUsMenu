@@ -156,6 +156,7 @@ void DetourInitilization() {
 	HOOKFUNC(InnerNetClient_DisconnectInternal);
 	HOOKFUNC(UdpConnection_HandleKeepAlive);
 	HOOKFUNC(UnityUdpClientConnection_ConnectAsync);
+	HOOKFUNC(VentilationSystem_Deserialize);
 	HOOKFUNC(AccountManager_UpdateKidAccountDisplay);
 	HOOKFUNC(PlayerStorageManager_OnReadPlayerPrefsComplete);
 	HOOKFUNC(EOSManager_UpdatePermissionKeys);
@@ -242,6 +243,7 @@ void DetourUninitialization()
 	UNHOOKFUNC(InnerNetClient_DisconnectInternal);
 	UNHOOKFUNC(UdpConnection_HandleKeepAlive);
 	UNHOOKFUNC(UnityUdpClientConnection_ConnectAsync);
+	UNHOOKFUNC(VentilationSystem_Deserialize);
 	UNHOOKFUNC(AccountManager_UpdateKidAccountDisplay);
 	UNHOOKFUNC(PlayerStorageManager_OnReadPlayerPrefsComplete);
 	UNHOOKFUNC(EOSManager_UpdatePermissionKeys);

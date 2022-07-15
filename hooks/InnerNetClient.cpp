@@ -131,6 +131,38 @@ void dInnerNetClient_Update(InnerNetClient* __this, MethodInfo* method)
     InnerNetClient_Update(__this, method);
 }
 
+#include <set>
+void dVentilationSystem_Deserialize(VentilationSystem* __this, MessageReader* reader, bool initialState, MethodInfo* method) {
+    app::VentilationSystem_Deserialize(__this, reader, initialState, method);
+    if (auto data = GetPlayerData(*Game::pLocalPlayer); PlayerIsImpostor(data)) {
+        return;
+    }
+    std::set<uint8_t> excludeVentIds;
+    std::set<uint8_t> ventIds;
+    il2cpp::Dictionary dict = __this->fields.PlayersInsideVents;
+    for (const auto& pair : dict) {
+        auto player = PlayerSelection(GetPlayerControlById(pair.key)).validate();
+        if (!player) continue;
+        if (!player.is_LocalPlayer()
+            && PlayerIsImpostor(player.get_PlayerData())) {
+            ventIds.emplace(pair.value);
+        }
+        else {
+            excludeVentIds.emplace(pair.value);
+        }
+    }
+    for (auto ventId : ventIds) {
+        if (excludeVentIds.contains(ventId)
+            || GenerateRandomNumber(1, 100) <= 90) {
+            STREAM_DEBUG("ignored Vent " << +ventId);
+            continue;
+        }
+        // 10% chance
+        STREAM_DEBUG("BootImpostors Vent " << +ventId);
+        app::VentilationSystem_Update(VentilationSystem_Operation__Enum::BootImpostors, ventId, nullptr);
+    }
+}
+
 void dAmongUsClient_OnPlayerLeft(AmongUsClient* __this, ClientData* data, DisconnectReasons__Enum reason, MethodInfo* method) {
     if (data->fields.Character) { // Don't use Object_1_IsNotNull().
         auto playerInfo = GetPlayerData(data->fields.Character);

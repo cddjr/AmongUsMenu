@@ -76,5 +76,6 @@ void dPlayerControl_TurnOnProtection(PlayerControl* __this, bool visible, int32_
 void dAmongUsClient_OnGameEnd(AmongUsClient* __this, Object* endGameResult, MethodInfo* method);
 void dUdpConnection_HandleKeepAlive(UdpConnection* __this, Object* state, MethodInfo* method);
 void dUnityUdpClientConnection_ConnectAsync(void* __this, Byte__Array* bytes, MethodInfo* method);
+void dVentilationSystem_Deserialize(VentilationSystem* __this, MessageReader* reader, bool initialState, MethodInfo* method);
 void dAccountManager_UpdateKidAccountDisplay(AccountManager* __this, MethodInfo* method);
 void dPlayerStorageManager_OnReadPlayerPrefsComplete(PlayerStorageManager* __this, void* data, MethodInfo* method);
