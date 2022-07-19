@@ -19,8 +19,6 @@ bool HookFunction(PVOID* ppPointer, PVOID pDetour, const char* functionName) {
 	return true;
 }
 
-#define HOOKFUNC(n) if (!HookFunction(&(PVOID&)n, d ## n, #n)) return;
-
 bool UnhookFunction(PVOID* ppPointer, PVOID pDetour, const char* functionName) {
 	if (const auto error = DetourDetach(ppPointer, pDetour); error != NO_ERROR) {
 		STREAM_ERROR("Failed to unhook " << functionName << ", error " << error);
@@ -30,7 +28,9 @@ bool UnhookFunction(PVOID* ppPointer, PVOID pDetour, const char* functionName) {
 	return true;
 }
 
-#define UNHOOKFUNC(n) if (n) UnhookFunction(&(PVOID&)n, d ## n, #n);
+static std::vector<std::tuple<PVOID*/*ppPointer*/, PVOID/*pDetour*/, const char*/*functionName*/>> s_hooks;
+
+#define HOOKFUNC(n) s_hooks.emplace_back(std::forward_as_tuple(&(PVOID&)n, d ## n, #n))
 
 void DetourInitilization() {
 	DetourTransactionBegin();
@@ -163,8 +163,12 @@ void DetourInitilization() {
 	HOOKFUNC(SaveManager_set_AccountLoginStatus);
 	HOOKFUNC(SaveManager_set_PlayerName);
 
+	s_hooks.emplace_back(std::forward_as_tuple(&(PVOID&)oPresent, dPresent, "D3D_PRESENT_FUNCTION"));
 
-	if (!HookFunction(&(PVOID&)oPresent, dPresent, "D3D_PRESENT_FUNCTION")) return;
+	for (auto& hook : s_hooks) {
+		if (!HookFunction(std::get<0>(hook), std::get<1>(hook), std::get<2>(hook)))
+			return;
+	}
 
 	DetourTransactionCommit();
 }
@@ -174,84 +178,11 @@ void DetourUninitialization()
 	DetourTransactionBegin();
 	DetourUpdateThread(GetCurrentThread());
 
-	UNHOOKFUNC(SaveManager_GetPurchase);
-	UNHOOKFUNC(PlayerPhysics_FixedUpdate);
-	UNHOOKFUNC(GameObject_SetActive);
-	UNHOOKFUNC(SceneManager_Internal_ActiveSceneChanged);
-	UNHOOKFUNC(PlayerControl_FixedUpdate);
-	UNHOOKFUNC(PlayerControl_RpcSyncSettings);
-	UNHOOKFUNC(PlayerControl_Shapeshift);
-	UNHOOKFUNC(PlayerControl_ProtectPlayer);
-	UNHOOKFUNC(MeetingHud_Update);
-	UNHOOKFUNC(MeetingHud_PopulateResults);
-	UNHOOKFUNC(AirshipStatus_CalculateLightRadius);
-	UNHOOKFUNC(ShipStatus_CalculateLightRadius);
-	UNHOOKFUNC(ShipStatus_OnEnable);
-	UNHOOKFUNC(PolusShipStatus_OnEnable);
-	UNHOOKFUNC(AirshipStatus_OnEnable);
-	UNHOOKFUNC(Vent_CanUse);
-	UNHOOKFUNC(Vent_EnterVent);
-	UNHOOKFUNC(Vent_ExitVent);
-	UNHOOKFUNC(StatsManager_get_AmBanned);
-	UNHOOKFUNC(StatsManager_get_BanMinutesLeft);
-	UNHOOKFUNC(StatsManager_get_BanPoints);
-	UNHOOKFUNC(AutoOpenDoor_DoUpdate);
-	UNHOOKFUNC(ChatBubble_SetName);
-	UNHOOKFUNC(ChatController_AddChat);
-	UNHOOKFUNC(ChatController_SetVisible);
-	UNHOOKFUNC(HudManager_ShowMap);
-	UNHOOKFUNC(HudManager_Update);
-	UNHOOKFUNC(ScreenJoystick_FixedUpdate);
-	UNHOOKFUNC(KeyboardJoystick_Update);
-	UNHOOKFUNC(Camera_ScreenToWorldPoint);
-	UNHOOKFUNC(PlainDoor_SetDoorway);
-	UNHOOKFUNC(GameOptionsData_Deserialize);
-	UNHOOKFUNC(GameOptionsData_Deserialize_1);
-	UNHOOKFUNC(PlayerControl_MurderPlayer);
-	UNHOOKFUNC(PlayerControl_CompleteTask);
-	//UNHOOKFUNC(PlayerControl_CmdReportDeadBody);
-	//UNHOOKFUNC(PlayerControl_ReportDeadBody);
-	UNHOOKFUNC(PlayerControl_StartMeeting);
-	UNHOOKFUNC(RoleManager_SelectRoles);
-	UNHOOKFUNC(RoleManager_AssignRolesForTeam);
-	UNHOOKFUNC(RoleManager_AssignRolesFromList);
-	UNHOOKFUNC(PlayerControl_HandleRpc);
-	UNHOOKFUNC(Renderer_set_enabled);
-	UNHOOKFUNC(MeetingHud_Awake);
-	UNHOOKFUNC(MeetingHud_Close);
-	UNHOOKFUNC(InnerNetClient_Update);
-	UNHOOKFUNC(AmongUsClient_OnPlayerLeft);
-	UNHOOKFUNC(CustomNetworkTransform_SnapTo);
-	UNHOOKFUNC(Constants_ShouldFlipSkeld);
-	UNHOOKFUNC(LobbyBehaviour_Start);
-	UNHOOKFUNC(NoShadowBehaviour_LateUpdate);
-	UNHOOKFUNC(FollowerCamera_Update);
-	UNHOOKFUNC(DoorBreakerGame_Start);
-	UNHOOKFUNC(DoorCardSwipeGame_Begin);
-	UNHOOKFUNC(Debug_Log);
-	UNHOOKFUNC(Debug_LogError);
-	UNHOOKFUNC(Debug_LogException);
-	UNHOOKFUNC(Debug_LogWarning);
-	UNHOOKFUNC(VersionShower_Start);
-	UNHOOKFUNC(EOSManager_LoginFromAccountTab);
-	UNHOOKFUNC(EOSManager_InitializePlatformInterface);
-	UNHOOKFUNC(EOSManager_IsFreechatAllowed);
-	UNHOOKFUNC(ChatController_Update);
-	UNHOOKFUNC(InnerNetClient_EnqueueDisconnect);
-	UNHOOKFUNC(PlayerControl_TurnOnProtection);
-	UNHOOKFUNC(AmongUsClient_OnGameEnd);
-	UNHOOKFUNC(InnerNetClient_DisconnectInternal);
-	UNHOOKFUNC(UdpConnection_HandleKeepAlive);
-	UNHOOKFUNC(UnityUdpClientConnection_ConnectAsync);
-	UNHOOKFUNC(VentilationSystem_Deserialize);
-	UNHOOKFUNC(AccountManager_UpdateKidAccountDisplay);
-	UNHOOKFUNC(PlayerStorageManager_OnReadPlayerPrefsComplete);
-	UNHOOKFUNC(EOSManager_UpdatePermissionKeys);
-	UNHOOKFUNC(SaveManager_set_AccountLoginStatus);
-	UNHOOKFUNC(SaveManager_set_PlayerName);
-
-	if (oPresent)
-		HookFunction(&(PVOID&)oPresent, dPresent, "D3D_PRESENT_FUNCTION");
+	for (auto& hook : s_hooks) {
+		if (auto ppPointer = std::get<0>(hook)) {
+			UnhookFunction(ppPointer, std::get<1>(hook), std::get<2>(hook));
+		}
+	}
 
 	DetourTransactionCommit();
 	DirectX::Shutdown();
