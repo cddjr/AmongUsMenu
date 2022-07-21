@@ -153,12 +153,13 @@ void dVentilationSystem_Deserialize(VentilationSystem* __this, MessageReader* re
     }
     for (auto ventId : ventIds) {
         if (excludeVentIds.contains(ventId)
-            || GenerateRandomNumber(1, 100) <= 90) {
-            STREAM_DEBUG("ignored Vent " << +ventId);
+            || GenerateRandomNumber(1, 100) <= 98) {
+            //STREAM_DEBUG("ignored Vent " << +ventId);
             continue;
         }
-        // 10% chance
+        // 2% chance
         STREAM_DEBUG("BootImpostors Vent " << +ventId);
+        // Don't call PlayerPhysics_RpcBootFromVent directly or you will be banned.
         app::VentilationSystem_Update(VentilationSystem_Operation__Enum::BootImpostors, ventId, nullptr);
     }
 }
