@@ -8,6 +8,7 @@
 #include "profiler.h"
 #include <iostream>
 #include <optional>
+#include "logger.h"
 
 void dPlayerControl_CompleteTask(PlayerControl* __this, uint32_t idx, MethodInfo* method) {
 	std::optional<TaskTypes__Enum> taskType = std::nullopt;
@@ -348,8 +349,11 @@ void dPlayerControl_Shapeshift(PlayerControl* __this, PlayerControl* target, boo
 }
 
 void dPlayerControl_ProtectPlayer(PlayerControl* __this, PlayerControl* target, int32_t colorId, MethodInfo* method) {
-	synchronized(Replay::replayEventMutex) {
+	if (SYNCHRONIZED(Replay::replayEventMutex); target != nullptr) {
 		State.liveReplayEvents.emplace_back(std::make_unique<ProtectPlayerEvent>(GetEventPlayerControl(__this).value(), GetEventPlayerControl(target).value()));
+	}
+	else {
+		LOG_ERROR("target is null"); // TownOfHost
 	}
 	PlayerControl_ProtectPlayer(__this, target, colorId, method);
 }
