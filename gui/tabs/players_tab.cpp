@@ -18,7 +18,11 @@ namespace PlayersTab {
 				bool shouldEndListBox = ImGui::ListBoxHeader("###players#list", ImVec2(200, 150) * State.dpiScale);
 				auto localData = GetPlayerData(*Game::pLocalPlayer);
 				for (auto playerData : GetAllPlayerData()) {
-					if (playerData->fields.Disconnected)
+					auto playerSelection = PlayerSelection(playerData);
+					const auto& player = playerSelection.validate();
+					if (!player.has_value())
+						continue;
+					if (player.is_Disconnected())
 						continue;
 
 					app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData);
@@ -26,9 +30,9 @@ namespace PlayersTab {
 					std::string playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0) * State.dpiScale);
 					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0) * State.dpiScale);
-					if (ImGui::Selectable(std::string("##" + playerName).c_str(), selectedPlayer.equals(playerData))) {
-						State.selectedPlayer = PlayerSelection(playerData);
-						selectedPlayer = State.selectedPlayer.validate();
+					if (ImGui::Selectable(std::string("##" + playerName).c_str(), selectedPlayer.equals(player))) {
+						State.selectedPlayer = playerSelection;
+						selectedPlayer = player;
 					}
 					ImGui::SameLine();
 					ImGui::ColorButton(std::string("##" + playerName + "_ColorButton").c_str(), AmongUsColorToImVec4(GetPlayerColor(outfit->fields.ColorId)), ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip);
@@ -46,7 +50,7 @@ namespace PlayersTab {
 					}
 					else if(PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
 						nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->ImpostorRed);
-					else if (PlayerSelection(playerData).is_LocalPlayer() || std::count(State.aumUsers.begin(), State.aumUsers.end(), playerData->fields.PlayerId))
+					else if (player.is_LocalPlayer() || std::count(State.aumUsers.begin(), State.aumUsers.end(), playerData->fields.PlayerId))
 						nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->Orange);
 
 					if (playerData->fields.IsDead)
@@ -99,6 +103,8 @@ namespace PlayersTab {
 							queue->push(new RpcSetName(State.originalName));
 							State.activeImpersonation = false;
 						}
+						if (IsInLobby())
+							ResetOriginalAppearance();
 					}
 				}
 				if (selectedPlayer.has_value())
@@ -113,14 +119,14 @@ namespace PlayersTab {
 
 					if (IsInGame() && !selectedPlayer.is_Disconnected() && !selectedPlayer.is_LocalPlayer())
 					{
-						if (State.playerToFollow.equals(State.selectedPlayer)) {
+						if (State.playerToFollow.equals(selectedPlayer)) {
 							if (ImGui::Button("Stop Spectating")) {
-								State.playerToFollow = PlayerSelection();
+								State.playerToFollow.reset();
 							}
 						} else {
 							if (ImGui::Button("Spectate")) {
 								State.FreeCam = false;
-								State.playerToFollow = State.selectedPlayer;
+								State.playerToFollow = selectedPlayer;
 							}
 						}
 					}
@@ -135,7 +141,7 @@ namespace PlayersTab {
 					}
 					else if(!selectedPlayer.is_LocalPlayer()) {
 						if ((IsInMultiplayerGame() || IsInLobby()) && ImGui::Button("Steal Name")) {
-							ImpersonateName(State.selectedPlayer);
+							ImpersonateName(selectedPlayer.get_PlayerData());
 						}
 					}
 					if ((IsInGame() || IsInLobby())) {
@@ -154,8 +160,12 @@ namespace PlayersTab {
 
 									if (IsInGame())
 										queue = &State.rpcQueue;
-									else if (IsInLobby())
+									else if (IsInLobby()) {
 										queue = &State.lobbyRpcQueue;
+										if (State.originalColor == Game::NoColorId) {
+											SaveOriginalAppearance();
+										}
+									}
 
 									if (queue != nullptr) {
 										if (IsHost())
@@ -167,7 +177,7 @@ namespace PlayersTab {
 										queue->push(new RpcSetVisor(visorId));
 										queue->push(new RpcSetHat(hatId));
 										queue->push(new RpcSetNamePlate(namePlateId));
-										ImpersonateName(State.selectedPlayer);
+										ImpersonateName(selectedPlayer.get_PlayerData());
 										State.activeImpersonation = true;
 									}
 								}
