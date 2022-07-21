@@ -60,6 +60,15 @@ void dHudManager_Update(HudManager* __this, MethodInfo* method) {
 				app::GameObject_SetActive(ImpostorVentButton, State.UnlockVents || PlayerIsImpostor(localData), nullptr);
 			}
 		}
+
+		if (__this->fields.taskDirtyTimer == 0.0f) {
+			auto options = *Game::pGameOptionsData;
+			auto taskString = convert_from_string(app::TMP_Text_get_text((TMP_Text*)__this->fields.TaskText, nullptr));
+			taskString.append(std::format("\n<size=75%><color=#80A0F0FF>Visual Tasks: {}\nAnonymous Votes: {}</color></size>", 
+				options->fields.VisualTasks ? "on" : "off", 
+				options->fields.AnonymousVotes ? "on" : "off"));
+			app::TMP_Text_set_text((TMP_Text*)__this->fields.TaskText, convert_to_string(taskString), nullptr);
+		}
 	}
 }
 
