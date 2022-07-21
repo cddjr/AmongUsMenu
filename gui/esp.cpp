@@ -8,13 +8,13 @@
 drawing_t* Esp::s_Instance = new drawing_t();
 ImGuiWindow* CurrentWindow = nullptr;
 
-static void RenderText(const char* text, const ImVec2& pos, const ImVec4& color, const bool outlined = true, const bool centered = true)
+static void RenderText(std::string_view text, const ImVec2& pos, const ImVec4& color, const bool outlined = true, const bool centered = true)
 {
-	if (!text) return;
+	if (text.empty()) return;
 	ImVec2 ImScreen = pos;
 	if (centered)
 	{
-		auto size = ImGui::CalcTextSize(text);
+		auto size = ImGui::CalcTextSize(text.data(), text.data() + text.length());
 		ImScreen.x -= size.x * 0.5f;
 		ImScreen.y -= size.y;
 	}
@@ -23,10 +23,10 @@ static void RenderText(const char* text, const ImVec2& pos, const ImVec4& color,
 	{
 		CurrentWindow->DrawList->AddText(nullptr, 0.f,
 			ImScreen + 0.5f * State.dpiScale,
-			ImGui::GetColorU32(IM_COL32_BLACK), text);
+			ImGui::GetColorU32(IM_COL32_BLACK), text.data(), text.data() + text.length());
 	}
 
-	CurrentWindow->DrawList->AddText(nullptr, 0.f, ImScreen, ImGui::GetColorU32(color), text);
+	CurrentWindow->DrawList->AddText(nullptr, 0.f, ImScreen, ImGui::GetColorU32(color), text.data(), text.data() + text.length());
 }
 
 static void RenderLine(const ImVec2& start, const ImVec2& end, const ImVec4& color, bool shadow = false) noexcept
@@ -99,17 +99,32 @@ void Esp::Render()
 
 					RenderBox(top, bottom, height, width, it.Color);
 				}
+
+				float killTimer = -1.f;
+				if (auto role = player.get_PlayerData()->fields.Role;
+					State.ShowEsp_KillCD &&  role->fields.CanUseKillButton && !player.get_PlayerData()->fields.IsDead) {
+					killTimer = player.get_PlayerControl()->fields.killTimer;
+				}
 				/////////////////////////////////
 				//// Distance ///////////////////
 				/////////////////////////////////
-				if (State.ShowEsp_Distance)
+				if (State.ShowEsp_Distance || killTimer >= 0.f)
 				{
 					const ImVec2 position{ it.Position.x, it.Position.y + 15.0f * State.dpiScale };
 
-					char distance[32];
-					sprintf_s(distance, "[%.0fm]", it.Distance);
+					std::string label;
+					if (State.ShowEsp_Distance) {
+						char distance[32] = { 0 };
+						sprintf_s(distance, "[%.0fm]", it.Distance);
+						label = distance;
+					}
+					if (killTimer >= 0.f) {
+						char distance[32] = { 0 };
+						sprintf_s(distance, "[Kill CD:%.1fs]", killTimer);
+						label += distance;
+					}
 
-					RenderText(distance, position, it.Color);
+					RenderText(label, position, it.Color);
 				}
 				/////////////////////////////////
 				//// Tracers ////////////////////

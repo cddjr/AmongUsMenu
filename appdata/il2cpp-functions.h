@@ -233,3 +233,5 @@ DO_APP_FUNC(IMECompositionMode__Enum, Input_get_imeCompositionMode, (MethodInfo*
 DO_APP_FUNC(void, Input_set_imeCompositionMode, (IMECompositionMode__Enum value, MethodInfo* method), "UnityEngine.InputLegacyModule, System.Void UnityEngine.Input::set_imeCompositionMode(UnityEngine.IMECompositionMode)");
 DO_APP_FUNC(String*, Input_get_compositionString, (MethodInfo* method), "UnityEngine.InputLegacyModule, System.String UnityEngine.Input::get_compositionString()");
 DO_APP_FUNC(String*, Input_get_inputString, (MethodInfo* method), "UnityEngine.InputLegacyModule, System.String UnityEngine.Input::get_inputString()");
+DO_APP_FUNC(void, ExileController_ReEnableGameplay, (void* __this, MethodInfo* method), "Assembly-CSharp, System.Void ExileController::ReEnableGameplay()");
+DO_APP_FUNC(void, PlayerControl_AdjustLighting, (PlayerControl* __this, MethodInfo* method), "Assembly-CSharp, System.Void PlayerControl::AdjustLighting()");

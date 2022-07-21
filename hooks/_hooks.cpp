@@ -162,6 +162,8 @@ void DetourInitilization() {
 	HOOKFUNC(EOSManager_UpdatePermissionKeys);
 	HOOKFUNC(SaveManager_set_AccountLoginStatus);
 	HOOKFUNC(SaveManager_set_PlayerName);
+	HOOKFUNC(ExileController_ReEnableGameplay);
+	HOOKFUNC(PlayerControl_AdjustLighting);
 
 	s_hooks.emplace_back(std::forward_as_tuple(&(PVOID&)oPresent, dPresent, "D3D_PRESENT_FUNCTION"));
 

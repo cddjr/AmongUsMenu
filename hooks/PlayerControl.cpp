@@ -96,6 +96,13 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 				Transform_set_position(cameraTransform, { cameraVector3.x, cameraVector3.y, 100 }, NULL);
 			}
 		}
+		else {
+			// ESP: Update kill cooldowns for all imposters except me.
+			if (auto role = playerData->fields.Role;
+				role->fields.CanUseKillButton && !playerData->fields.IsDead) {
+				__this->fields.killTimer = (std::max)(__this->fields.killTimer - Time_get_fixedDeltaTime(nullptr), 0.f);
+			}
+		}
 
 		if ((__this == *Game::pLocalPlayer) && (State.originalColor == Game::NoColorId)) {
 			SaveOriginalAppearance();
@@ -208,29 +215,28 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 				}
 				Profiler::EndSample("WalkEventCreation");
 			}
-			app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData);
-			PlayerData espPlayerData;
-			espPlayerData.Position = WorldToScreen(playerPos);
-			if (outfit != NULL)
-			{
-				espPlayerData.Color = State.ShowEsp_RoleBased == false ? AmongUsColorToImVec4(GetPlayerColor(outfit->fields.ColorId))
-					: AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
-				espPlayerData.Name = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
-			}
-			else
-			{
-				espPlayerData.Color = State.ShowEsp_RoleBased == false ? ImVec4(0.f, 0.f, 0.f, 1.f)
-					: AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
-				espPlayerData.Name = "<Unknown>";
-			}
-			espPlayerData.OnScreen = IsWithinScreenBounds(playerPos);
-			espPlayerData.Distance = Vector2_Distance(localPos, playerPos, nullptr);
-			espPlayerData.playerData = PlayerSelection(__this);
+			if (State.ShowEsp) {
+				PlayerData espPlayerData;
+				espPlayerData.Position = WorldToScreen(playerPos);
+				if (auto outfit = GetPlayerOutfit(playerData)) {
+					espPlayerData.Color = State.ShowEsp_RoleBased == false ? AmongUsColorToImVec4(GetPlayerColor(outfit->fields.ColorId))
+						: AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
+					espPlayerData.Name = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
+				}
+				else {
+					espPlayerData.Color = State.ShowEsp_RoleBased == false ? ImVec4(0.f, 0.f, 0.f, 1.f)
+						: AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
+					espPlayerData.Name = "<Unknown>";
+				}
+				espPlayerData.OnScreen = IsWithinScreenBounds(playerPos);
+				espPlayerData.Distance = Vector2_Distance(localPos, playerPos, nullptr);
+				espPlayerData.playerData = PlayerSelection(__this);
 
-			drawing_t& instance = Esp::GetDrawing();
-			synchronized(instance.m_DrawingMutex) {
-				instance.LocalPosition = localScreenPosition;
-				instance.m_Players[playerData->fields.PlayerId] = espPlayerData;
+				drawing_t& instance = Esp::GetDrawing();
+				synchronized(instance.m_DrawingMutex) {
+					instance.LocalPosition = localScreenPosition;
+					instance.m_Players[playerData->fields.PlayerId] = espPlayerData;
+				}
 			}
 		}
 	}
@@ -260,6 +266,16 @@ void dPlayerControl_MurderPlayer(PlayerControl* __this, PlayerControl* target, M
 		State.liveReplayEvents.emplace_back(std::make_unique<KillEvent>(GetEventPlayerControl(__this).value(), GetEventPlayerControl(target).value(), PlayerControl_GetTruePosition(__this, NULL), PlayerControl_GetTruePosition(target, NULL)));
 		State.replayDeathTimePerPlayer[target->fields.PlayerId] = std::chrono::system_clock::now();
 	}
+
+	// ESP: Reset kill cooldowns for all imposters except me.
+	if (__this->fields._.OwnerId != (*Game::pAmongUsClient)->fields._.ClientId) {
+		if (!target || target->fields.protectedByGuardian == false)
+			__this->fields.killTimer = (std::max)((*Game::pGameOptionsData)->fields._.killCooldown, 0.f);
+		else
+			__this->fields.killTimer = (std::max)((*Game::pGameOptionsData)->fields._.killCooldown * 0.5f, 0.f);
+		STREAM_DEBUG("Player " << ToString(__this) << " KillTimer " << __this->fields.killTimer);
+	}
+
 	do {
 		if (!State.ShowProtections) break;
 		if (!target || target->fields.protectedByGuardian == false)
@@ -363,5 +379,21 @@ void dPlayerControl_TurnOnProtection(PlayerControl* __this, bool visible, int32_
 	std::pair pair { colorId, app::Time_get_time(nullptr) };
 	synchronized(State.protectMutex) {
 		State.protectMonitor[__this->fields.PlayerId] = pair;
+	}
+}
+
+void dPlayerControl_AdjustLighting(PlayerControl* __this, MethodInfo* method) {
+	app::PlayerControl_AdjustLighting(__this, method);
+
+	// ESP: Initialize kill cooldowns for all imposters except me.
+	for (auto pc : GetAllPlayerControl()) {
+		if (auto player = PlayerSelection(pc).validate();
+			player.has_value() && !player.is_LocalPlayer() && !player.is_Disconnected()) {
+			if (auto role = player.get_PlayerData()->fields.Role;
+				role->fields.CanUseKillButton && !player.get_PlayerData()->fields.IsDead) {
+				pc->fields.killTimer = 10.f;
+				STREAM_DEBUG("Player " << ToString(pc) << " KillTimer " << pc->fields.killTimer);
+			}
+		}
 	}
 }

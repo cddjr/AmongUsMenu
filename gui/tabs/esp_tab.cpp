@@ -7,9 +7,6 @@
 namespace EspTab {
 
 	void Render() {
-		if (not IsInGame())
-			return;
-
 		bool changed = false;
 		if (ImGui::BeginTabItem("Esp")) {
 
@@ -22,6 +19,7 @@ namespace EspTab {
 			changed |= ImGui::Checkbox("Show Tracers", &State.ShowEsp_Tracers);
 			changed |= ImGui::Checkbox("Show Distance", &State.ShowEsp_Distance);
 
+			changed |= ImGui::Checkbox("Show Kill Cooldown", &State.ShowEsp_KillCD);
 			changed |= ImGui::Checkbox("Role-based", &State.ShowEsp_RoleBased);
 
 			ImGui::EndTabItem();

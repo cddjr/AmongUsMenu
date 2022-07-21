@@ -81,6 +81,7 @@ public:
     bool ShowEsp_Box = true;
     bool ShowEsp_Tracers = true;
     bool ShowEsp_Distance = true;
+    bool ShowEsp_KillCD = true;
     bool HideEsp_During_Meetings = false;
     bool ShowEsp_RoleBased = false;
 
