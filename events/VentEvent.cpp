@@ -2,11 +2,12 @@
 #include "_events.h"
 #include "utility.h"
 
-VentEvent::VentEvent(const EVENT_PLAYER& source, const Vector2& position, VENT_ACTIONS action) : EventInterface(source, EVENT_TYPES::EVENT_VENT)
+VentEvent::VentEvent(const EVENT_PLAYER& source, const Vector2& position, VENT_ACTIONS action) : BaseEvent(source, EVENT_TYPES::EVENT_VENT)
 {
 	this->position = position;
 	this->systemType = GetSystemTypes(position);
 	this->action = action;
+	this->countDuringMeeting = false;
 }
 
 void VentEvent::Output()
@@ -15,7 +16,7 @@ void VentEvent::Output()
 	ImGui::SameLine();
 	ImGui::Text("(%s)", TranslateSystemTypes(systemType));
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void VentEvent::ColoredEventOutput()

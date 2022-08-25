@@ -98,9 +98,26 @@ public:
 	EVENT_TYPES getType() const { return this->eventType; }
 	const EVENT_PLAYER& getSource() const { return this->source; }
 	const std::chrono::system_clock::time_point& GetTimeStamp() const { return this->timestamp; }
+
+	virtual std::chrono::system_clock::duration GetTimeAgo() const { return std::chrono::system_clock::now() - this->timestamp; }
 };
 
-class KillEvent : public EventInterface {
+class BaseEvent : public EventInterface {
+protected:
+	bool countDuringMeeting;
+public:
+	//using EventInterface::EventInterface;
+	BaseEvent(const EVENT_PLAYER& source, EVENT_TYPES eventType)
+		: EventInterface(source, eventType) {
+		countDuringMeeting = true;
+	}
+
+	virtual std::chrono::system_clock::duration GetTimeAgo() const;
+
+	// TODO: virtual void ColoredEventOutput() override;
+};
+
+class KillEvent : public BaseEvent {
 private:
 	EVENT_PLAYER target;
 	Vector2 position;
@@ -116,7 +133,7 @@ public:
 	SystemTypes__Enum GetSystemType() { return this->systemType; }
 };
 
-class VentEvent : public EventInterface {
+class VentEvent : public BaseEvent {
 private:
 	Vector2 position;
 	SystemTypes__Enum systemType;
@@ -145,7 +162,7 @@ public:
 	}
 };
 
-class TaskCompletedEvent : public EventInterface {
+class TaskCompletedEvent : public BaseEvent {
 private:
 	std::optional<TaskTypes__Enum> taskType;
 	Vector2 position;
@@ -160,7 +177,7 @@ public:
 
 };
 
-class ReportDeadBodyEvent : public EventInterface {
+class ReportDeadBodyEvent : public BaseEvent {
 private:
 	std::optional<EVENT_PLAYER> target;
 	Vector2 position;
@@ -176,7 +193,7 @@ public:
 	SystemTypes__Enum GetSystemType() { return this->systemType; }
 };
 
-class CastVoteEvent : public EventInterface {
+class CastVoteEvent : public BaseEvent {
 private:
 	std::optional<EVENT_PLAYER> target;
 public:
@@ -186,7 +203,7 @@ public:
 	std::optional<EVENT_PLAYER> GetTarget() { return this->target; }
 };
 
-class CheatDetectedEvent : public EventInterface {
+class CheatDetectedEvent : public BaseEvent {
 private:
 	CHEAT_ACTIONS action;
 public:
@@ -196,14 +213,14 @@ public:
 	CHEAT_ACTIONS GetCheatAction() { return this->action; }
 };
 
-class DisconnectEvent : public EventInterface {
+class DisconnectEvent : public BaseEvent {
 public:
 	DisconnectEvent(const EVENT_PLAYER& source);
 	virtual void Output() override;
 	virtual void ColoredEventOutput() override;
 };
 
-class ShapeShiftEvent : public EventInterface {
+class ShapeShiftEvent : public BaseEvent {
 private:
 	EVENT_PLAYER target;
 public:
@@ -213,7 +230,7 @@ public:
 	EVENT_PLAYER GetTarget() { return this->target; }
 };
 
-class ProtectPlayerEvent : public EventInterface {
+class ProtectPlayerEvent : public BaseEvent {
 private:
 	EVENT_PLAYER target;
 public:

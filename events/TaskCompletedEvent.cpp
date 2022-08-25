@@ -2,10 +2,11 @@
 #include "_events.h"
 #include "utility.h"
 
-TaskCompletedEvent::TaskCompletedEvent(const EVENT_PLAYER& source, const std::optional<TaskTypes__Enum>& taskType, const Vector2& position) : EventInterface(source, EVENT_TYPES::EVENT_TASK) {
+TaskCompletedEvent::TaskCompletedEvent(const EVENT_PLAYER& source, const std::optional<TaskTypes__Enum>& taskType, const Vector2& position) : BaseEvent(source, EVENT_TYPES::EVENT_TASK) {
 	this->taskType = taskType;
 	this->position = position;
 	this->systemType = GetSystemTypes(position);
+	this->countDuringMeeting = false;
 }
 
 void TaskCompletedEvent::Output() {
@@ -13,7 +14,7 @@ void TaskCompletedEvent::Output() {
 	ImGui::SameLine();
 	ImGui::Text("> %s (%s)", (taskType.has_value()) ? TranslateTaskTypes(*taskType) : "UNKOWN" , TranslateSystemTypes(systemType));
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void TaskCompletedEvent::ColoredEventOutput() {

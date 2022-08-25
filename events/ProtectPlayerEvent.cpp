@@ -2,8 +2,9 @@
 #include "_events.h"
 #include "utility.h"
 
-ProtectPlayerEvent::ProtectPlayerEvent(const EVENT_PLAYER& source, const EVENT_PLAYER& target) : EventInterface(source, EVENT_TYPES::EVENT_PROTECTPLAYER) {
+ProtectPlayerEvent::ProtectPlayerEvent(const EVENT_PLAYER& source, const EVENT_PLAYER& target) : BaseEvent(source, EVENT_TYPES::EVENT_PROTECTPLAYER) {
 	this->target = target;
+	this->countDuringMeeting = false;
 }
 
 void ProtectPlayerEvent::Output() {
@@ -13,7 +14,7 @@ void ProtectPlayerEvent::Output() {
 	ImGui::SameLine();
 	ImGui::TextColored(AmongUsColorToImVec4(GetPlayerColor(target.colorId)), target.playerName.c_str());
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void ProtectPlayerEvent::ColoredEventOutput() {

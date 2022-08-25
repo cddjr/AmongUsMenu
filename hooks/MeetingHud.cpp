@@ -10,6 +10,7 @@ static app::Type* voteSpreaderType = nullptr;
 void dMeetingHud_Awake(MeetingHud* __this, MethodInfo* method) {
 	State.voteMonitor.clear();
 	State.InMeeting = true;
+	State.MeetingStart = std::chrono::system_clock::now();
 
 	static std::string strVoteSpreaderType = translate_type_name("VoteSpreader, Assembly-CSharp");
 	voteSpreaderType = app::Type_GetType(convert_to_string(strVoteSpreaderType), nullptr);

@@ -2,8 +2,9 @@
 #include "_events.h"
 #include "utility.h"
 
-ShapeShiftEvent::ShapeShiftEvent(const EVENT_PLAYER& source, const EVENT_PLAYER& target) : EventInterface(source, EVENT_TYPES::EVENT_SHAPESHIFT) {
+ShapeShiftEvent::ShapeShiftEvent(const EVENT_PLAYER& source, const EVENT_PLAYER& target) : BaseEvent(source, EVENT_TYPES::EVENT_SHAPESHIFT) {
 	this->target = target;
+	this->countDuringMeeting = false;
 }
 
 void ShapeShiftEvent::Output() {
@@ -13,7 +14,7 @@ void ShapeShiftEvent::Output() {
 	ImGui::SameLine();
 	ImGui::TextColored(AmongUsColorToImVec4(GetPlayerColor(target.colorId)), target.playerName.c_str());
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void ShapeShiftEvent::ColoredEventOutput() {

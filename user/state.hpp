@@ -85,6 +85,8 @@ public:
     bool ShowEsp_RoleBased = false;
 
     bool InMeeting = false;
+    std::chrono::system_clock::time_point MeetingStart;
+
     bool PlayMedbayScan = false;
 
     bool ChatAlwaysActive = false;

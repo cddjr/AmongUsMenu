@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="events\BaseEvent.cpp" />
     <ClCompile Include="events\CastVoteEvent.cpp" />
     <ClCompile Include="events\CheatDetectedEvent.cpp" />
     <ClCompile Include="events\DisconnectEvent.cpp" />

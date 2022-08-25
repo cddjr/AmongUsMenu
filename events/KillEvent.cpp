@@ -2,11 +2,12 @@
 #include "_events.h"
 #include "utility.h"
 
-KillEvent::KillEvent(const EVENT_PLAYER& source, const EVENT_PLAYER& target, const Vector2& position, const Vector2& targetPosition) : EventInterface(source, EVENT_TYPES::EVENT_KILL) {
+KillEvent::KillEvent(const EVENT_PLAYER& source, const EVENT_PLAYER& target, const Vector2& position, const Vector2& targetPosition) : BaseEvent(source, EVENT_TYPES::EVENT_KILL) {
 	this->target = target;
 	this->targetPosition = targetPosition;
 	this->position = position;
 	this->systemType = GetSystemTypes(position);
+	this->countDuringMeeting = false;
 }
 
 void KillEvent::Output() {
@@ -26,7 +27,7 @@ void KillEvent::Output() {
 		ImGui::Text("]");
 	}
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void KillEvent::ColoredEventOutput() {

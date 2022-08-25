@@ -2,7 +2,7 @@
 #include "_events.h"
 #include "utility.h"
 
-CastVoteEvent::CastVoteEvent(const EVENT_PLAYER& source, const std::optional<EVENT_PLAYER>& target) : EventInterface(source, EVENT_TYPES::EVENT_VOTE) {
+CastVoteEvent::CastVoteEvent(const EVENT_PLAYER& source, const std::optional<EVENT_PLAYER>& target) : BaseEvent(source, EVENT_TYPES::EVENT_VOTE) {
 	this->target = target;
 }
 
@@ -14,7 +14,7 @@ void CastVoteEvent::Output() {
 	if (target.has_value()) ImGui::TextColored(AmongUsColorToImVec4(GetPlayerColor(target->colorId)), target->playerName.c_str());
 	else ImGui::Text("Skipped");
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void CastVoteEvent::ColoredEventOutput() {

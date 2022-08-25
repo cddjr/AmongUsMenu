@@ -3,7 +3,7 @@
 #include "utility.h"
 
 ReportDeadBodyEvent::ReportDeadBodyEvent(const EVENT_PLAYER& source, const std::optional<EVENT_PLAYER>& target, const Vector2& position, const std::optional<Vector2>& targetPosition)
-	: EventInterface(source, (target.has_value() ? EVENT_TYPES::EVENT_REPORT : EVENT_TYPES::EVENT_MEETING)) {
+	: BaseEvent(source, (target.has_value() ? EVENT_TYPES::EVENT_REPORT : EVENT_TYPES::EVENT_MEETING)) {
 	this->target = target;
 	this->position = position;
 	this->targetPosition = targetPosition;
@@ -21,7 +21,7 @@ void ReportDeadBodyEvent::Output() {
 	}
 	ImGui::Text("(%s)", TranslateSystemTypes(systemType));
 	ImGui::SameLine();
-	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", (std::chrono::system_clock::now() - this->timestamp)).c_str());
+	ImGui::Text("[%s ago]", std::format("{:%OM:%OS}", GetTimeAgo()).c_str());
 }
 
 void ReportDeadBodyEvent::ColoredEventOutput() {
