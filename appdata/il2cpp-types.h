@@ -12470,6 +12470,19 @@ struct RoleEffectAnimation__Array {
     };
 #pragma endregion
 
+    struct __declspec(align(4)) Version__Fields {
+        int32_t _Major;
+        int32_t _Minor;
+        int32_t _Build;
+        int32_t _Revision;
+    };
+
+    struct Version {
+        void* klass;
+        MonitorData* monitor;
+        struct Version__Fields fields;
+    };
+
     typedef Il2CppObject PlayerData;
     typedef Il2CppObject PlayerCustomizationData;
     typedef Il2CppObject PlayerPurchasesData;
