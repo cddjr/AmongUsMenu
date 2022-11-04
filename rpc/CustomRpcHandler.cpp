@@ -139,6 +139,30 @@ namespace TOH {
 }
 
 void HandleRpc(uint8_t callId, MessageReader* reader) {
+	if (!State.isTOH && callId != TOH::VersionCheck) {
+		switch (callId) {
+		case 85://(uint8_t)42069:
+		{
+			uint8_t playerid = MessageReader_ReadByte(reader, NULL);
+			if (!std::count(State.aumUsers.begin(), State.aumUsers.end(), playerid)) {
+				State.aumUsers.push_back(playerid);
+				STREAM_DEBUG("RPC Received for another AUM User from " << ToString((Game::PlayerId)playerid));
+			}
+		}
+		break;
+		case 101:
+		{
+			std::string playerName = convert_from_string(MessageReader_ReadString(reader, NULL));
+			std::string message = convert_from_string(MessageReader_ReadString(reader, NULL));
+			uint32_t colorId = MessageReader_ReadInt32(reader, NULL);
+			if (message.size() == 0) break;
+			State.chatMessages.emplace_back(std::make_unique<RpcChatMessage>(playerName, message, colorId, std::chrono::system_clock::now()));
+			State.newChatMessage = true;
+		}
+		break;
+		}
+		return;
+	}
 	switch (callId) {
 	case TOH::VersionCheck:
 	{
@@ -154,7 +178,7 @@ void HandleRpc(uint8_t callId, MessageReader* reader) {
 			try {
 				const auto& modForkId = convert_from_string(app::MessageReader_ReadString(reader, nullptr));
 				ss << ", ForkId:" << modForkId;
-				bool isTOH = (modForkId == "OriginalTOH");
+				State.isTOH = (modForkId == "OriginalTOH");
 			}
 			catch (...) {
 				// TOR < v0.7
@@ -254,28 +278,29 @@ void HandleRpc(uint8_t callId, MessageReader* reader) {
 		STREAM_DEBUG("TOH: SyncCustomSettings");
 	}
 	break;
+	case TOH::SetExecutionerTarget:
+	{
+		Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
+		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+		STREAM_DEBUG("TOH: SetExecutionerTarget:" << ToString(ExecutionerId) << ", TargetId:" << ToString(TargetId));
+	}
+	break;
+	case TOH::RemoveExecutionerTarget:
+	{
+		Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
+		STREAM_DEBUG("TOH: RemoveExecutionerTarget:" << ToString(ExecutionerId));
+	}
+	break;
+	case TOH::SetBountyTarget:
+	{
+		Game::PlayerId bountyId = app::MessageReader_ReadByte(reader, nullptr);
+		Game::PlayerId targetId = app::MessageReader_ReadByte(reader, nullptr);
+		STREAM_DEBUG("TOH: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
+	}
+	break;
 	default:
 		if (callId > 60)
 			STREAM_DEBUG("Unknown RPC:" << (int)callId);
 		break;
-	case 85://(uint8_t)42069:
-	{
-		uint8_t playerid = MessageReader_ReadByte(reader, NULL);
-		if (!std::count(State.aumUsers.begin(), State.aumUsers.end(), playerid)) {
-			State.aumUsers.push_back(playerid);
-			STREAM_DEBUG("RPC Received for another AUM User from " << ToString((Game::PlayerId)playerid));
-		}
-	}
-	break;
-	case 101:
-	{
-		std::string playerName = convert_from_string(MessageReader_ReadString(reader, NULL));
-		std::string message = convert_from_string(MessageReader_ReadString(reader, NULL));
-		uint32_t colorId = MessageReader_ReadInt32(reader, NULL);
-		if (message.size() == 0) break;
-		State.chatMessages.emplace_back(std::make_unique<RpcChatMessage>(playerName, message, colorId, std::chrono::system_clock::now()));
-		State.newChatMessage = true;
-	}
-	break;
 	}
 }

@@ -136,6 +136,8 @@ void dAmongUsClient_OnPlayerLeft(AmongUsClient* __this, ClientData* data, Discon
         if (it != State.aumUsers.end())
             State.aumUsers.erase(it);
 
+        // TODO: State.isTOH = false; // if the host leaves
+
         if (auto evtPlayer = GetEventPlayer(playerInfo); evtPlayer) {
             synchronized(Replay::replayEventMutex) {
         	    State.liveReplayEvents.emplace_back(std::make_unique<DisconnectEvent>(evtPlayer.value()));
@@ -208,6 +210,7 @@ void dCustomNetworkTransform_SnapTo(CustomNetworkTransform* __this, Vector2 posi
 static void onGameEnd() {
     LOG_DEBUG("Reset All");
     Replay::Reset();
+    State.isTOH = false;
     State.aumUsers.clear();
     State.chatMessages.clear();
     State.MatchEnd = std::chrono::system_clock::now();

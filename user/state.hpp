@@ -171,6 +171,8 @@ public:
     bool newChatMessage = false;
     std::vector<std::unique_ptr<RpcChatMessage>> chatMessages;
 
+    bool isTOH = false;
+
     enum class MapType : uint8_t
     {
         Ship = 0,
