@@ -33,6 +33,7 @@ void dChatController_SetVisible(ChatController* __this, bool visible, MethodInfo
 	}
 }
 
+extern Color GetRoleColor(GameData_PlayerInfo*);
 void dChatBubble_SetName(ChatBubble* __this, String* playerName, bool isDead, bool voted, Color color, MethodInfo* method) {
 	if (IsInGame()) {
 		for (auto playerData : GetAllPlayerData()) {
@@ -40,7 +41,7 @@ void dChatBubble_SetName(ChatBubble* __this, String* playerName, bool isDead, bo
 			if (outfit == NULL) continue;
 			if (playerName == GameData_PlayerOutfit_get_PlayerName(outfit, nullptr)) {
 				if (State.RevealRoles)
-					color = GetRoleColor(playerData->fields.Role);
+					color = GetRoleColor(playerData);
 				else
 					color = Palette__TypeInfo->static_fields->White;
 			}

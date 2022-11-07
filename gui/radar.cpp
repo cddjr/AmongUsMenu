@@ -5,6 +5,7 @@
 #include "state.hpp"
 #include "gui-helpers.hpp"
 
+extern Color GetRoleColor(GameData_PlayerInfo*);
 namespace Radar {
 	ImU32 GetRadarPlayerColor(GameData_PlayerInfo* playerData) {
 		app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData);
@@ -18,7 +19,7 @@ namespace Radar {
 			return ImGui::ColorConvertFloat4ToU32(AmongUsColorToImVec4(app::Palette__TypeInfo->static_fields->HalfWhite));
 		else if (State.RevealRoles
 			&& PlayerIsImpostor(playerData))
-			return ImGui::ColorConvertFloat4ToU32(AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role)));
+			return ImGui::ColorConvertFloat4ToU32(AmongUsColorToImVec4(GetRoleColor(playerData)));
 		else
 			return ImGui::ColorConvertFloat4ToU32(ImVec4(0, 0, 0, 0));
 	}

@@ -5,6 +5,8 @@
 #include "utility.h"
 #include "gui-helpers.hpp"
 
+extern std::string GetRoleName(GameData_PlayerInfo*, bool);
+extern Color GetRoleColor(GameData_PlayerInfo*);
 namespace PlayersTab {
 
 	int framesPassed = -1;
@@ -40,9 +42,9 @@ namespace PlayersTab {
 					ImVec4 nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->White);
 					if (State.RevealRoles)
 					{
-						std::string roleName = GetRoleName(playerData->fields.Role);
+						std::string roleName = GetRoleName(playerData, State.AbbreviatedRoleNames);
 						playerName = playerName + " (" + roleName + ")";
-						nameColor = AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
+						nameColor = AmongUsColorToImVec4(GetRoleColor(playerData));
 					}
 					else if(PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
 						nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->ImpostorRed);
