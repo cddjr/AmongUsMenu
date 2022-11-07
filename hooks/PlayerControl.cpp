@@ -23,9 +23,14 @@ void dPlayerControl_CompleteTask(PlayerControl* __this, uint32_t idx, MethodInfo
 	PlayerControl_CompleteTask(__this, idx, method);
 }
 
+extern std::string GetRoleName(GameData_PlayerInfo*, bool);
+extern Color GetRoleColor(GameData_PlayerInfo*);
+
 float dPlayerControl_fixedUpdateTimer = 50;
 float dPlayerControl_fixedUpdateCount = 0;
 void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
+	app::PlayerControl_FixedUpdate(__this, method);
+
 	dPlayerControl_fixedUpdateTimer = round(1.f / Time_get_fixedDeltaTime(nullptr));
 	/*if (__this == *Game::pLocalPlayer) {
 		if (State.rpcCooldown == 0) {
@@ -48,27 +53,27 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 		if (!playerData || !localData)
 			return;
 
-		Color32 faceColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->Black, NULL);
-		Color32 roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->White, NULL);
+		//Color32 faceColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->Black, NULL);
+		//Color32 roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->White, NULL);
 		app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData, true);
 		std::string playerName = "<Unknown>";
 		if (outfit != NULL)
 			playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 		if (State.RevealRoles)
 		{
-			std::string roleName = GetRoleName(playerData->fields.Role, State.AbbreviatedRoleNames);
+			std::string roleName = GetRoleName(playerData, State.AbbreviatedRoleNames);
 			playerName += "\n<size=50%>(" + roleName + ")";
-			roleColor = app::Color32_op_Implicit(GetRoleColor(playerData->fields.Role), NULL);
-		}
-		else if (PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
-		{
-			roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->ImpostorRed, NULL);
+			auto roleColor = app::Color32_op_Implicit(GetRoleColor(playerData), NULL);
+
+			playerName = std::format("<color=#{:02x}{:02x}{:02x}{:02x}>",
+									 roleColor.r, roleColor.g, roleColor.b,
+									 roleColor.a) + playerName;
 		}
 
 		String* playerNameStr = convert_to_string(playerName);
 		app::TMP_Text_set_text((app::TMP_Text*)nameTextTMP, playerNameStr, NULL);
-		app::TextMeshPro_SetFaceColor(nameTextTMP, roleColor, NULL);
-		app::TextMeshPro_SetOutlineColor(nameTextTMP, faceColor, NULL);
+		//app::TextMeshPro_SetFaceColor(nameTextTMP, roleColor, NULL);
+		//app::TextMeshPro_SetOutlineColor(nameTextTMP, faceColor, NULL);
 
 		if (State.Wallhack && __this == *Game::pLocalPlayer && !State.FreeCam && !State.playerToFollow.has_value()) {
 			auto mainCamera = Camera_get_main(NULL);
@@ -217,13 +222,13 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 			if (outfit != NULL)
 			{
 				espPlayerData.Color = State.ShowEsp_RoleBased == false ? AmongUsColorToImVec4(GetPlayerColor(outfit->fields.ColorId))
-					: AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
+					: AmongUsColorToImVec4(GetRoleColor(playerData));
 				espPlayerData.Name = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 			}
 			else
 			{
 				espPlayerData.Color = State.ShowEsp_RoleBased == false ? ImVec4(0.f, 0.f, 0.f, 1.f)
-					: AmongUsColorToImVec4(GetRoleColor(playerData->fields.Role));
+					: AmongUsColorToImVec4(GetRoleColor(playerData));
 				espPlayerData.Name = "<Unknown>";
 			}
 			espPlayerData.OnScreen = IsWithinScreenBounds(playerPos);
@@ -237,7 +242,6 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 			}
 		}
 	}
-	app::PlayerControl_FixedUpdate(__this, method);
 }
 
 void dPlayerControl_RpcSyncSettings(PlayerControl* __this, GameOptionsData* gameOptions, MethodInfo* method)

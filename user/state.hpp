@@ -172,6 +172,8 @@ public:
     std::vector<std::unique_ptr<RpcChatMessage>> chatMessages;
 
     bool isTOH = false;
+    bool isTOH_TOR = false;
+    std::array<std::pair<int32_t, int32_t>, Game::MAX_PLAYERS> assignedModRoles = {};
 
     enum class MapType : uint8_t
     {

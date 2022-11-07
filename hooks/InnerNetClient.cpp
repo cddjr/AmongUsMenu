@@ -210,7 +210,10 @@ void dCustomNetworkTransform_SnapTo(CustomNetworkTransform* __this, Vector2 posi
 static void onGameEnd() {
     LOG_DEBUG("Reset All");
     Replay::Reset();
-    State.isTOH = false;
+
+    State.isTOH = State.isTOH_TOR = false;
+    State.assignedModRoles = {};
+
     State.aumUsers.clear();
     State.chatMessages.clear();
     State.MatchEnd = std::chrono::system_clock::now();
