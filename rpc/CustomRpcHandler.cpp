@@ -460,18 +460,94 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 		TOH::CustomRoles role = (TOH::CustomRoles)p.first;
 		TOH::CustomRoles role2 = (TOH::CustomRoles)p.second;
 		switch (role) {
-		case TOH::Jester:
-			return "小丑";
-		case TOH::Bait:
-			return "诱饵";
-		case TOH::Mayor:
-			return "市长";
-		case TOH::Sheriff:
-			return "警长";
+		case TOH::BountyHunter:
+			return "赏金猎人";
+		case TOH::EvilWatcher:
+			return "邪恶的窥视者";
+		case TOH::FireWorks:
+			return "烟花商人";
+		case TOH::Mafia:
+			return "黑手党";
+		case TOH::SerialKiller:
+			return "嗜血杀手";
+		case TOH::Sniper:
+			return "狙击手";
+		case TOH::Vampire:
+			return "吸血鬼";
+		case TOH::Witch:
+			return "女巫";
+		case TOH::Warlock:
+			return "术士";
+		case TOH::Mare:
+			return "梦魇";
+		case TOH::Puppeteer:
+			return "傀儡师";
+		case TOH::TimeThief:
+			return "蚀时者";
+		case TOH::EvilTracker:
+			return "邪恶的追踪者";
+		case TOH::MadGuardian:
+			return "背叛的守卫";
 		case TOH::Madmate:
 			return "叛徒";
 		case TOH::MadSnitch:
 			return "背叛的告密者";
+		case TOH::SKMadmate:
+			return "叛徒小弟";
+		case TOH::MSchrodingerCat:
+		case TOH::CSchrodingerCat:
+		case TOH::EgoSchrodingerCat:
+		case TOH::SchrodingerCat:
+		case TOH::JSchrodingerCat:
+			return "薛定谔的猫";
+		case TOH::Watcher:
+			return "窥视者";
+		case TOH::Bait:
+			return "诱饵";
+		case TOH::Lighter:
+			return "执灯人";
+		case TOH::Mayor:
+			return "市长";
+		case TOH::NiceWatcher:
+			return "正义的窥视者";
+		case TOH::SabotageMaster:
+			return "修理大师";
+		case TOH::Sheriff:
+			return "警长";
+		case TOH::Snitch:
+			return "告密者";
+		case TOH::SpeedBooster:
+			return "增速者";
+		case TOH::Trapper:
+			return "陷阱师";
+		case TOH::Dictator:
+			return "独裁者";
+		case TOH::Doctor:
+			return "医生";
+		case TOH::Seer:
+			return "灵媒";
+		case TOH::Arsonist:
+			return "纵火犯";
+		case TOH::Egoist:
+			return "野心家";
+		case TOH::Jester:
+			return "小丑";
+		case TOH::Opportunist:
+			return "投机者";
+		case TOH::Terrorist:
+			return "恐怖分子";
+		case TOH::Executioner:
+			return "处刑人";
+		case TOH::Jackal:
+			return "豺狼";
+		case TOH::HASFox:
+			return "狐狸";
+		case TOH::HASTroll:
+			return "猎人";
+		case TOH::GM:
+			return "GM管理员";
+		case TOH::Lovers:
+			return "恋人";
 		default:
 			return std::format("{},{}", (int32_t)role, (int32_t)role2);
 		}
@@ -483,22 +559,88 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)p.first;
 		TOHTOR::CustomRoles role2 = (TOHTOR::CustomRoles)p.second;
 		switch (role) {
-		case TOHTOR::Jester:
-			return "小丑";
-		case TOHTOR::Bait:
-			return "诱饵";
-		case TOHTOR::Mayor:
-			return "市长";
-		case TOHTOR::Medium:
-			return "警探";
-		case TOHTOR::Sheriff:
-			return "警长";
-		case TOHTOR::Child:
-			return "小孩";
+		case TOHTOR::BountyHunter:
+			return "赏金猎人";
+		case TOHTOR::FireWorks:
+			return "烟花商人";
+		case TOHTOR::Mafia:
+			return "黑手党";
+		case TOHTOR::SerialKiller:
+			return "嗜血杀手";
+		case TOHTOR::Sniper:
+			return "狙击手";
+		case TOHTOR::Vampire:
+			return "吸血鬼";
+		case TOHTOR::Witch:
+			return "女巫";
+		case TOHTOR::Warlock:
+			return "术士";
+		case TOHTOR::Mare:
+			return "梦魇";
+		case TOHTOR::Puppeteer:
+			return "傀儡师";
+		case TOHTOR::TimeThief:
+			return "蚀时者";
+		case TOHTOR::MadGuardian:
+			return "背叛的守卫";
 		case TOHTOR::Madmate:
 			return "叛徒";
 		case TOHTOR::MadSnitch:
 			return "背叛的告密者";
+		case TOHTOR::SKMadmate:
+			return "叛徒小弟";
+		case TOHTOR::MSchrodingerCat:
+		case TOHTOR::CSchrodingerCat:
+		case TOHTOR::EgoSchrodingerCat:
+		case TOHTOR::SchrodingerCat:
+		case TOHTOR::JSchrodingerCat:
+			return "薛定谔的猫";
+		case TOHTOR::Watcher:
+			return "窥视者";
+		case TOHTOR::Bait:
+			return "诱饵";
+		case TOHTOR::Lighter:
+			return "执灯人";
+		case TOHTOR::Mayor:
+			return "市长";
+		case TOHTOR::SabotageMaster:
+			return "修理大师";
+		case TOHTOR::Sheriff:
+			return "警长";
+		case TOHTOR::Snitch:
+			return "告密者";
+		case TOHTOR::SpeedBooster:
+			return "增速者";
+		case TOHTOR::Trapper:
+			return "陷阱师";
+		case TOHTOR::Dictator:
+			return "独裁者";
+		case TOHTOR::Doctor:
+			return "医生";
+		case TOHTOR::Arsonist:
+			return "纵火犯";
+		case TOHTOR::Egoist:
+			return "野心家";
+		case TOHTOR::Jester:
+			return "小丑";
+		case TOHTOR::Opportunist:
+			return "投机者";
+		case TOHTOR::Terrorist:
+			return "恐怖分子";
+		case TOHTOR::Executioner:
+			return "处刑人";
+		case TOHTOR::Jackal:
+			return "豺狼";
+		case TOHTOR::HASFox:
+			return "狐狸";
+		case TOHTOR::HASTroll:
+			return "猎人";
+		case TOHTOR::Lovers:
+			return "恋人";
+		case TOHTOR::Medium:
+			return "警探";
+		case TOHTOR::Child:
+			return "小孩";
 		default:
 			return std::format("{},{}", (int32_t)role, (int32_t)role2);
 		}
