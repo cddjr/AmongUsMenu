@@ -289,7 +289,7 @@ void dPlayerControl_StartMeeting(PlayerControl* __this, GameData_PlayerInfo* tar
 
 void dPlayerControl_HandleRpc(PlayerControl* __this, uint8_t callId, MessageReader* reader, MethodInfo* method) {
 	try {
-		HandleRpc(callId, reader);
+		HandleRpc(__this, callId, reader);
 	}
 	catch (...) {
 		LOG_ERROR("Exception");

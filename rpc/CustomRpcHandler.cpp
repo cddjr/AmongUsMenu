@@ -138,12 +138,14 @@ namespace TOH {
 	}
 }
 
-void HandleRpc(uint8_t callId, MessageReader* reader) {
+void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
+	LOG_ASSERT(sender != nullptr);
 	if (!State.isTOH && callId != TOH::VersionCheck) {
 		switch (callId) {
 		case 85://(uint8_t)42069:
 		{
 			uint8_t playerid = MessageReader_ReadByte(reader, NULL);
+			LOG_ASSERT(playerid == sender->fields.PlayerId);
 			if (!std::count(State.aumUsers.begin(), State.aumUsers.end(), playerid)) {
 				State.aumUsers.push_back(playerid);
 				STREAM_DEBUG("RPC Received for another AUM User from " << ToString((Game::PlayerId)playerid));
@@ -163,6 +165,10 @@ void HandleRpc(uint8_t callId, MessageReader* reader) {
 		}
 		return;
 	}
+
+	if (!IsHost(sender))
+		return;
+
 	switch (callId) {
 	case TOH::VersionCheck:
 	{
@@ -172,13 +178,15 @@ void HandleRpc(uint8_t callId, MessageReader* reader) {
 
 		std::ostringstream ss;
 		ss << "MOD Version:" << convert_from_string(pVersion);
+		ss << "Host:" << ToString(sender);
 		app::MessageReader_ReadString(reader, nullptr);//skip Tag
 		if (ver->fields._Major >= 3) {
 			// only for TOH v3.0.0+
 			try {
 				const auto& modForkId = convert_from_string(app::MessageReader_ReadString(reader, nullptr));
-				ss << ", ForkId:" << modForkId;
 				State.isTOH = (modForkId == "OriginalTOH");
+				if (!State.isTOH)
+					ss << ", ForkId:" << modForkId;
 			}
 			catch (...) {
 				// TOR < v0.7

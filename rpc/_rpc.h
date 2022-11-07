@@ -1,7 +1,7 @@
 #pragma once
 #include "utility.h"
 
-void HandleRpc(uint8_t callId, MessageReader* reader);
+void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader);
 
 class RPCInterface {
 public:

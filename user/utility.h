@@ -138,6 +138,7 @@ ImVec4 AmongUsColorToImVec4(const Color& color);
 ImVec4 AmongUsColorToImVec4(const Color32& color);
 bool IsInLobby();
 bool IsHost();
+bool IsHost(const PlayerControl* player);
 bool IsInGame();
 bool IsInMultiplayerGame();
 int GetMaxImposterAmount(int playerAmount);

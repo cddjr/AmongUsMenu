@@ -247,6 +247,11 @@ bool IsHost() {
 	return app::InnerNetClient_get_AmHost((InnerNetClient*)(*Game::pAmongUsClient), NULL);
 }
 
+bool IsHost(const PlayerControl* player) {
+	if (!(*Game::pAmongUsClient && player)) return false;
+	return (*Game::pAmongUsClient)->fields._.HostId == player->fields._.OwnerId;
+}
+
 bool IsInGame() {
 	if (Object_1_IsNull((Object_1*)*Game::pAmongUsClient)) return false;
 	return (LocalInGame || OnlineInGame || TutorialScene) && Object_1_IsNotNull((Object_1*)*Game::pShipStatus) && Object_1_IsNotNull((Object_1*)*Game::pLocalPlayer);
