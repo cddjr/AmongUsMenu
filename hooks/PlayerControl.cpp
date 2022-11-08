@@ -156,8 +156,8 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 
 		// We should have this in a scope so that the lock guard only locks the right things
 		{
-			Vector2 localPos = PlayerControl_GetTruePosition(*Game::pLocalPlayer, nullptr);
-			ImVec2 localScreenPosition = WorldToScreen(localPos);
+			//Vector2 localPos = PlayerControl_GetTruePosition(*Game::pLocalPlayer, nullptr);
+			//ImVec2 localScreenPosition = WorldToScreen(localPos);
 
 			Vector2 playerPos = PlayerControl_GetTruePosition(__this, nullptr);
 
@@ -216,30 +216,7 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 				}
 				Profiler::EndSample("WalkEventCreation");
 			}
-			app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData);
-			EspPlayerData espPlayerData;
-			espPlayerData.Position = WorldToScreen(playerPos);
-			if (outfit != NULL)
-			{
-				espPlayerData.Color = State.ShowEsp_RoleBased == false ? AmongUsColorToImVec4(GetPlayerColor(outfit->fields.ColorId))
-					: AmongUsColorToImVec4(GetRoleColor(playerData));
-				espPlayerData.Name = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
-			}
-			else
-			{
-				espPlayerData.Color = State.ShowEsp_RoleBased == false ? ImVec4(0.f, 0.f, 0.f, 1.f)
-					: AmongUsColorToImVec4(GetRoleColor(playerData));
-				espPlayerData.Name = "<Unknown>";
-			}
-			espPlayerData.OnScreen = IsWithinScreenBounds(playerPos);
-			espPlayerData.Distance = Vector2_Distance(localPos, playerPos, nullptr);
-			espPlayerData.playerData = PlayerSelection(__this);
-
-			drawing_t& instance = Esp::GetDrawing();
-			synchronized(instance.m_DrawingMutex) {
-				instance.LocalPosition = localScreenPosition;
-				instance.m_Players[playerData->fields.PlayerId] = espPlayerData;
-			}
+			
 		}
 	}
 }
