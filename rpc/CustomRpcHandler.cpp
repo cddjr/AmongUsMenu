@@ -561,6 +561,8 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 		switch (role) {
 		case TOHTOR::BountyHunter:
 			return "赏金猎人";
+		case TOHTOR::VoteStealer:
+			return "窃票者";
 		case TOHTOR::FireWorks:
 			return "烟花商人";
 		case TOHTOR::Mafia:
@@ -571,44 +573,102 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 			return "狙击手";
 		case TOHTOR::Vampire:
 			return "吸血鬼";
+		case TOHTOR::Vampress:
+			return "血族公主";
 		case TOHTOR::Witch:
 			return "女巫";
 		case TOHTOR::Warlock:
 			return "术士";
 		case TOHTOR::Mare:
 			return "梦魇";
+		case TOHTOR::Miner:
+			return "矿工";
+		case TOHTOR::Consort:
+			return "邪恶的护卫";
+		case TOHTOR::YingYanger:
+			return "阴阳师";
+		case TOHTOR::Grenadier:
+			return "致盲师";
+		case TOHTOR::Disperser:
+			return "驱散者";
 		case TOHTOR::Puppeteer:
 			return "傀儡师";
 		case TOHTOR::TimeThief:
 			return "蚀时者";
+		case TOHTOR::Silencer:
+			return "沉默者";
+		case TOHTOR::Ninja:
+			return "忍者";
+		case TOHTOR::Swooper:
+			return "隐身人";
+		case TOHTOR::Camouflager:
+			return "伪装师";
+		case TOHTOR::Freezer:
+			return "冰法师";
+		case TOHTOR::Cleaner:
+			return "清理工";
+		case TOHTOR::EvilGuesser:
+			return "邪恶的猜测者";
 		case TOHTOR::MadGuardian:
 			return "背叛的守卫";
 		case TOHTOR::Madmate:
 			return "叛徒";
 		case TOHTOR::MadSnitch:
 			return "背叛的告密者";
+		case TOHTOR::CrewPostor:
+			return "舰长";
+		case TOHTOR::CorruptedSheriff:
+			return "背叛的警长";
 		case TOHTOR::SKMadmate:
 			return "叛徒小弟";
+		case TOHTOR::Parasite:
+			return "寄居者";
 		case TOHTOR::MSchrodingerCat:
 		case TOHTOR::CSchrodingerCat:
 		case TOHTOR::EgoSchrodingerCat:
 		case TOHTOR::SchrodingerCat:
 		case TOHTOR::JSchrodingerCat:
 			return "薛定谔的猫";
-		case TOHTOR::Watcher:
-			return "窥视者";
-		case TOHTOR::Bait:
-			return "诱饵";
+		case TOHTOR::Alturist:
+			return "祭师";
 		case TOHTOR::Lighter:
 			return "执灯人";
+		case TOHTOR::Medium:
+			return "警探";
+		case TOHTOR::Demolitionist:
+			return "同命爆手";
+		case TOHTOR::Bastion:
+			return "埋雷兵";
+		case TOHTOR::NiceGuesser:
+			return "正义的猜测者";
+		case TOHTOR::Escort:
+			return "护卫";
+		case TOHTOR::Crusader:
+			return "十字军";
+		case TOHTOR::Psychic:
+			return "通灵师";
+		case TOHTOR::Mystic:
+			return "灵媒";
+		case TOHTOR::Swapper:
+			return "挑衅者";
 		case TOHTOR::Mayor:
 			return "市长";
 		case TOHTOR::SabotageMaster:
 			return "修理大师";
+		case TOHTOR::Oracle:
+			return "神谕者";
+		case TOHTOR::Medic:
+			return "医师";
+		case TOHTOR::Bodyguard:
+			return "保镖";
 		case TOHTOR::Sheriff:
 			return "警长";
+		case TOHTOR::Investigator:
+			return "调查员";
 		case TOHTOR::Snitch:
 			return "告密者";
+		case TOHTOR::Transporter:
+			return "传送师";
 		case TOHTOR::SpeedBooster:
 			return "增速者";
 		case TOHTOR::Trapper:
@@ -617,30 +677,100 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 			return "独裁者";
 		case TOHTOR::Doctor:
 			return "医生";
+		case TOHTOR::Child:
+			return "小孩";
+		case TOHTOR::Veteran:
+			return "老兵";
 		case TOHTOR::Arsonist:
 			return "纵火犯";
 		case TOHTOR::Egoist:
 			return "野心家";
+		case TOHTOR::PlagueBearer:
+			return "疫医";
+		case TOHTOR::Pestilence:
+			return "瘟神";
+		case TOHTOR::Vulture:
+			return "秃鹫";
+		case TOHTOR::TheGlitch:
+			return "混沌";
+		case TOHTOR::Postman:
+			return "邮递员";
+		case TOHTOR::Werewolf:
+			return "狼人";
+		case TOHTOR::NeutWitch:
+			return "巫女";
+		case TOHTOR::Marksman:
+			return "神射手";
+		case TOHTOR::GuardianAngelTOU:
+			return "守护天使";
 		case TOHTOR::Jester:
 			return "小丑";
+		case TOHTOR::Amnesiac:
+			return "窃忆者";
+		case TOHTOR::Hacker:
+			return "黑客";
+		case TOHTOR::PoisonMaster:
+			return "制毒师";
+		case TOHTOR::BloodKnight:
+			return "嗜血骑士";
+		case TOHTOR::Hitman:
+			return "雇佣杀手";
+		case TOHTOR::Phantom:
+			return "幻影";
+		case TOHTOR::Pirate:
+			return "海盗";
+		case TOHTOR::Juggernaut:
+			return "欲望杀手";
 		case TOHTOR::Opportunist:
 			return "投机者";
+		case TOHTOR::Survivor:
+			return "求生者";
 		case TOHTOR::Terrorist:
 			return "恐怖分子";
 		case TOHTOR::Executioner:
 			return "处刑人";
 		case TOHTOR::Jackal:
 			return "豺狼";
+		case TOHTOR::Sidekick:
+			return "跟班";
 		case TOHTOR::HASFox:
 			return "狐狸";
 		case TOHTOR::HASTroll:
 			return "猎人";
+		case TOHTOR::Coven:
+			return "巫师";
+		case TOHTOR::Poisoner:
+			return "毒师";
+		case TOHTOR::CovenWitch:
+			return "巫师团领袖";
+		case TOHTOR::HexMaster:
+			return "魔法师";
+		case TOHTOR::PotionMaster:
+			return "药剂师";
+		case TOHTOR::Medusa:
+			return "美杜莎";
+		case TOHTOR::Mimic:
+			return "模仿师";
+		case TOHTOR::Necromancer:
+			return "亡灵法师";
+		case TOHTOR::Conjuror:
+			return "魔术师";
+		case TOHTOR::Painter:
+			return "喷漆工";
+		case TOHTOR::Janitor:
+			return "清洁工";
+		case TOHTOR::Supporter:
+			return "工人";
+		case TOHTOR::LoversWin:
 		case TOHTOR::Lovers:
+		case TOHTOR::LoversRecode:
 			return "恋人";
-		case TOHTOR::Medium:
-			return "警探";
-		case TOHTOR::Child:
-			return "小孩";
+		case TOHTOR::Watcher:
+			return "窥视者";
+		case TOHTOR::Obvious:
+			return "广播员";
+		case TOHTOR::Bait:
+			return "诱饵";
 		default:
 			return std::format("{},{}", (int32_t)role, (int32_t)role2);
 		}
@@ -668,7 +798,10 @@ static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader
 	{
 		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetCustomRole:" << ToString(id) << ", Role:" << role);
+		STREAM_DEBUG("TOHTOR: SetCustomRole:" << ToString(id) << ", Role:" << role
+					 << ", " << (TOHTOR::IsImpostorTeam(role) ? "ImpostorTeam" :
+								 TOHTOR::IsNeutral(role) ? "Neutral" :
+								 TOHTOR::IsCoven(role) ? "Coven" : "Crewmate"));
 		if (role < TOHTOR::NoSubRoleAssigned)
 			State.assignedModRoles[id].first = (int32_t)role;
 		else
@@ -784,7 +917,8 @@ static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* r
 		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 		TOH::CustomRoles role = (TOH::CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
 		STREAM_DEBUG("TOH: SetCustomRole:" << ToString(id) << ", Role:" << role
-					 << ", " << (TOH::IsImpostorTeam(role) ? "ImpostorTeam" : TOH::IsNeutral(role) ? "Neutral" : "Crewmate"));
+					 << ", " << (TOH::IsImpostorTeam(role) ? "ImpostorTeam" :
+								 TOH::IsNeutral(role) ? "Neutral" : "Crewmate"));
 		if (role < TOH::NoSubRoleAssigned)
 			State.assignedModRoles[id].first = (int32_t)role;
 		else
