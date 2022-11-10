@@ -758,12 +758,28 @@ namespace TOHTOR {
 		case TOHTOR::Lovers:
 		case TOHTOR::LoversRecode:
 			return "恋人";
+		case TOHTOR::Flash:
+			return "闪电侠";
+		case TOHTOR::Escalation:
+			return "恐惧者";
+		case TOHTOR::TieBreaker:
+			return "破局者";
+		case TOHTOR::Oblivious:
+			return "胆小鬼";
+		case TOHTOR::Sleuth:
+			return "侦探";
 		case TOHTOR::Watcher:
 			return "窥视者";
 		case TOHTOR::Obvious:
 			return "广播员";
+		case TOHTOR::Bewilder:
+			return "迷幻者";
 		case TOHTOR::Bait:
 			return "诱饵";
+		case TOHTOR::Torch:
+			return "火炬手";
+		case TOHTOR::Diseased:
+			return "患者";
 		default:
 			return std::format("{}", (int32_t)role);
 		}
@@ -983,6 +999,12 @@ static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader
 		STREAM_DEBUG("TOHTOR: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
 	}
 	break;
+	case TOHTOR::DoSpell:
+	{
+		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+		STREAM_DEBUG("TOHTOR: DoSpell:" << ToString(TargetId));
+	}
+	break;
 	default:
 		if (callId > 60)
 			STREAM_DEBUG("Unknown RPC:" << (int)callId);
@@ -1105,6 +1127,12 @@ static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* r
 		Game::PlayerId bountyId = app::MessageReader_ReadByte(reader, nullptr);
 		Game::PlayerId targetId = app::MessageReader_ReadByte(reader, nullptr);
 		STREAM_DEBUG("TOH: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
+	}
+	break;
+	case TOH::DoSpell:
+	{
+		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+		STREAM_DEBUG("TOH: DoSpell:" << ToString(TargetId));
 	}
 	break;
 	default:
