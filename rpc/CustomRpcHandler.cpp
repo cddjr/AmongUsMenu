@@ -136,6 +136,136 @@ namespace TOH {
 	bool IsCrewmate(CustomRoles role) {
 		return !IsImpostorTeam(role) && !IsNeutral(role);
 	}
+
+	std::string GetRoleName(CustomRoles role) {
+		switch (role) {
+		case TOH::BountyHunter:
+			return "赏金猎人";
+		case TOH::EvilWatcher:
+			return "邪恶的窥视者";
+		case TOH::FireWorks:
+			return "烟花商人";
+		case TOH::Mafia:
+			return "黑手党";
+		case TOH::SerialKiller:
+			return "嗜血杀手";
+		case TOH::Sniper:
+			return "狙击手";
+		case TOH::Vampire:
+			return "吸血鬼";
+		case TOH::Witch:
+			return "女巫";
+		case TOH::Warlock:
+			return "术士";
+		case TOH::Mare:
+			return "梦魇";
+		case TOH::Puppeteer:
+			return "傀儡师";
+		case TOH::TimeThief:
+			return "蚀时者";
+		case TOH::EvilTracker:
+			return "邪恶的追踪者";
+		case TOH::MadGuardian:
+			return "背叛的守卫";
+		case TOH::Madmate:
+			return "叛徒";
+		case TOH::MadSnitch:
+			return "背叛的告密者";
+		case TOH::SKMadmate:
+			return "叛徒小弟";
+		case TOH::MSchrodingerCat:
+		case TOH::CSchrodingerCat:
+		case TOH::EgoSchrodingerCat:
+		case TOH::SchrodingerCat:
+		case TOH::JSchrodingerCat:
+			return "薛定谔的猫";
+		case TOH::Watcher:
+			return "窥视者";
+		case TOH::Bait:
+			return "诱饵";
+		case TOH::Lighter:
+			return "执灯人";
+		case TOH::Mayor:
+			return "市长";
+		case TOH::NiceWatcher:
+			return "正义的窥视者";
+		case TOH::SabotageMaster:
+			return "修理大师";
+		case TOH::Sheriff:
+			return "警长";
+		case TOH::Snitch:
+			return "告密者";
+		case TOH::SpeedBooster:
+			return "增速者";
+		case TOH::Trapper:
+			return "陷阱师";
+		case TOH::Dictator:
+			return "独裁者";
+		case TOH::Doctor:
+			return "医生";
+		case TOH::Seer:
+			return "灵媒";
+		case TOH::Arsonist:
+			return "纵火犯";
+		case TOH::Egoist:
+			return "野心家";
+		case TOH::Jester:
+			return "小丑";
+		case TOH::Opportunist:
+			return "投机者";
+		case TOH::Terrorist:
+			return "恐怖分子";
+		case TOH::Executioner:
+			return "处刑人";
+		case TOH::Jackal:
+			return "豺狼";
+		case TOH::HASFox:
+			return "狐狸";
+		case TOH::HASTroll:
+			return "猎人";
+		case TOH::GM:
+			return "GM管理员";
+		case TOH::Lovers:
+			return "恋人";
+		default:
+			return std::format("{}", (int32_t)role);
+		}
+	}
+
+	std::string GetDeathReason(DeathReason reason) {
+		switch (reason) {
+		case DeathReason::Kill:
+			return "被杀";
+		case DeathReason::Vote:
+			return "放逐";
+		case DeathReason::Suicide:
+			return "自杀";
+		case DeathReason::Spell:
+			return "咒杀";
+		case DeathReason::FollowingSuicide:
+			return "为爱而死";
+		case DeathReason::Bite:
+			return "吸血";
+		case DeathReason::Bombed:
+			return "炸死";
+		case DeathReason::Misfire:
+			return "走火";
+		case DeathReason::Torched:
+			return "烧死";
+		case DeathReason::Sniped:
+			return "狙杀";
+		case DeathReason::Execution:
+			return "处刑";
+		case DeathReason::Disconnected:
+			return "断连";
+		case DeathReason::Fall:
+			return "摔死";
+		case DeathReason::etc:
+			return "其他";
+		default:
+			return std::format("{}", (int32_t)reason);
+		}
+	}
 }
 
 namespace TOHTOR {
@@ -417,148 +547,11 @@ namespace TOHTOR {
 	bool IsCrewmate(CustomRoles role) {
 		return !IsImpostorTeam(role) && !IsNeutral(role) && !IsCoven(role);
 	}
-}
 
-Color GetRoleColor(GameData_PlayerInfo* info) {
-	if (State.isTOH) {
-		TOH::CustomRoles role = (TOH::CustomRoles)State.assignedModRoles[info->fields.PlayerId].first;
-		if (TOH::IsImpostorTeam(role)) {
-			return Palette__TypeInfo->static_fields->ImpostorRed;
-		}
-		else if (TOH::IsNeutral(role)) {
-			return Palette__TypeInfo->static_fields->Orange;
-		}
-		else {
-			return Palette__TypeInfo->static_fields->White;
-		}
-	}
-	else if (State.isTOH_TOR) {
-		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)State.assignedModRoles[info->fields.PlayerId].first;
-		if (TOHTOR::IsImpostorTeam(role)) {
-			return Palette__TypeInfo->static_fields->ImpostorRed;
-		}
-		else if (TOHTOR::IsNeutral(role)) {
-			return Palette__TypeInfo->static_fields->Orange;
-		}
-		else if (TOHTOR::IsCoven(role)) {
-			return Palette__TypeInfo->static_fields->Purple;
-		}
-		else {
-			return Palette__TypeInfo->static_fields->White;
-		}
-	}
-	else {
-		return GetRoleColor(info->fields.Role);
-	}
-}
-
-std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
-	if (State.isTOH) {
-		//if ((*Game::pLocalPlayer)->fields.PlayerId == info->fields.PlayerId)
-		//	return "";
-		const auto& p = State.assignedModRoles[info->fields.PlayerId];
-		TOH::CustomRoles role = (TOH::CustomRoles)p.first;
-		TOH::CustomRoles role2 = (TOH::CustomRoles)p.second;
+	std::string GetRoleName(CustomRoles role) {
 		switch (role) {
-		case TOH::BountyHunter:
-			return "赏金猎人";
-		case TOH::EvilWatcher:
-			return "邪恶的窥视者";
-		case TOH::FireWorks:
-			return "烟花商人";
-		case TOH::Mafia:
-			return "黑手党";
-		case TOH::SerialKiller:
-			return "嗜血杀手";
-		case TOH::Sniper:
-			return "狙击手";
-		case TOH::Vampire:
-			return "吸血鬼";
-		case TOH::Witch:
-			return "女巫";
-		case TOH::Warlock:
-			return "术士";
-		case TOH::Mare:
-			return "梦魇";
-		case TOH::Puppeteer:
-			return "傀儡师";
-		case TOH::TimeThief:
-			return "蚀时者";
-		case TOH::EvilTracker:
-			return "邪恶的追踪者";
-		case TOH::MadGuardian:
-			return "背叛的守卫";
-		case TOH::Madmate:
-			return "叛徒";
-		case TOH::MadSnitch:
-			return "背叛的告密者";
-		case TOH::SKMadmate:
-			return "叛徒小弟";
-		case TOH::MSchrodingerCat:
-		case TOH::CSchrodingerCat:
-		case TOH::EgoSchrodingerCat:
-		case TOH::SchrodingerCat:
-		case TOH::JSchrodingerCat:
-			return "薛定谔的猫";
-		case TOH::Watcher:
-			return "窥视者";
-		case TOH::Bait:
-			return "诱饵";
-		case TOH::Lighter:
-			return "执灯人";
-		case TOH::Mayor:
-			return "市长";
-		case TOH::NiceWatcher:
-			return "正义的窥视者";
-		case TOH::SabotageMaster:
-			return "修理大师";
-		case TOH::Sheriff:
-			return "警长";
-		case TOH::Snitch:
-			return "告密者";
-		case TOH::SpeedBooster:
-			return "增速者";
-		case TOH::Trapper:
-			return "陷阱师";
-		case TOH::Dictator:
-			return "独裁者";
-		case TOH::Doctor:
-			return "医生";
-		case TOH::Seer:
-			return "灵媒";
-		case TOH::Arsonist:
-			return "纵火犯";
-		case TOH::Egoist:
-			return "野心家";
-		case TOH::Jester:
-			return "小丑";
-		case TOH::Opportunist:
-			return "投机者";
-		case TOH::Terrorist:
-			return "恐怖分子";
-		case TOH::Executioner:
-			return "处刑人";
-		case TOH::Jackal:
-			return "豺狼";
-		case TOH::HASFox:
-			return "狐狸";
-		case TOH::HASTroll:
-			return "猎人";
-		case TOH::GM:
-			return "GM管理员";
-		case TOH::Lovers:
-			return "恋人";
-		default:
-			return std::format("{},{}", (int32_t)role, (int32_t)role2);
-		}
-	}
-	else if (State.isTOH_TOR) {
-		//if ((*Game::pLocalPlayer)->fields.PlayerId == info->fields.PlayerId)
-		//	return "";
-		const auto& p = State.assignedModRoles[info->fields.PlayerId];
-		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)p.first;
-		TOHTOR::CustomRoles role2 = (TOHTOR::CustomRoles)p.second;
-		switch (role) {
+		case Crewmate:
+			return "船员";
 		case TOHTOR::BountyHunter:
 			return "赏金猎人";
 		case TOHTOR::VoteStealer:
@@ -772,8 +765,107 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 		case TOHTOR::Bait:
 			return "诱饵";
 		default:
-			return std::format("{},{}", (int32_t)role, (int32_t)role2);
+			return std::format("{}", (int32_t)role);
 		}
+	}
+
+	std::string GetDeathReason(DeathReason reason) {
+		switch (reason) {
+		case DeathReason::Kill:
+			return "被杀";
+		case DeathReason::Vote:
+			return "放逐";
+		case DeathReason::Suicide:
+			return "自杀";
+		case DeathReason::Spell:
+			return "咒杀";
+		case DeathReason::LoversSuicide:
+			return "失爱";
+		case DeathReason::Bite:
+			return "吸血";
+		case DeathReason::Bombed:
+			return "炸死";
+		case DeathReason::Misfire:
+			return "走火";
+		case DeathReason::Torched:
+			return "烧死";
+		case DeathReason::Sniped:
+			return "狙杀";
+		case DeathReason::Execution:
+			return "处刑";
+		case DeathReason::Disconnected:
+			return "断连";
+		case DeathReason::Fell:
+			return "摔死";
+		case DeathReason::Alive:
+			return "存活";
+		case DeathReason::EarDamage:
+			return "耳鸣";
+		case DeathReason::Screamed:
+			return "惊吓";
+		case DeathReason::etc:
+			return "其他";
+		default:
+			return std::format("{}", (int32_t)reason);
+		}
+	}
+}
+
+Color GetRoleColor(GameData_PlayerInfo* info) {
+	if (State.isTOH) {
+		TOH::CustomRoles role = (TOH::CustomRoles)State.assignedModRoles[info->fields.PlayerId].first;
+		if (TOH::IsImpostorTeam(role)) {
+			return Palette__TypeInfo->static_fields->ImpostorRed;
+		}
+		else if (TOH::IsNeutral(role)) {
+			return Palette__TypeInfo->static_fields->Orange;
+		}
+		else {
+			return Palette__TypeInfo->static_fields->White;
+		}
+	}
+	else if (State.isTOH_TOR) {
+		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)State.assignedModRoles[info->fields.PlayerId].first;
+		if (TOHTOR::IsImpostorTeam(role)) {
+			return Palette__TypeInfo->static_fields->ImpostorRed;
+		}
+		else if (TOHTOR::IsNeutral(role)) {
+			return Palette__TypeInfo->static_fields->Orange;
+		}
+		else if (TOHTOR::IsCoven(role)) {
+			return Palette__TypeInfo->static_fields->Purple;
+		}
+		else {
+			return Palette__TypeInfo->static_fields->White;
+		}
+	}
+	else {
+		return GetRoleColor(info->fields.Role);
+	}
+}
+
+std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
+	if (State.isTOH) {
+		//if ((*Game::pLocalPlayer)->fields.PlayerId == info->fields.PlayerId)
+		//	return "";
+		const auto& p = State.assignedModRoles[info->fields.PlayerId];
+		TOH::CustomRoles role = (TOH::CustomRoles)p.first;
+		TOH::CustomRoles role2 = (TOH::CustomRoles)p.second;
+		if (role2)
+			return TOH::GetRoleName(role) + "+" + TOH::GetRoleName(role2);
+		else
+			return TOH::GetRoleName(role);
+	}
+	else if (State.isTOH_TOR) {
+		//if ((*Game::pLocalPlayer)->fields.PlayerId == info->fields.PlayerId)
+		//	return "";
+		const auto& p = State.assignedModRoles[info->fields.PlayerId];
+		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)p.first;
+		TOHTOR::CustomRoles role2 = (TOHTOR::CustomRoles)p.second;
+		if (role2)
+			return TOHTOR::GetRoleName(role) + "+" + TOHTOR::GetRoleName(role2);
+		else
+			return TOHTOR::GetRoleName(role);
 	}
 	else {
 		return GetRoleName(info->fields.Role, abbreviated);
@@ -798,7 +890,7 @@ static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader
 	{
 		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetCustomRole:" << ToString(id) << ", Role:" << role
+		STREAM_DEBUG("TOHTOR: SetCustomRole:" << ToString(id) << ", Role:" << TOHTOR::GetRoleName(role)
 					 << ", " << (TOHTOR::IsImpostorTeam(role) ? "ImpostorTeam" :
 								 TOHTOR::IsNeutral(role) ? "Neutral" :
 								 TOHTOR::IsCoven(role) ? "Coven" : "Crewmate"));
@@ -839,7 +931,7 @@ static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader
 	{
 		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 		TOHTOR::DeathReason deathReason = (TOHTOR::DeathReason)app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetDeathReason:" << ToString(id) << ", Reason:" << deathReason);
+		STREAM_DEBUG("TOHTOR: SetDeathReason:" << ToString(id) << ", Reason:" << TOHTOR::GetDeathReason(deathReason));
 	}
 	break;
 	case TOHTOR::SetDousedPlayer:
@@ -916,7 +1008,7 @@ static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* r
 	{
 		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 		TOH::CustomRoles role = (TOH::CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
-		STREAM_DEBUG("TOH: SetCustomRole:" << ToString(id) << ", Role:" << role
+		STREAM_DEBUG("TOH: SetCustomRole:" << ToString(id) << ", Role:" << TOH::GetRoleName(role)
 					 << ", " << (TOH::IsImpostorTeam(role) ? "ImpostorTeam" :
 								 TOH::IsNeutral(role) ? "Neutral" : "Crewmate"));
 		if (role < TOH::NoSubRoleAssigned)
@@ -956,7 +1048,7 @@ static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* r
 	{
 		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 		TOH::DeathReason deathReason = (TOH::DeathReason)app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOH: SetDeathReason:" << ToString(id) << ", Reason:" << deathReason);
+		STREAM_DEBUG("TOH: SetDeathReason:" << ToString(id) << ", Reason:" << TOH::GetDeathReason(deathReason));
 	}
 	break;
 	case TOH::SetDousedPlayer:
@@ -1039,7 +1131,7 @@ void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
 
 		std::ostringstream ss;
 		ss << "MOD Version:" << convert_from_string(pVersion);
-		app::MessageReader_ReadString(reader, nullptr);//skip Tag
+		ss << ", Tag:" << convert_from_string(app::MessageReader_ReadString(reader, nullptr));
 		if (ver->fields._Major >= 3) {
 			// only for TOH v3.0.0+
 			try {
@@ -1057,6 +1149,7 @@ void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
 			// TOH:TOR v0.9.x.x
 			State.isTOH_TOR = true;
 		}
+		State.moddedHost = sender->fields.PlayerId;
 		LOG_DEBUG(ss.str());
 		return;
 	}

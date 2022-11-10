@@ -136,7 +136,13 @@ void dAmongUsClient_OnPlayerLeft(AmongUsClient* __this, ClientData* data, Discon
         if (it != State.aumUsers.end())
             State.aumUsers.erase(it);
 
-        // TODO: State.isTOH = false; // if the host leaves
+        if (State.isTOH || State.isTOH_TOR) {
+            if (data->fields.Character->fields.PlayerId == State.moddedHost) {
+                // If the host has left
+                State.isTOH = State.isTOH_TOR = false;
+                State.assignedModRoles = {};
+            }
+        }
 
         if (auto evtPlayer = GetEventPlayer(playerInfo); evtPlayer) {
             synchronized(Replay::replayEventMutex) {

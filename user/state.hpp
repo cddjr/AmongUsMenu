@@ -171,6 +171,7 @@ public:
     bool newChatMessage = false;
     std::vector<std::unique_ptr<RpcChatMessage>> chatMessages;
 
+    Game::PlayerId moddedHost = 0;
     bool isTOH = false;
     bool isTOH_TOR = false;
     std::array<std::pair<int32_t, int32_t>, Game::MAX_PLAYERS> assignedModRoles = {};
