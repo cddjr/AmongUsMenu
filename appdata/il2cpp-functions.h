@@ -224,6 +224,8 @@ DO_APP_FUNC(GameData_PlayerOutfit*, GameData_PlayerInfo_get_DefaultOutfit, (Game
 DO_APP_FUNC(String*, GameData_PlayerOutfit_get_PlayerName, (GameData_PlayerOutfit* __this, MethodInfo* method), "Assembly-CSharp, System.String GameData+PlayerOutfit::get_PlayerName()");
 DO_APP_FUNC(String*, GameData_PlayerInfo_get_PlayerName, (GameData_PlayerInfo* __this, MethodInfo* method), "Assembly-CSharp, System.String GameData+PlayerInfo::get_PlayerName()");
 
+DO_APP_FUNC(void, UdpConnection_HandleKeepAlive, (UdpConnection* __this, Object* state, MethodInfo* method), "Hazel, System.Void Hazel.Udp.UdpConnection::HandleKeepAlive(System.Object)");
+DO_APP_FUNC(void, UnityUdpClientConnection_ConnectAsync, (void* __this, Byte__Array* bytes, MethodInfo* method), "Hazel, System.Void Hazel.Udp.UnityUdpClientConnection::ConnectAsync(System.Byte[])");
 DO_APP_FUNC(void, AccountManager_UpdateKidAccountDisplay, (AccountManager* __this, MethodInfo* method), "Assembly-CSharp, System.Void AccountManager::UpdateKidAccountDisplay()");
 DO_APP_FUNC(void, PlayerStorageManager_OnReadPlayerPrefsComplete, (PlayerStorageManager* __this, void* data, MethodInfo* method), "Assembly-CSharp, System.Void PlayerStorageManager::OnReadPlayerPrefsComplete(Epic.OnlineServices.PlayerDataStorage.ReadFileCallbackInfo)");
 

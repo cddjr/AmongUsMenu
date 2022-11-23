@@ -72,6 +72,8 @@ void dPlayerPhysics_FixedUpdate (PlayerPhysics* __this, MethodInfo* method);
 bool dSaveManager_GetPurchase(String* itemKey, String* bundleKey, MethodInfo* method);
 void dPlayerControl_TurnOnProtection(PlayerControl* __this, bool visible, int32_t colorId, MethodInfo* method);
 void dAmongUsClient_OnGameEnd(AmongUsClient* __this, Object* endGameResult, MethodInfo* method);
+void dUdpConnection_HandleKeepAlive(UdpConnection* __this, Object* state, MethodInfo* method);
+void dUnityUdpClientConnection_ConnectAsync(void* __this, Byte__Array* bytes, MethodInfo* method);
 void dAccountManager_UpdateKidAccountDisplay(AccountManager* __this, MethodInfo* method);
 void dPlayerStorageManager_OnReadPlayerPrefsComplete(PlayerStorageManager* __this, void* data, MethodInfo* method);
 bool dPlayerPurchasesData_GetPurchase(PlayerPurchasesData* __this, String* itemKey, String* bundleKey, MethodInfo* method);
