@@ -896,7 +896,7 @@ static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader
 	{
 		auto count = app::MessageReader_ReadInt32(reader, nullptr);
 		STREAM_DEBUG("TOHTOR: Lovers Count:" << count);
-		for (int i = 0; i < count; i++) {
+		while (count-- > 0) {
 			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 			STREAM_DEBUG("TOHTOR:  Lover:" << ToString(id));
 		}
@@ -932,7 +932,7 @@ static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader
 		bool isNotify = app::MessageReader_ReadBoolean(reader, nullptr);
 		if (isNotify) {
 			int count = app::MessageReader_ReadInt32(reader, nullptr);
-			while (count > 0) {
+			while (count-- > 0) {
 				Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 				STREAM_DEBUG("TOHTOR:   Notify:" << ToString(id));
 			}
@@ -1020,7 +1020,7 @@ static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* r
 	{
 		auto count = app::MessageReader_ReadInt32(reader, nullptr);
 		STREAM_DEBUG("TOH: Lovers Count:" << count);
-		for (int i = 0; i < count; i++) {
+		while (count-- > 0) {
 			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 			STREAM_DEBUG("TOH:  Lover:" << ToString(id));
 		}
@@ -1055,7 +1055,7 @@ static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* r
 		bool isNotify = app::MessageReader_ReadBoolean(reader, nullptr);
 		if (isNotify) {
 			int count = app::MessageReader_ReadInt32(reader, nullptr);
-			while (count > 0) {
+			while (count-- > 0) {
 				Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
 				STREAM_DEBUG("TOH:   Notify:" << ToString(id));
 			}
