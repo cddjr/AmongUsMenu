@@ -136,10 +136,10 @@ void dAmongUsClient_OnPlayerLeft(AmongUsClient* __this, ClientData* data, Discon
         if (it != State.aumUsers.end())
             State.aumUsers.erase(it);
 
-        if (State.isTOH || State.isTOH_TOR) {
+        if (State.isTOH || State.isTOH_Y || State.isTOH_TOR) {
             if (data->fields.Character->fields.PlayerId == State.moddedHost) {
                 // If the host has left
-                State.isTOH = State.isTOH_TOR = false;
+                State.isTOH = State.isTOH_Y = State.isTOH_TOR = false;
                 State.assignedModRoles = {};
             }
         }
@@ -217,7 +217,7 @@ static void onGameEnd() {
     LOG_DEBUG("Reset All");
     Replay::Reset();
 
-    State.isTOH = State.isTOH_TOR = false;
+    State.isTOH = State.isTOH_Y = State.isTOH_TOR = false;
     State.assignedModRoles = {};
 
     State.aumUsers.clear();

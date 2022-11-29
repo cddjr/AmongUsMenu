@@ -173,6 +173,7 @@ public:
 
     Game::PlayerId moddedHost = 0;
     bool isTOH = false;
+    bool isTOH_Y = false;
     bool isTOH_TOR = false;
     std::array<std::pair<int32_t, int32_t>, Game::MAX_PLAYERS> assignedModRoles = {};
 

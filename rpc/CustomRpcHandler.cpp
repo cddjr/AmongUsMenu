@@ -3,8 +3,10 @@
 #include "game.h"
 #include "state.hpp"
 #include "logger.h"
+
+// v3.0.2
 namespace TOH {
-	enum
+	enum CustomRPC
 	{
 		VersionCheck = 60,
 		RequestRetryVersionCheck = 61,
@@ -264,6 +266,521 @@ namespace TOH {
 			return "其他";
 		default:
 			return std::format("{}", (int32_t)reason);
+		}
+	}
+
+	void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
+		if (!IsHost(sender))
+			return; // ignore
+		switch ((CustomRPC)callId) {
+		case SetLoversPlayers:
+		{
+			auto count = app::MessageReader_ReadInt32(reader, nullptr);
+			STREAM_DEBUG("TOH: Lovers Count:" << count);
+			while (count-- > 0) {
+				Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+				STREAM_DEBUG("TOH:  Lover:" << ToString(id));
+			}
+		}
+		break;
+		case SetCustomRole:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			CustomRoles role = (CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
+			STREAM_DEBUG("TOH: SetCustomRole:" << ToString(id) << ", Role:" << GetRoleName(role)
+						 << ", " << (IsImpostorTeam(role) ? "ImpostorTeam" :
+									 IsNeutral(role) ? "Neutral" : "Crewmate"));
+			if (role < NoSubRoleAssigned)
+				State.assignedModRoles[id].first = (int32_t)role;
+			else
+				State.assignedModRoles[id].second = (int32_t)role;
+		}
+		break;
+		case SendFireWorksState:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			int state = app::MessageReader_ReadInt32(reader, nullptr);
+			STREAM_DEBUG("TOH: SendFireWorksState:" << ToString(id) << ", FireWorks:" << state);
+		}
+		break;
+		case SniperSync:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: SniperSync:" << ToString(id)
+						 << ", Target:" << ToString(target));
+			bool isNotify = app::MessageReader_ReadBoolean(reader, nullptr);
+			if (isNotify) {
+				int count = app::MessageReader_ReadInt32(reader, nullptr);
+				while (count-- > 0) {
+					Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+					STREAM_DEBUG("TOH:   Notify:" << ToString(id));
+				}
+			}
+			else {
+				int bulletCount = app::MessageReader_ReadInt32(reader, nullptr);
+				STREAM_DEBUG("TOH: Bullet:" << bulletCount);
+			}
+		}
+		break;
+		case SetDeathReason:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			DeathReason deathReason = (DeathReason)app::MessageReader_ReadInt32(reader, nullptr);
+			STREAM_DEBUG("TOH: SetDeathReason:" << ToString(id) << ", Reason:" << GetDeathReason(deathReason));
+		}
+		break;
+		case SetDousedPlayer:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			bool doused = app::MessageReader_ReadBoolean(reader, nullptr);
+			STREAM_DEBUG("TOH: SetDousedPlayer:" << ToString(id)
+						 << ", Target:" << ToString(target)
+						 << ", Doused:" << doused);
+		}
+		break;
+		case SetCurrentDousingTarget:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: SetCurrentDousingTarget:" << ToString(id) << ", Target:" << ToString(target));
+		}
+		break;
+		case SetEvilTrackerTarget:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: SetEvilTrackerTarget:" << ToString(id) << ", Target:" << ToString(target));
+		}
+		break;
+		case SetSheriffShotLimit:
+		{
+			Game::PlayerId SheriffId = app::MessageReader_ReadByte(reader, nullptr);
+			float Limit = app::MessageReader_ReadSingle(reader, nullptr);
+			STREAM_DEBUG("TOH: SetSheriffShotLimit:" << ToString(SheriffId) << ", Limit:" << Limit);
+		}
+		break;
+		case SyncCustomSettings:
+		{
+			int idx = 0;
+			while (app::MessageReader_get_BytesRemaining(reader, nullptr) >= 4) {
+				int selection = app::MessageReader_ReadInt32(reader, nullptr);
+				if ((idx >= 76 && idx <= 79) || (idx >= 93 && idx <= 96) || (idx >= 166 && idx <= 169)) {
+					STREAM_DEBUG("TOH: SyncCustomSettings[" << idx << "=" << selection);
+				}
+				idx++;
+			}
+		}
+		break;
+		case SetExecutionerTarget:
+		{
+			Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: SetExecutionerTarget:" << ToString(ExecutionerId) << ", TargetId:" << ToString(TargetId));
+		}
+		break;
+		case RemoveExecutionerTarget:
+		{
+			Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: RemoveExecutionerTarget:" << ToString(ExecutionerId));
+		}
+		break;
+		case SetBountyTarget:
+		{
+			Game::PlayerId bountyId = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId targetId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
+		}
+		break;
+		case DoSpell:
+		{
+			Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOH: DoSpell:" << ToString(TargetId));
+		}
+		break;
+		default:
+			if (callId > 60)
+				STREAM_DEBUG("Unknown RPC:" << (int)callId);
+			break;
+		}
+	}
+}
+
+// v3.0.2.3
+namespace TOH_Y {
+	enum CustomRPC
+	{
+		VersionCheck = 60,
+		RequestRetryVersionCheck = 61,
+		SyncCustomSettings = 80,
+		SetDeathReason,
+		EndGame,
+		PlaySound,
+		SetCustomRole,
+		SetBountyTarget,
+		SetKillOrSpell,
+		SetSheriffShotLimit,
+		SetTimeThiefKillCount,
+		SetDousedPlayer,
+		AddNameColorData,
+		RemoveNameColorData,
+		ResetNameColorData,
+		DoSpell,
+		SniperSync,
+		SetLoversPlayers,
+		SetExecutionerTarget,
+		RemoveExecutionerTarget,
+		SendFireWorksState,
+		SetCurrentDousingTarget,
+		SetEvilTrackerTarget,
+		// begin of TOH_Y
+		SetHunterShotLimit,
+		SetMadSheriffShotLimit,
+		SetApprenticeSheriffShotLimit,
+		SetDarkHiderKillCount,
+	};
+
+	enum CustomRoles
+	{
+		//Default
+		Crewmate = 0,
+		//Impostor(Vanilla)
+		Impostor,
+		Shapeshifter,
+		//Impostor
+		BountyHunter,
+		EvilWatcher,
+		FireWorks,
+		Mafia,
+		SerialKiller,
+		//ShapeMaster,
+		Sniper,
+		Vampire,
+		Witch,
+		Warlock,
+		Mare,
+		Puppeteer,
+		TimeThief,
+		EvilTracker,
+		LastImpostor,
+		Evilneko,//TOH_Y01_11
+		AntiAdminer,//TOH_Y01_12
+		CursedWolf,//TOH_Y
+		NormalImpostor,
+		//Madmate
+		MadGuardian,
+		Madmate,
+		MadSnitch,
+		MadDictator,//TOH_Y01_9
+		MadNatureCalls,//TOH_Y01_10
+		MadBrackOuter,
+		MadSheriff,
+		SKMadmate,
+		MSchrodingerCat,//インポスター陣営のシュレディンガーの猫
+		//両陣営
+		Watcher,
+		//Crewmate(Vanilla)
+		Engineer,
+		GuardianAngel,
+		Scientist,
+		//Crewmate
+		Bait,
+		Lighter,
+		Mayor,
+		NiceWatcher,
+		SabotageMaster,
+		Sheriff,
+		Snitch,
+		SpeedBooster,
+		Trapper,
+		Dictator,
+		Doctor,
+		Seer,
+		Bakery,//TOH_Y01_1
+		Hunter,
+		TaskManager,
+		Nekomata,
+		Express,
+		Chairman,
+		SeeingOff,
+		Rainbow,//TOH_Y01_8
+		SillySheriff,//TOH_Y
+		Sympathizer,//TOH_Y
+		CSchrodingerCat,//クルー陣営のシュレディンガーの猫
+		//Neutral
+		Arsonist,
+		Egoist,
+		EgoSchrodingerCat,//エゴイスト陣営のシュレディンガーの猫
+		Jester,
+		Opportunist,
+		SchrodingerCat,//第三陣営のシュレディンガーの猫
+		Terrorist,
+		Executioner,
+		Jackal,
+		AntiComplete,//TOH_Y01_13
+		Workaholic,//TOH_Y01_14
+		DarkHide,//TOH_Y
+		LoveCutter,//TOH_Y
+		JSchrodingerCat,//ジャッカル陣営のシュレディンガーの猫
+		OSchrodingerCat,//オポチュニスト陣営のシュレディンガーの猫
+		DSchrodingerCat,//ダークキラー陣営のシュレディンガーの猫
+		//HideAndSeek
+		HASFox,
+		HASTroll,
+		//GM
+		GM,
+		// Sub-roll after 500
+		NoSubRoleAssigned = 500,
+		Lovers,
+	};
+
+	enum DeathReason
+	{
+		Kill,
+		Vote,
+		Suicide,
+		Spell,
+		FollowingSuicide,
+		Bite,
+		Bombed,
+		Misfire,
+		Torched,
+		Sniped,
+		Execution,
+		Disconnected,
+		Fall,
+
+		Companion,//TOH_Y01
+		win,
+		WTaskFinish,
+
+		etc = -1
+	};
+
+	bool IsImpostor(CustomRoles role) {
+		return role >= CustomRoles::Impostor && role <= CustomRoles::NormalImpostor;
+	}
+
+	bool IsMadmate(CustomRoles role) {
+		return role >= CustomRoles::MadGuardian && role <= CustomRoles::MSchrodingerCat;
+	}
+
+	bool IsImpostorTeam(CustomRoles role) {
+		return IsImpostor(role) || IsMadmate(role);
+	}
+
+	bool IsNeutral(CustomRoles role) {
+		return role >= CustomRoles::Arsonist && role <= CustomRoles::HASTroll;
+	}
+
+	bool IsCrewmate(CustomRoles role) {
+		return !IsImpostorTeam(role) && !IsNeutral(role);
+	}
+
+	std::string GetRoleName(CustomRoles role) {
+		switch (role) {
+		case BountyHunter:
+			return "赏金猎人";
+		case EvilWatcher:
+			return "邪恶的窥视者";
+		case FireWorks:
+			return "烟花商人";
+		case Mafia:
+			return "黑手党";
+		case SerialKiller:
+			return "嗜血杀手";
+		case Sniper:
+			return "狙击手";
+		case Vampire:
+			return "吸血鬼";
+		case Witch:
+			return "女巫";
+		case Warlock:
+			return "术士";
+		case Mare:
+			return "梦魇";
+		case Puppeteer:
+			return "傀儡师";
+		case TimeThief:
+			return "蚀时者";
+		case EvilTracker:
+			return "邪恶的追踪者";
+		case MadGuardian:
+			return "背叛的守卫";
+		case Madmate:
+			return "叛徒";
+		case MadSnitch:
+			return "背叛的告密者";
+		case SKMadmate:
+			return "叛徒小弟";
+		case MSchrodingerCat:
+		case CSchrodingerCat:
+		case EgoSchrodingerCat:
+		case SchrodingerCat:
+		case JSchrodingerCat:
+			return "薛定谔的猫";
+		case Watcher:
+			return "窥视者";
+		case Bait:
+			return "诱饵";
+		case Lighter:
+			return "执灯人";
+		case Mayor:
+			return "市长";
+		case NiceWatcher:
+			return "正义的窥视者";
+		case SabotageMaster:
+			return "修理大师";
+		case Sheriff:
+			return "警长";
+		case Snitch:
+			return "告密者";
+		case SpeedBooster:
+			return "增速者";
+		case Trapper:
+			return "陷阱师";
+		case Dictator:
+			return "独裁者";
+		case Doctor:
+			return "医生";
+		case Seer:
+			return "灵媒";
+		case Arsonist:
+			return "纵火犯";
+		case Egoist:
+			return "野心家";
+		case Jester:
+			return "小丑";
+		case Opportunist:
+			return "投机者";
+		case Terrorist:
+			return "恐怖分子";
+		case Executioner:
+			return "处刑人";
+		case Jackal:
+			return "豺狼";
+		case HASFox:
+			return "狐狸";
+		case HASTroll:
+			return "猎人";
+		case GM:
+			return "GM管理员";
+		case Lovers:
+			return "恋人";
+		// TOH_Y
+		case Evilneko:
+			return "双尾妖猫";
+		case AntiAdminer:
+			return "反管理人";
+		case CursedWolf:
+			return "呪狼";
+		case NormalImpostor:
+			return "普通内鬼";
+
+		case MadDictator:
+			return "背叛的独裁者";
+		case MadNatureCalls:
+			return "背叛的自然呼声";
+		case MadBrackOuter:
+			return "背叛的控灯人";
+		case MadSheriff:
+			return "背叛的警长";
+
+		case Bakery:
+			return "面包店";
+		case Hunter:
+			return "猎人";
+		case TaskManager:
+			return "任务管理器";
+		case Nekomata:
+			return "双尾怪猫";
+		case Express:
+			return "邮递员";
+		case Chairman:
+			return "总裁";
+		case SeeingOff:
+			return "送行者";
+		case Rainbow:
+			return "彩虹";
+		case SillySheriff:
+			return "憨批警长";
+		case Sympathizer:
+			return "共鳴者";
+
+		case AntiComplete:
+			return "防成者";
+		case Workaholic:
+			return "工作狂";
+		case DarkHide:
+			return "闇黑者";
+		case LoveCutter:
+			return "LoveCutter";
+		default:
+			return std::format("{}", (int32_t)role);
+		}
+	}
+
+	std::string GetDeathReason(DeathReason reason) {
+		switch (reason) {
+		case DeathReason::Companion:
+			return "同归于尽";
+		case DeathReason::win:
+			return "猜着";
+		case DeathReason::WTaskFinish:
+			return "任务完成";
+		default:
+			return TOH::GetDeathReason((TOH::DeathReason)reason);
+		}
+	}
+
+	static void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
+		if (!IsHost(sender))
+			return; // ignore
+		switch ((CustomRPC)callId) {
+		case SetHunterShotLimit:
+		{
+			Game::PlayerId HunterId = app::MessageReader_ReadByte(reader, nullptr);
+			float Limit = app::MessageReader_ReadSingle(reader, nullptr);
+			STREAM_DEBUG("TOH_Y: SetHunterShotLimit:" << ToString(HunterId) << ", Limit:" << Limit);
+		}
+		break;
+		case SetMadSheriffShotLimit:
+		{
+			Game::PlayerId SheriffId = app::MessageReader_ReadByte(reader, nullptr);
+			float Limit = app::MessageReader_ReadSingle(reader, nullptr);
+			STREAM_DEBUG("TOH_Y: SetMadSheriffShotLimit:" << ToString(SheriffId) << ", Limit:" << Limit);
+		}
+		break;
+		case SetApprenticeSheriffShotLimit:
+		{
+			Game::PlayerId SheriffId = app::MessageReader_ReadByte(reader, nullptr);
+			float Limit = app::MessageReader_ReadSingle(reader, nullptr);
+			STREAM_DEBUG("TOH_Y: SetApprenticeSheriffShotLimit:" << ToString(SheriffId) << ", Limit:" << Limit);
+		}
+		break;
+		case SetDarkHiderKillCount:
+		{
+			Game::PlayerId DarkHiderId = app::MessageReader_ReadByte(reader, nullptr);
+			bool IsKillerKill = app::MessageReader_ReadBoolean(reader, nullptr);
+			STREAM_DEBUG("TOH_Y: SetDarkHiderKillCount:" << ToString(DarkHiderId) << ", IsKillerKill:" << IsKillerKill);
+		}
+		break;
+		case SyncCustomSettings:
+		{
+			int idx = 0;
+			while (app::MessageReader_get_BytesRemaining(reader, nullptr) >= 4) {
+				int selection = app::MessageReader_ReadInt32(reader, nullptr);
+				//if ((idx >= 76 && idx <= 79) || (idx >= 93 && idx <= 96) || (idx >= 166 && idx <= 169)) {
+					STREAM_DEBUG("TOH_Y: SyncCustomSettings[" << idx << "=" << selection);
+				//}
+				idx++;
+			}
+		}
+		break;
+		default:
+			TOH::HandleRpc(sender, callId, reader);
+			break;
 		}
 	}
 }
@@ -825,6 +1342,138 @@ namespace TOHTOR {
 			return std::format("{}", (int32_t)reason);
 		}
 	}
+
+	void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
+		if (!IsHost(sender))
+			return; // ignore
+		switch ((CustomRPC)callId) {
+		case SetLoversPlayers:
+		{
+			auto count = app::MessageReader_ReadInt32(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: Lovers Count:" << count);
+			while (count-- > 0) {
+				Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+				STREAM_DEBUG("TOHTOR:  Lover:" << ToString(id));
+			}
+		}
+		break;
+		case SetCustomRole:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			CustomRoles role = (CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetCustomRole:" << ToString(id) << ", Role:" << GetRoleName(role)
+						 << ", " << (IsImpostorTeam(role) ? "ImpostorTeam" :
+									 IsNeutral(role) ? "Neutral" :
+									 IsCoven(role) ? "Coven" : "Crewmate"));
+			if (role < NoSubRoleAssigned)
+				State.assignedModRoles[id].first = (int32_t)role;
+			else
+				State.assignedModRoles[id].second = (int32_t)role;
+		}
+		break;
+		case SendFireWorksState:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			int state = app::MessageReader_ReadInt32(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SendFireWorksState:" << ToString(id) << ", FireWorks:" << state);
+		}
+		break;
+		case SniperSync:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SniperSync:" << ToString(id)
+						 << ", Target:" << ToString(target));
+			bool isNotify = app::MessageReader_ReadBoolean(reader, nullptr);
+			if (isNotify) {
+				int count = app::MessageReader_ReadInt32(reader, nullptr);
+				while (count-- > 0) {
+					Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+					STREAM_DEBUG("TOHTOR:   Notify:" << ToString(id));
+				}
+			}
+			else {
+				int bulletCount = app::MessageReader_ReadInt32(reader, nullptr);
+				STREAM_DEBUG("TOHTOR: Bullet:" << bulletCount);
+			}
+		}
+		break;
+		case SetDeathReason:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			DeathReason deathReason = (DeathReason)app::MessageReader_ReadInt32(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetDeathReason:" << ToString(id) << ", Reason:" << GetDeathReason(deathReason));
+		}
+		break;
+		case SetDousedPlayer:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			bool doused = app::MessageReader_ReadBoolean(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetDousedPlayer:" << ToString(id)
+						 << ", Target:" << ToString(target)
+						 << ", Doused:" << doused);
+		}
+		break;
+		case SetCurrentDousingTarget:
+		{
+			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetCurrentDousingTarget:" << ToString(id) << ", Target:" << ToString(target));
+		}
+		break;
+		case SetSheriffShotLimit:
+		{
+			Game::PlayerId SheriffId = app::MessageReader_ReadByte(reader, nullptr);
+			float Limit = app::MessageReader_ReadSingle(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetSheriffShotLimit:" << ToString(SheriffId) << ", Limit:" << Limit);
+		}
+		break;
+		case SyncCustomSettings:
+		{
+			int idx = 0;
+			while (app::MessageReader_get_BytesRemaining(reader, nullptr) >= 4) {
+				int selection = app::MessageReader_ReadInt32(reader, nullptr);
+				if (idx == 169) {
+					STREAM_DEBUG("TOHTOR: SyncCustomSettings[" << idx << "=" << selection);
+				}
+				idx++;
+			}
+		}
+		break;
+		case SetExecutionerTarget:
+		{
+			Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetExecutionerTarget:" << ToString(ExecutionerId) << ", TargetId:" << ToString(TargetId));
+		}
+		break;
+		case RemoveExecutionerTarget:
+		{
+			Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: RemoveExecutionerTarget:" << ToString(ExecutionerId));
+		}
+		break;
+		case SetBountyTarget:
+		{
+			Game::PlayerId bountyId = app::MessageReader_ReadByte(reader, nullptr);
+			Game::PlayerId targetId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
+		}
+		break;
+		case DoSpell:
+		{
+			Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOHTOR: DoSpell:" << ToString(TargetId));
+		}
+		break;
+		default:
+			if (callId > 60)
+				STREAM_DEBUG("Unknown RPC:" << (int)callId);
+			break;
+		}
+	}
+
 }
 
 Color GetRoleColor(GameData_PlayerInfo* info) {
@@ -834,6 +1483,18 @@ Color GetRoleColor(GameData_PlayerInfo* info) {
 			return Palette__TypeInfo->static_fields->ImpostorRed;
 		}
 		else if (TOH::IsNeutral(role)) {
+			return Palette__TypeInfo->static_fields->Orange;
+		}
+		else {
+			return Palette__TypeInfo->static_fields->White;
+		}
+	}
+	else if (State.isTOH_Y) {
+		TOH_Y::CustomRoles role = (TOH_Y::CustomRoles)State.assignedModRoles[info->fields.PlayerId].first;
+		if (TOH_Y::IsImpostorTeam(role)) {
+			return Palette__TypeInfo->static_fields->ImpostorRed;
+		}
+		else if (TOH_Y::IsNeutral(role)) {
 			return Palette__TypeInfo->static_fields->Orange;
 		}
 		else {
@@ -872,6 +1533,17 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 		else
 			return TOH::GetRoleName(role);
 	}
+	else if (State.isTOH_Y) {
+		//if ((*Game::pLocalPlayer)->fields.PlayerId == info->fields.PlayerId)
+		//	return "";
+		const auto& p = State.assignedModRoles[info->fields.PlayerId];
+		TOH_Y::CustomRoles role = (TOH_Y::CustomRoles)p.first;
+		TOH_Y::CustomRoles role2 = (TOH_Y::CustomRoles)p.second;
+		if (role2)
+			return TOH_Y::GetRoleName(role) + "+" + TOH_Y::GetRoleName(role2);
+		else
+			return TOH_Y::GetRoleName(role);
+	}
 	else if (State.isTOH_TOR) {
 		//if ((*Game::pLocalPlayer)->fields.PlayerId == info->fields.PlayerId)
 		//	return "";
@@ -888,267 +1560,16 @@ std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated) {
 	}
 }
 
-static void HandleTohTorRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
-	if (!IsHost(sender))
-		return; // ignore
-	switch (callId) {
-	case TOHTOR::SetLoversPlayers:
-	{
-		auto count = app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: Lovers Count:" << count);
-		while (count-- > 0) {
-			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-			STREAM_DEBUG("TOHTOR:  Lover:" << ToString(id));
-		}
-	}
-	break;
-	case TOHTOR::SetCustomRole:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		TOHTOR::CustomRoles role = (TOHTOR::CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetCustomRole:" << ToString(id) << ", Role:" << TOHTOR::GetRoleName(role)
-					 << ", " << (TOHTOR::IsImpostorTeam(role) ? "ImpostorTeam" :
-								 TOHTOR::IsNeutral(role) ? "Neutral" :
-								 TOHTOR::IsCoven(role) ? "Coven" : "Crewmate"));
-		if (role < TOHTOR::NoSubRoleAssigned)
-			State.assignedModRoles[id].first = (int32_t)role;
-		else
-			State.assignedModRoles[id].second = (int32_t)role;
-	}
-	break;
-	case TOHTOR::SendFireWorksState:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		int state = app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SendFireWorksState:" << ToString(id) << ", FireWorks:" << state);
-	}
-	break;
-	case TOHTOR::SniperSync:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SniperSync:" << ToString(id)
-					 << ", Target:" << ToString(target));
-		bool isNotify = app::MessageReader_ReadBoolean(reader, nullptr);
-		if (isNotify) {
-			int count = app::MessageReader_ReadInt32(reader, nullptr);
-			while (count-- > 0) {
-				Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-				STREAM_DEBUG("TOHTOR:   Notify:" << ToString(id));
-			}
-		}
-		else {
-			int bulletCount = app::MessageReader_ReadInt32(reader, nullptr);
-			STREAM_DEBUG("TOHTOR: Bullet:" << bulletCount);
-		}
-	}
-	break;
-	case TOHTOR::SetDeathReason:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		TOHTOR::DeathReason deathReason = (TOHTOR::DeathReason)app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetDeathReason:" << ToString(id) << ", Reason:" << TOHTOR::GetDeathReason(deathReason));
-	}
-	break;
-	case TOHTOR::SetDousedPlayer:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		bool doused = app::MessageReader_ReadBoolean(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetDousedPlayer:" << ToString(id)
-					 << ", Target:" << ToString(target)
-					 << ", Doused:" << doused);
-	}
-	break;
-	case TOHTOR::SetCurrentDousingTarget:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetCurrentDousingTarget:" << ToString(id) << ", Target:" << ToString(target));
-	}
-	break;
-	case TOHTOR::SetSheriffShotLimit:
-	{
-		Game::PlayerId SheriffId = app::MessageReader_ReadByte(reader, nullptr);
-		float Limit = app::MessageReader_ReadSingle(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetSheriffShotLimit:" << ToString(SheriffId) << ", Limit:" << Limit);
-	}
-	break;
-	case TOHTOR::SyncCustomSettings:
-	{
-		STREAM_DEBUG("TOHTOR: SyncCustomSettings");
-	}
-	break;
-	case TOHTOR::SetExecutionerTarget:
-	{
-		Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetExecutionerTarget:" << ToString(ExecutionerId) << ", TargetId:" << ToString(TargetId));
-	}
-	break;
-	case TOHTOR::RemoveExecutionerTarget:
-	{
-		Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: RemoveExecutionerTarget:" << ToString(ExecutionerId));
-	}
-	break;
-	case TOHTOR::SetBountyTarget:
-	{
-		Game::PlayerId bountyId = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId targetId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
-	}
-	break;
-	case TOHTOR::DoSpell:
-	{
-		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOHTOR: DoSpell:" << ToString(TargetId));
-	}
-	break;
-	default:
-		if (callId > 60)
-			STREAM_DEBUG("Unknown RPC:" << (int)callId);
-		break;
-	}
-}
-
-static void HandleTohRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
-	if (!IsHost(sender))
-		return; // ignore
-	switch (callId) {
-	case TOH::SetLoversPlayers:
-	{
-		auto count = app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOH: Lovers Count:" << count);
-		while (count-- > 0) {
-			Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-			STREAM_DEBUG("TOH:  Lover:" << ToString(id));
-		}
-	}
-	break;
-	case TOH::SetCustomRole:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		TOH::CustomRoles role = (TOH::CustomRoles)app::MessageReader_ReadPackedInt32(reader, nullptr);
-		STREAM_DEBUG("TOH: SetCustomRole:" << ToString(id) << ", Role:" << TOH::GetRoleName(role)
-					 << ", " << (TOH::IsImpostorTeam(role) ? "ImpostorTeam" :
-								 TOH::IsNeutral(role) ? "Neutral" : "Crewmate"));
-		if (role < TOH::NoSubRoleAssigned)
-			State.assignedModRoles[id].first = (int32_t)role;
-		else
-			State.assignedModRoles[id].second = (int32_t)role;
-	}
-	break;
-	case TOH::SendFireWorksState:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		int state = app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOH: SendFireWorksState:" << ToString(id) << ", FireWorks:" << state);
-	}
-	break;
-	case TOH::SniperSync:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: SniperSync:" << ToString(id)
-					 << ", Target:" << ToString(target));
-		bool isNotify = app::MessageReader_ReadBoolean(reader, nullptr);
-		if (isNotify) {
-			int count = app::MessageReader_ReadInt32(reader, nullptr);
-			while (count-- > 0) {
-				Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-				STREAM_DEBUG("TOH:   Notify:" << ToString(id));
-			}
-		}
-		else {
-			int bulletCount = app::MessageReader_ReadInt32(reader, nullptr);
-			STREAM_DEBUG("TOH: Bullet:" << bulletCount);
-		}
-	}
-	break;
-	case TOH::SetDeathReason:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		TOH::DeathReason deathReason = (TOH::DeathReason)app::MessageReader_ReadInt32(reader, nullptr);
-		STREAM_DEBUG("TOH: SetDeathReason:" << ToString(id) << ", Reason:" << TOH::GetDeathReason(deathReason));
-	}
-	break;
-	case TOH::SetDousedPlayer:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		bool doused = app::MessageReader_ReadBoolean(reader, nullptr);
-		STREAM_DEBUG("TOH: SetDousedPlayer:" << ToString(id)
-					 << ", Target:" << ToString(target)
-					 << ", Doused:" << doused);
-	}
-	break;
-	case TOH::SetCurrentDousingTarget:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: SetCurrentDousingTarget:" << ToString(id) << ", Target:" << ToString(target));
-	}
-	break;
-	case TOH::SetEvilTrackerTarget:
-	{
-		Game::PlayerId id = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId target = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: SetEvilTrackerTarget:" << ToString(id) << ", Target:" << ToString(target));
-	}
-	break;
-	case TOH::SetSheriffShotLimit:
-	{
-		Game::PlayerId SheriffId = app::MessageReader_ReadByte(reader, nullptr);
-		float Limit = app::MessageReader_ReadSingle(reader, nullptr);
-		STREAM_DEBUG("TOH: SetSheriffShotLimit:" << ToString(SheriffId) << ", Limit:" << Limit);
-	}
-	break;
-	case TOH::SyncCustomSettings:
-	{
-		STREAM_DEBUG("TOH: SyncCustomSettings");
-	}
-	break;
-	case TOH::SetExecutionerTarget:
-	{
-		Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: SetExecutionerTarget:" << ToString(ExecutionerId) << ", TargetId:" << ToString(TargetId));
-	}
-	break;
-	case TOH::RemoveExecutionerTarget:
-	{
-		Game::PlayerId ExecutionerId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: RemoveExecutionerTarget:" << ToString(ExecutionerId));
-	}
-	break;
-	case TOH::SetBountyTarget:
-	{
-		Game::PlayerId bountyId = app::MessageReader_ReadByte(reader, nullptr);
-		Game::PlayerId targetId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: SetBountyTarget:" << ToString(bountyId) << ", TargetId:" << ToString(targetId));
-	}
-	break;
-	case TOH::DoSpell:
-	{
-		Game::PlayerId TargetId = app::MessageReader_ReadByte(reader, nullptr);
-		STREAM_DEBUG("TOH: DoSpell:" << ToString(TargetId));
-	}
-	break;
-	default:
-		if (callId > 60)
-			STREAM_DEBUG("Unknown RPC:" << (int)callId);
-		break;
-	}
-}
-
 void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
 	LOG_ASSERT(sender != nullptr);
 	if (State.isTOH) {
-		return HandleTohRpc(sender, callId, reader);
+		return TOH::HandleRpc(sender, callId, reader);
+	}
+	else if (State.isTOH_Y) {
+		return TOH_Y::HandleRpc(sender, callId, reader);
 	}
 	else if (State.isTOH_TOR) {
-		return HandleTohTorRpc(sender, callId, reader);
+		return TOHTOR::HandleRpc(sender, callId, reader);
 	}
 	else if (callId == 60) { // TOH or TOH:TOR VersionCheck
 		if (!IsHost(sender))
@@ -1164,8 +1585,11 @@ void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
 			// only for TOH v3.0.0+
 			try {
 				const auto& modForkId = convert_from_string(app::MessageReader_ReadString(reader, nullptr));
-				State.isTOH = (modForkId == "OriginalTOH");
-				if (!State.isTOH)
+				if (modForkId == "OriginalTOH")
+					State.isTOH = true;
+				else if (modForkId == "TOH_Y")
+					State.isTOH_Y = true;
+				else
 					ss << ", ForkId:" << modForkId;
 			}
 			catch (...) {
