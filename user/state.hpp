@@ -175,6 +175,7 @@ public:
     bool isTOH = false;
     bool isTOH_Y = false;
     bool isTOH_TOR = false;
+    bool isTOR = false;
     std::array<std::pair<int32_t, int32_t>, Game::MAX_PLAYERS> assignedModRoles = {};
 
     enum class MapType : uint8_t

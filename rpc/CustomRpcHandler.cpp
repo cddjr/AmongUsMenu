@@ -200,7 +200,7 @@ namespace TOH {
 		case TOH::SpeedBooster:
 			return "增速者";
 		case TOH::Trapper:
-			return "陷阱师";
+			return "机关师";//"陷阱师"
 		case TOH::Dictator:
 			return "独裁者";
 		case TOH::Doctor:
@@ -580,94 +580,6 @@ namespace TOH_Y {
 
 	std::string GetRoleName(CustomRoles role) {
 		switch (role) {
-		case BountyHunter:
-			return "赏金猎人";
-		case EvilWatcher:
-			return "邪恶的窥视者";
-		case FireWorks:
-			return "烟花商人";
-		case Mafia:
-			return "黑手党";
-		case SerialKiller:
-			return "嗜血杀手";
-		case Sniper:
-			return "狙击手";
-		case Vampire:
-			return "吸血鬼";
-		case Witch:
-			return "女巫";
-		case Warlock:
-			return "术士";
-		case Mare:
-			return "梦魇";
-		case Puppeteer:
-			return "傀儡师";
-		case TimeThief:
-			return "蚀时者";
-		case EvilTracker:
-			return "邪恶的追踪者";
-		case MadGuardian:
-			return "背叛的守卫";
-		case Madmate:
-			return "叛徒";
-		case MadSnitch:
-			return "背叛的告密者";
-		case SKMadmate:
-			return "叛徒小弟";
-		case MSchrodingerCat:
-		case CSchrodingerCat:
-		case EgoSchrodingerCat:
-		case SchrodingerCat:
-		case JSchrodingerCat:
-			return "薛定谔的猫";
-		case Watcher:
-			return "窥视者";
-		case Bait:
-			return "诱饵";
-		case Lighter:
-			return "执灯人";
-		case Mayor:
-			return "市长";
-		case NiceWatcher:
-			return "正义的窥视者";
-		case SabotageMaster:
-			return "修理大师";
-		case Sheriff:
-			return "警长";
-		case Snitch:
-			return "告密者";
-		case SpeedBooster:
-			return "增速者";
-		case Trapper:
-			return "陷阱师";
-		case Dictator:
-			return "独裁者";
-		case Doctor:
-			return "医生";
-		case Seer:
-			return "灵媒";
-		case Arsonist:
-			return "纵火犯";
-		case Egoist:
-			return "野心家";
-		case Jester:
-			return "小丑";
-		case Opportunist:
-			return "投机者";
-		case Terrorist:
-			return "恐怖分子";
-		case Executioner:
-			return "处刑人";
-		case Jackal:
-			return "豺狼";
-		case HASFox:
-			return "狐狸";
-		case HASTroll:
-			return "猎人";
-		case GM:
-			return "GM管理员";
-		case Lovers:
-			return "恋人";
 		// TOH_Y
 		case Evilneko:
 			return "双尾妖猫";
@@ -717,7 +629,7 @@ namespace TOH_Y {
 		case LoveCutter:
 			return "LoveCutter";
 		default:
-			return std::format("{}", (int32_t)role);
+			return TOH::GetRoleName((TOH::CustomRoles)role);
 		}
 	}
 
@@ -1069,233 +981,233 @@ namespace TOHTOR {
 		switch (role) {
 		case Crewmate:
 			return "船员";
-		case TOHTOR::BountyHunter:
+		case BountyHunter:
 			return "赏金猎人";
-		case TOHTOR::VoteStealer:
+		case VoteStealer:
 			return "窃票者";
-		case TOHTOR::FireWorks:
+		case FireWorks:
 			return "烟花商人";
-		case TOHTOR::Mafia:
+		case Mafia:
 			return "黑手党";
-		case TOHTOR::SerialKiller:
+		case SerialKiller:
 			return "嗜血杀手";
-		case TOHTOR::Sniper:
+		case Sniper:
 			return "狙击手";
-		case TOHTOR::Vampire:
+		case Vampire:
 			return "吸血鬼";
-		case TOHTOR::Vampress:
+		case Vampress:
 			return "血族公主";
-		case TOHTOR::Witch:
+		case Witch:
 			return "女巫";
-		case TOHTOR::Warlock:
+		case Warlock:
 			return "术士";
-		case TOHTOR::Mare:
+		case Mare:
 			return "梦魇";
-		case TOHTOR::Miner:
+		case Miner:
 			return "矿工";
-		case TOHTOR::Consort:
+		case Consort:
 			return "邪恶的护卫";
-		case TOHTOR::YingYanger:
+		case YingYanger:
 			return "阴阳师";
-		case TOHTOR::Grenadier:
+		case Grenadier:
 			return "致盲师";
-		case TOHTOR::Disperser:
+		case Disperser:
 			return "驱散者";
-		case TOHTOR::Puppeteer:
+		case Puppeteer:
 			return "傀儡师";
-		case TOHTOR::TimeThief:
+		case TimeThief:
 			return "蚀时者";
-		case TOHTOR::Silencer:
+		case Silencer:
 			return "沉默者";
-		case TOHTOR::Ninja:
+		case Ninja:
 			return "忍者";
-		case TOHTOR::Swooper:
+		case Swooper:
 			return "隐身人";
-		case TOHTOR::Camouflager:
+		case Camouflager:
 			return "伪装师";
-		case TOHTOR::Freezer:
+		case Freezer:
 			return "冰法师";
-		case TOHTOR::Cleaner:
+		case Cleaner:
 			return "清理工";
-		case TOHTOR::EvilGuesser:
+		case EvilGuesser:
 			return "邪恶的猜测者";
-		case TOHTOR::MadGuardian:
+		case MadGuardian:
 			return "背叛的守卫";
-		case TOHTOR::Madmate:
+		case Madmate:
 			return "叛徒";
-		case TOHTOR::MadSnitch:
+		case MadSnitch:
 			return "背叛的告密者";
-		case TOHTOR::CrewPostor:
+		case CrewPostor:
 			return "舰长";
-		case TOHTOR::CorruptedSheriff:
+		case CorruptedSheriff:
 			return "背叛的警长";
-		case TOHTOR::SKMadmate:
+		case SKMadmate:
 			return "叛徒小弟";
-		case TOHTOR::Parasite:
+		case Parasite:
 			return "寄居者";
-		case TOHTOR::MSchrodingerCat:
-		case TOHTOR::CSchrodingerCat:
-		case TOHTOR::EgoSchrodingerCat:
-		case TOHTOR::SchrodingerCat:
-		case TOHTOR::JSchrodingerCat:
+		case MSchrodingerCat:
+		case CSchrodingerCat:
+		case EgoSchrodingerCat:
+		case SchrodingerCat:
+		case JSchrodingerCat:
 			return "薛定谔的猫";
-		case TOHTOR::Alturist:
+		case Alturist:
 			return "祭师";
-		case TOHTOR::Lighter:
+		case Lighter:
 			return "执灯人";
-		case TOHTOR::Medium:
+		case Medium:
 			return "警探";
-		case TOHTOR::Demolitionist:
+		case Demolitionist:
 			return "同命爆手";
-		case TOHTOR::Bastion:
+		case Bastion:
 			return "埋雷兵";
-		case TOHTOR::NiceGuesser:
+		case NiceGuesser:
 			return "正义的猜测者";
-		case TOHTOR::Escort:
+		case Escort:
 			return "护卫";
-		case TOHTOR::Crusader:
+		case Crusader:
 			return "十字军";
-		case TOHTOR::Psychic:
+		case Psychic:
 			return "通灵师";
-		case TOHTOR::Mystic:
+		case Mystic:
 			return "灵媒";
-		case TOHTOR::Swapper:
+		case Swapper:
 			return "挑衅者";
-		case TOHTOR::Mayor:
+		case Mayor:
 			return "市长";
-		case TOHTOR::SabotageMaster:
+		case SabotageMaster:
 			return "修理大师";
-		case TOHTOR::Oracle:
+		case Oracle:
 			return "神谕者";
-		case TOHTOR::Medic:
+		case Medic:
 			return "医师";
-		case TOHTOR::Bodyguard:
+		case Bodyguard:
 			return "保镖";
-		case TOHTOR::Sheriff:
+		case Sheriff:
 			return "警长";
-		case TOHTOR::Investigator:
+		case Investigator:
 			return "调查员";
-		case TOHTOR::Snitch:
+		case Snitch:
 			return "告密者";
-		case TOHTOR::Transporter:
+		case Transporter:
 			return "传送师";
-		case TOHTOR::SpeedBooster:
+		case SpeedBooster:
 			return "增速者";
-		case TOHTOR::Trapper:
+		case Trapper:
 			return "陷阱师";
-		case TOHTOR::Dictator:
+		case Dictator:
 			return "独裁者";
-		case TOHTOR::Doctor:
+		case Doctor:
 			return "医生";
-		case TOHTOR::Child:
+		case Child:
 			return "小孩";
-		case TOHTOR::Veteran:
+		case Veteran:
 			return "老兵";
-		case TOHTOR::Arsonist:
+		case Arsonist:
 			return "纵火犯";
-		case TOHTOR::Egoist:
+		case Egoist:
 			return "野心家";
-		case TOHTOR::PlagueBearer:
+		case PlagueBearer:
 			return "疫医";
-		case TOHTOR::Pestilence:
+		case Pestilence:
 			return "瘟神";
-		case TOHTOR::Vulture:
+		case Vulture:
 			return "秃鹫";
-		case TOHTOR::TheGlitch:
+		case TheGlitch:
 			return "混沌";
-		case TOHTOR::Postman:
+		case Postman:
 			return "邮递员";
-		case TOHTOR::Werewolf:
+		case Werewolf:
 			return "狼人";
-		case TOHTOR::NeutWitch:
+		case NeutWitch:
 			return "巫女";
-		case TOHTOR::Marksman:
+		case Marksman:
 			return "神射手";
-		case TOHTOR::GuardianAngelTOU:
+		case GuardianAngelTOU:
 			return "守护天使";
-		case TOHTOR::Jester:
+		case Jester:
 			return "小丑";
-		case TOHTOR::Amnesiac:
+		case Amnesiac:
 			return "窃忆者";
-		case TOHTOR::Hacker:
+		case Hacker:
 			return "黑客";
-		case TOHTOR::PoisonMaster:
+		case PoisonMaster:
 			return "制毒师";
-		case TOHTOR::BloodKnight:
+		case BloodKnight:
 			return "嗜血骑士";
-		case TOHTOR::Hitman:
+		case Hitman:
 			return "雇佣杀手";
-		case TOHTOR::Phantom:
+		case Phantom:
 			return "幻影";
-		case TOHTOR::Pirate:
+		case Pirate:
 			return "海盗";
-		case TOHTOR::Juggernaut:
+		case Juggernaut:
 			return "欲望杀手";
-		case TOHTOR::Opportunist:
+		case Opportunist:
 			return "投机者";
-		case TOHTOR::Survivor:
+		case Survivor:
 			return "求生者";
-		case TOHTOR::Terrorist:
+		case Terrorist:
 			return "恐怖分子";
-		case TOHTOR::Executioner:
+		case Executioner:
 			return "处刑人";
-		case TOHTOR::Jackal:
+		case Jackal:
 			return "豺狼";
-		case TOHTOR::Sidekick:
+		case Sidekick:
 			return "跟班";
-		case TOHTOR::HASFox:
+		case HASFox:
 			return "狐狸";
-		case TOHTOR::HASTroll:
+		case HASTroll:
 			return "猎人";
-		case TOHTOR::Coven:
+		case Coven:
 			return "巫师";
-		case TOHTOR::Poisoner:
+		case Poisoner:
 			return "毒师";
-		case TOHTOR::CovenWitch:
+		case CovenWitch:
 			return "巫师团领袖";
-		case TOHTOR::HexMaster:
+		case HexMaster:
 			return "魔法师";
-		case TOHTOR::PotionMaster:
+		case PotionMaster:
 			return "药剂师";
-		case TOHTOR::Medusa:
+		case Medusa:
 			return "美杜莎";
-		case TOHTOR::Mimic:
+		case Mimic:
 			return "模仿师";
-		case TOHTOR::Necromancer:
+		case Necromancer:
 			return "亡灵法师";
-		case TOHTOR::Conjuror:
+		case Conjuror:
 			return "魔术师";
-		case TOHTOR::Painter:
+		case Painter:
 			return "喷漆工";
-		case TOHTOR::Janitor:
+		case Janitor:
 			return "清洁工";
-		case TOHTOR::Supporter:
+		case Supporter:
 			return "工人";
-		case TOHTOR::LoversWin:
-		case TOHTOR::Lovers:
-		case TOHTOR::LoversRecode:
+		case LoversWin:
+		case Lovers:
+		case LoversRecode:
 			return "恋人";
-		case TOHTOR::Flash:
+		case Flash:
 			return "闪电侠";
-		case TOHTOR::Escalation:
+		case Escalation:
 			return "恐惧者";
-		case TOHTOR::TieBreaker:
+		case TieBreaker:
 			return "破局者";
-		case TOHTOR::Oblivious:
+		case Oblivious:
 			return "胆小鬼";
-		case TOHTOR::Sleuth:
+		case Sleuth:
 			return "侦探";
-		case TOHTOR::Watcher:
+		case Watcher:
 			return "窥视者";
-		case TOHTOR::Obvious:
+		case Obvious:
 			return "广播员";
-		case TOHTOR::Bewilder:
+		case Bewilder:
 			return "迷幻者";
-		case TOHTOR::Bait:
+		case Bait:
 			return "诱饵";
-		case TOHTOR::Torch:
+		case Torch:
 			return "火炬手";
-		case TOHTOR::Diseased:
+		case Diseased:
 			return "患者";
 		default:
 			return std::format("{}", (int32_t)role);
@@ -1476,6 +1388,170 @@ namespace TOHTOR {
 
 }
 
+// v4.2.0 TheOtherRoles
+namespace TOR {
+	enum class CustomRPC
+	{
+		// Main Controls
+
+		ResetVaribles = 60,
+		ShareOptions,
+		ForceEnd,
+		WorkaroundSetRoles,
+		SetRole,
+		SetModifier,
+		VersionHandshake,
+		UseUncheckedVent,
+		UncheckedMurderPlayer,
+		UncheckedCmdReportDeadBody,
+		UncheckedExilePlayer,
+		DynamicMapOption,
+		SetGameStarting,
+		ShareGamemode,
+
+		// Role functionality
+
+		EngineerFixLights = 101,
+		EngineerFixSubmergedOxygen,
+		EngineerUsedRepair,
+		CleanBody,
+		MedicSetShielded,
+		ShieldedMurderAttempt,
+		TimeMasterShield,
+		TimeMasterRewindTime,
+		ShifterShift,
+		SwapperSwap,
+		MorphlingMorph,
+		CamouflagerCamouflage,
+		TrackerUsedTracker,
+		VampireSetBitten,
+		PlaceGarlic,
+		DeputyUsedHandcuffs,
+		DeputyPromotes,
+		JackalCreatesSidekick,
+		SidekickPromotes,
+		ErasePlayerRoles,
+		SetFutureErased,
+		SetFutureShifted,
+		SetFutureShielded,
+		SetFutureSpelled,
+		PlaceNinjaTrace,
+		PlacePortal,
+		UsePortal,
+		PlaceJackInTheBox,
+		LightsOut,
+		PlaceCamera,
+		SealVent,
+		ArsonistWin,
+		GuesserShoot,
+		VultureWin,
+		LawyerSetTarget,
+		LawyerPromotesToPursuer,
+		SetBlanked,
+		Bloody,
+		SetFirstKill,
+		Invert,
+		SetTiebreak,
+		SetInvisible,
+		ThiefStealsRole,
+		SetTrap,
+		TriggerTrap,
+
+		// Gamemode
+		SetGuesserGm,
+		HuntedShield,
+		HuntedRewindTime,
+		ShareTimer
+	};
+
+	enum class RoleId {
+		Jester,
+		Mayor,
+		Portalmaker,
+		Engineer,
+		Sheriff,
+		Deputy,
+		Lighter,
+		Godfather,
+		Mafioso,
+		Janitor,
+		Detective,
+		TimeMaster,
+		Medic,
+		Swapper,
+		Seer,
+		Morphling,
+		Camouflager,
+		Hacker,
+		Tracker,
+		Vampire,
+		Snitch,
+		Jackal,
+		Sidekick,
+		Eraser,
+		Spy,
+		Trickster,
+		Cleaner,
+		Warlock,
+		SecurityGuard,
+		Arsonist,
+		EvilGuesser,
+		NiceGuesser,
+		BountyHunter,
+		Vulture,
+		Medium,
+		Trapper,
+		Lawyer,
+		Prosecutor,
+		Pursuer,
+		Witch,
+		Ninja,
+		Thief,
+		Crewmate,
+		Impostor,
+		// Modifier ---
+		Lover,
+		Bait,
+		Bloody,
+		AntiTeleport,
+		Tiebreaker,
+		Sunglasses,
+		Mini,
+		Vip,
+		Invert,
+		Chameleon,
+		Shifter
+	};
+
+	void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
+		if (!IsHost(sender))
+			return; // ignore
+		switch ((CustomRPC)callId) {
+		case CustomRPC::WorkaroundSetRoles:
+		{
+			auto numberOfRoles = app::MessageReader_ReadByte(reader, nullptr);
+			for (int i = 0; i < numberOfRoles; i++) {
+				auto id = (Game::PlayerId)app::MessageReader_ReadPackedUInt32(reader, nullptr);
+				auto role = app::MessageReader_ReadPackedUInt32(reader, nullptr);
+				STREAM_DEBUG("TOR: wSetRole:" << ToString(id) << ", Role:" << (int)role);
+			}
+		}
+		break;
+		case CustomRPC::SetRole:
+		{
+			auto role = app::MessageReader_ReadByte(reader, nullptr);
+			auto id = app::MessageReader_ReadByte(reader, nullptr);
+			STREAM_DEBUG("TOR: SetRole:" << ToString(id) << ", Role:" << (int)role);
+		}
+		break;
+		default:
+			if (callId > 60)
+				STREAM_DEBUG("Unknown RPC:" << (int)callId);
+			break;
+		}
+	}
+}
+
 Color GetRoleColor(GameData_PlayerInfo* info) {
 	if (State.isTOH) {
 		TOH::CustomRoles role = (TOH::CustomRoles)State.assignedModRoles[info->fields.PlayerId].first;
@@ -1571,9 +1647,14 @@ void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
 	else if (State.isTOH_TOR) {
 		return TOHTOR::HandleRpc(sender, callId, reader);
 	}
+	else if (State.isTOR) {
+		return TOR::HandleRpc(sender, callId, reader);
+	}
 	else if (callId == 60) { // TOH or TOH:TOR VersionCheck
 		if (!IsHost(sender))
 			return; // ignore
+		if (app::MessageReader_get_BytesRemaining(reader, nullptr) < 4)
+			return; // TheOtherRoles ?
 		auto pVersion = app::MessageReader_ReadString(reader, nullptr);
 		app::Version* ver = app::Version_Parse(pVersion, nullptr);
 		if (!ver) return;
@@ -1603,6 +1684,23 @@ void HandleRpc(PlayerControl* sender, uint8_t callId, MessageReader* reader) {
 		}
 		State.moddedHost = sender->fields.PlayerId;
 		LOG_DEBUG(ss.str());
+		return;
+	}
+	else if (callId == (uint8_t)TOR::CustomRPC::VersionHandshake) {
+		if (!IsHost(sender))
+			return; // ignore
+		if (app::MessageReader_get_BytesRemaining(reader, nullptr) < 8)
+			return; // Unknown
+		int major = app::MessageReader_ReadByte(reader, nullptr);
+		int minor = app::MessageReader_ReadByte(reader, nullptr);
+		int patch = app::MessageReader_ReadByte(reader, nullptr);
+		float timer = app::MessageReader_ReadSingle(reader, nullptr);
+		int versionOwnerId = app::MessageReader_ReadPackedInt32(reader, nullptr);
+		auto ss = std::format("TheOtherRoles Version:v{}.{}.{}\ntimer:{}\nversionOwnerId:{}",
+							  major, minor, patch, timer, versionOwnerId);
+		State.isTOR = true;
+		State.moddedHost = sender->fields.PlayerId;
+		LOG_DEBUG(ss);
 		return;
 	}
 			
