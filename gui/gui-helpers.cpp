@@ -7,9 +7,10 @@
 #include "DirectX.h"
 #include <DirectX.h>
 
+#include "mods/ModsHandler.h"
+
 using namespace ImGui;
-extern std::string GetRoleName(GameData_PlayerInfo*, bool);
-extern Color GetRoleColor(GameData_PlayerInfo*);
+
 bool CustomListBoxInt(const char* label, int* value, const std::vector<const char*> list, float width, ImGuiComboFlags flags) {
 	auto comboLabel = "##" + std::string(label);
 	auto leftArrow = "##" + std::string(label) + "Left";
@@ -166,9 +167,9 @@ bool CustomListBoxPlayerSelectionMultiple(const char* label, std::array<std::pai
 			ImVec4 nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->White);
 			if (State.RevealRoles)
 			{
-				std::string roleName = GetRoleName(playerData, State.AbbreviatedRoleNames);
+				std::string roleName = Mods::GetRoleName(playerData, State.AbbreviatedRoleNames);
 				playerName = playerName + " (" + roleName + ")";
-				nameColor = AmongUsColorToImVec4(GetRoleColor(playerData));
+				nameColor = AmongUsColorToImVec4(Mods::GetRoleColor(playerData));
 			}
 			else if (PlayerIsImpostor(localData) && PlayerIsImpostor(playerData))
 				nameColor = AmongUsColorToImVec4(Palette__TypeInfo->static_fields->ImpostorRed);

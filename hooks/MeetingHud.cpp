@@ -4,6 +4,7 @@
 #include "game.h"
 #include "logger.h"
 #include <chrono>
+#include "mods/ModsHandler.h"
 
 static app::Type* voteSpreaderType = nullptr;
 
@@ -147,11 +148,9 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 			std::string playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 			if (State.RevealRoles)
 			{
-				extern std::string GetRoleName(GameData_PlayerInfo*, bool);
-				extern Color GetRoleColor(GameData_PlayerInfo*);
-				std::string roleName = GetRoleName(playerData, State.AbbreviatedRoleNames);
+				std::string roleName = Mods::GetRoleName(playerData, State.AbbreviatedRoleNames);
 				playerName += "\n<size=50%>(" + roleName + ")";
-				auto roleColor = app::Color32_op_Implicit(GetRoleColor(playerData), NULL);
+				auto roleColor = app::Color32_op_Implicit(Mods::GetRoleColor(playerData), NULL);
 
 				playerName = std::format("<color=#{:02x}{:02x}{:02x}{:02x}>",
 										 roleColor.r, roleColor.g, roleColor.b,

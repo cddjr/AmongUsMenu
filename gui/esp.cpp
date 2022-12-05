@@ -4,6 +4,7 @@
 #include "utility.h"
 #include "game.h"
 #include "gui-helpers.hpp"
+#include "mods/ModsHandler.h"
 
 drawing_t* Esp::s_Instance = new drawing_t();
 ImGuiWindow* CurrentWindow = nullptr;
@@ -71,8 +72,6 @@ static void RenderBox(const ImVec2& top, const ImVec2& bottom, const float heigh
 
 void Esp::Render()
 {
-	extern Color GetRoleColor(GameData_PlayerInfo*);
-
 	CurrentWindow = ImGui::GetCurrentWindow();
 
 	if (!(State.ShowEsp_Box || State.ShowEsp_Distance || State.ShowEsp_Tracers)) {
@@ -97,12 +96,12 @@ void Esp::Render()
 			std::string Name;
 			if (auto outfit = GetPlayerOutfit(player.get_PlayerData())) {
 				Color = State.ShowEsp_RoleBased == false ? AmongUsColorToImVec4(GetPlayerColor(outfit->fields.ColorId))
-					: AmongUsColorToImVec4(GetRoleColor(player.get_PlayerData()));
+					: AmongUsColorToImVec4(Mods::GetRoleColor(player.get_PlayerData()));
 				Name = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 			}
 			else {
 				Color = State.ShowEsp_RoleBased == false ? ImVec4(0.f, 0.f, 0.f, 1.f)
-					: AmongUsColorToImVec4(GetRoleColor(player.get_PlayerData()));
+					: AmongUsColorToImVec4(Mods::GetRoleColor(player.get_PlayerData()));
 				Name = "<Unknown>";
 			}
 			const auto& Position = WorldToScreen(playerPos);

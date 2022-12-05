@@ -9,6 +9,7 @@
 #include <iostream>
 #include <optional>
 #include "logger.h"
+#include "mods/ModsHandler.h"
 
 void dPlayerControl_CompleteTask(PlayerControl* __this, uint32_t idx, MethodInfo* method) {
 	std::optional<TaskTypes__Enum> taskType = std::nullopt;
@@ -22,9 +23,6 @@ void dPlayerControl_CompleteTask(PlayerControl* __this, uint32_t idx, MethodInfo
 	}
 	PlayerControl_CompleteTask(__this, idx, method);
 }
-
-extern std::string GetRoleName(GameData_PlayerInfo*, bool);
-extern Color GetRoleColor(GameData_PlayerInfo*);
 
 float dPlayerControl_fixedUpdateTimer = 50;
 float dPlayerControl_fixedUpdateCount = 0;
@@ -61,9 +59,9 @@ void dPlayerControl_FixedUpdate(PlayerControl* __this, MethodInfo* method) {
 			playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 		if (State.RevealRoles)
 		{
-			std::string roleName = GetRoleName(playerData, State.AbbreviatedRoleNames);
+			std::string roleName = Mods::GetRoleName(playerData, State.AbbreviatedRoleNames);
 			playerName += "\n<size=50%>(" + roleName + ")";
-			auto roleColor = app::Color32_op_Implicit(GetRoleColor(playerData), NULL);
+			auto roleColor = app::Color32_op_Implicit(Mods::GetRoleColor(playerData), NULL);
 
 			playerName = std::format("<color=#{:02x}{:02x}{:02x}{:02x}>",
 									 roleColor.r, roleColor.g, roleColor.b,

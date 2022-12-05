@@ -75,6 +75,11 @@
     <ClCompile Include="hooks\RoleManager.cpp" />
     <ClCompile Include="hooks\SaveManager.cpp" />
     <ClCompile Include="hooks\UnityDebug.cpp" />
+    <ClCompile Include="mods\ModsHandler.cpp" />
+    <ClCompile Include="mods\TheOtherRoles.cpp" />
+    <ClCompile Include="mods\TownOfHost-TheOtherRoles.cpp" />
+    <ClCompile Include="mods\TownOfHost.cpp" />
+    <ClCompile Include="mods\TownOfHost_Y.cpp" />
     <ClCompile Include="rpc\CustomRpcHandler.cpp" />
     <ClCompile Include="rpc\RpcChatMessage.cpp" />
     <ClCompile Include="rpc\RpcPlayerAppearance.cpp" />
@@ -353,6 +358,11 @@
     <ClInclude Include="includes\directx11.h" />
     <ClInclude Include="includes\detours\detours.h" />
     <ClInclude Include="framework\pch-il2cpp.h" />
+    <ClInclude Include="mods\ModsHandler.h" />
+    <ClInclude Include="mods\TheOtherRoles.h" />
+    <ClInclude Include="mods\TownOfHost-TheOtherRoles.h" />
+    <ClInclude Include="mods\TownOfHost.h" />
+    <ClInclude Include="mods\TownOfHost_Y.h" />
     <ClInclude Include="user\achievements.hpp" />
     <ClInclude Include="user\keybinds.h" />
     <ClInclude Include="resources\resource_data.h" />

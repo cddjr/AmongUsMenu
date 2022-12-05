@@ -9,6 +9,7 @@
 #include "profiler.h"
 #include <sstream>
 #include "esp.hpp"
+#include "mods/ModsHandler.h"
 
 void dInnerNetClient_Update(InnerNetClient* __this, MethodInfo* method)
 {
@@ -136,13 +137,7 @@ void dAmongUsClient_OnPlayerLeft(AmongUsClient* __this, ClientData* data, Discon
         if (it != State.aumUsers.end())
             State.aumUsers.erase(it);
 
-        if (State.isTOH || State.isTOH_Y || State.isTOH_TOR || State.isTOR) {
-            if (data->fields.Character->fields.PlayerId == State.moddedHost) {
-                // If the host has left
-                State.isTOH = State.isTOH_Y = State.isTOH_TOR = State.isTOR = false;
-                State.assignedModRoles = {};
-            }
-        }
+        Mods::OnPlayerLeft(data->fields.Character->fields.PlayerId);
 
         if (auto evtPlayer = GetEventPlayer(playerInfo); evtPlayer) {
             synchronized(Replay::replayEventMutex) {
@@ -217,8 +212,7 @@ static void onGameEnd() {
     LOG_DEBUG("Reset All");
     Replay::Reset();
 
-    State.isTOH = State.isTOH_Y = State.isTOH_TOR = false;
-    State.assignedModRoles = {};
+    Mods::onGameEnd();
 
     State.aumUsers.clear();
     State.chatMessages.clear();
