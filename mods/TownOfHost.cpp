@@ -327,6 +327,9 @@ namespace Mods {
 		else if (role == 2) {
 			return "变形";
 		}
+		else if (role == 500) {
+			return std::string();
+		}
 		if (_major >= 4) {
 			switch (role) {
 			case (int)v400::CustomRoles::BountyHunter:
