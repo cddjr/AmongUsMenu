@@ -49,6 +49,9 @@ public:
     bool RevealVotes = false;
     bool RevealAnonymousVotes = false;
 
+    bool ShowKillCD = false;
+
+    bool ChatPaste = false;
     bool RevealRoles = false;
     bool AbbreviatedRoleNames = false;
     int PrevKillDistance = 0;
@@ -90,6 +93,7 @@ public:
     bool ChatAlwaysActive = false;
     bool ChatActiveOriginalState = false;
     bool ReadGhostMessages = false;
+    bool RightClickTeleport = false;
 
     SystemTypes__Enum selectedDoor = SystemTypes__Enum::Hallway;
     std::vector<SystemTypes__Enum> mapDoors;

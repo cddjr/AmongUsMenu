@@ -4,15 +4,6 @@
 #include "utility.h"
 #include "game.h"
 
-void dHudManager_ShowMap(HudManager* __this, Action_1_MapBehaviour_* mapAction, MethodInfo* method) {
-	HudManager_ShowMap(__this, mapAction, method);
-
-	//if (State.ChatAlwaysActive)
-	//	ChatController_SetVisible(__this->fields.Chat, true, NULL);
-	//else
-	//	ChatController_SetVisible(__this->fields.Chat, false, NULL);
-}
-
 void dHudManager_Update(HudManager* __this, MethodInfo* method) {
 	static bool bChatAlwaysActivePrevious = false;
 	if (bChatAlwaysActivePrevious != State.ChatAlwaysActive)
@@ -25,6 +16,11 @@ void dHudManager_Update(HudManager* __this, MethodInfo* method) {
 	}
 	HudManager_Update(__this, method);
 	__this->fields.PlayerCam->fields.Locked = State.FreeCam;
+
+	if (__this->fields.Chat) {
+		__this->fields.Chat->fields.TextArea->fields.AllowPaste = State.ChatPaste;
+	}
+
 
 	//HudManager_SetHudActive(__this, State.ShowHud, NULL);
 	if (IsInGame()) {

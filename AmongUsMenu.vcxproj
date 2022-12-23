@@ -63,7 +63,8 @@
     <ClCompile Include="hooks\DirectX.cpp" />
     <ClCompile Include="hooks\Dleks.cpp" />
     <ClCompile Include="hooks\EOSManager.cpp" />
-    <ClCompile Include="hooks\GameOptionsData.cpp" />
+    <ClCompile Include="hooks\ExileController.cpp" />
+    <ClCompile Include="hooks\GameOptionsManager.cpp" />
     <ClCompile Include="hooks\HudManager.cpp" />
     <ClCompile Include="hooks\InnerNetClient.cpp" />
     <ClCompile Include="hooks\LobbyBehaviour.cpp" />
@@ -73,8 +74,10 @@
     <ClCompile Include="hooks\PlayerStorageManager.cpp" />
     <ClCompile Include="hooks\PolusShipStatus.cpp" />
     <ClCompile Include="hooks\RoleManager.cpp" />
+    <ClCompile Include="hooks\SabotageSystemType.cpp" />
     <ClCompile Include="hooks\SaveManager.cpp" />
     <ClCompile Include="hooks\UnityDebug.cpp" />
+    <ClCompile Include="rpc\CmdCheckMurder.cpp" />
     <ClCompile Include="mods\ModsHandler.cpp" />
     <ClCompile Include="mods\TheOtherRoles.cpp" />
     <ClCompile Include="mods\TownOfHost-TheOtherRoles.cpp" />
@@ -85,6 +88,7 @@
     <ClCompile Include="rpc\RpcPlayerAppearance.cpp" />
     <ClCompile Include="rpc\RpcSetRole.cpp" />
     <ClCompile Include="rpc\RpcUsePlatform.cpp" />
+    <ClCompile Include="user\achievements.cpp" />
     <ClCompile Include="user\keybinds.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -364,6 +368,7 @@
     <ClInclude Include="mods\TownOfHost.h" />
     <ClInclude Include="mods\TownOfHost_Y.h" />
     <ClInclude Include="user\achievements.hpp" />
+    <ClInclude Include="user\DestroyableSingleton.h" />
     <ClInclude Include="user\keybinds.h" />
     <ClInclude Include="resources\resource_data.h" />
     <ClInclude Include="rpc\_rpc.h" />

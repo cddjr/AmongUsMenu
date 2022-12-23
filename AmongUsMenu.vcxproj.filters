@@ -67,7 +67,7 @@
     <ClCompile Include="hooks\Doors.cpp">
       <Filter>hooks</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\GameOptionsData.cpp">
+    <ClCompile Include="hooks\GameOptionsManager.cpp">
       <Filter>hooks</Filter>
     </ClCompile>
     <ClCompile Include="hooks\HudManager.cpp">
@@ -301,6 +301,15 @@
     <ClCompile Include="gui\aum-chat.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="user\achievements.cpp">
+      <Filter>user</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks\ExileController.cpp">
+      <Filter>hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks\SabotageSystemType.cpp">
+      <Filter>hooks</Filter>
+    </ClCompile>
     <ClCompile Include="mods\ModsHandler.cpp">
       <Filter>mods</Filter>
     </ClCompile>
@@ -497,6 +506,9 @@
     </ClInclude>
     <ClInclude Include="gui\aum-chat.hpp">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="user\DestroyableSingleton.h">
+      <Filter>user</Filter>
     </ClInclude>
     <ClInclude Include="mods\TheOtherRoles.h">
       <Filter>mods</Filter>

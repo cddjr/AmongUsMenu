@@ -65,6 +65,7 @@ void Settings::Load() {
         JSON_TRYGET("MaxVision", this->MaxVision);
         JSON_TRYGET("Wallhack", this->Wallhack);
         JSON_TRYGET("UnlockVents", this->UnlockVents);
+        JSON_TRYGET("ChatPaste", this->ChatPaste);
         JSON_TRYGET("RevealRoles", this->RevealRoles);
         JSON_TRYGET("AbbreviatedRoleNames", this->AbbreviatedRoleNames);
         JSON_TRYGET("ChatAlwaysActive", this->ChatAlwaysActive);
@@ -83,6 +84,8 @@ void Settings::Load() {
         JSON_TRYGET("RevealAnonymousVotes", this->RevealAnonymousVotes);
 
         JSON_TRYGET("ShowChat", this->ShowChat);
+        JSON_TRYGET("RightClickTeleport", this->RightClickTeleport);
+        JSON_TRYGET("ShowKillCD", this->ShowKillCD);
     } catch (...) {
         Log.Info("Unable to load settings.json");
     }
@@ -135,6 +138,7 @@ void Settings::Save() {
             {"MaxVision", this->MaxVision},
             {"Wallhack", this->Wallhack},
             {"UnlockVents", this->UnlockVents},
+            {"ChatPaste", this->ChatPaste},
             {"RevealRoles", this->RevealRoles},
             {"AbbreviatedRoleNames", this->AbbreviatedRoleNames},
             {"ChatAlwaysActive", this->ChatAlwaysActive},
@@ -150,7 +154,9 @@ void Settings::Save() {
             {"ShowConsole", this->ShowConsole},
             {"ShowUnityLogs", this->ShowUnityLogs},
 
-            {"ShowChat", this->ShowChat}
+            {"ShowChat", this->ShowChat},
+            {"RightClickTeleport", this->RightClickTeleport},
+            {"ShowKillCD", this->ShowKillCD},
         };
 
         std::ofstream outSettings(settingsPath);

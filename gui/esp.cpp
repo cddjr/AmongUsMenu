@@ -9,13 +9,13 @@
 drawing_t* Esp::s_Instance = new drawing_t();
 ImGuiWindow* CurrentWindow = nullptr;
 
-static void RenderText(const char* text, const ImVec2& pos, const ImVec4& color, const bool outlined = true, const bool centered = true)
+static void RenderText(std::string_view text, const ImVec2& pos, const ImVec4& color, const bool outlined = true, const bool centered = true)
 {
-	if (!text) return;
+	if (text.empty()) return;
 	ImVec2 ImScreen = pos;
 	if (centered)
 	{
-		auto size = ImGui::CalcTextSize(text);
+		auto size = ImGui::CalcTextSize(text.data(), text.data() + text.length());
 		ImScreen.x -= size.x * 0.5f;
 		ImScreen.y -= size.y;
 	}
@@ -24,10 +24,10 @@ static void RenderText(const char* text, const ImVec2& pos, const ImVec4& color,
 	{
 		CurrentWindow->DrawList->AddText(nullptr, 0.f,
 			ImScreen + 0.5f * State.dpiScale,
-			ImGui::GetColorU32(IM_COL32_BLACK), text);
+			ImGui::GetColorU32(IM_COL32_BLACK), text.data(), text.data() + text.length());
 	}
 
-	CurrentWindow->DrawList->AddText(nullptr, 0.f, ImScreen, ImGui::GetColorU32(color), text);
+	CurrentWindow->DrawList->AddText(nullptr, 0.f, ImScreen, ImGui::GetColorU32(color), text.data(), text.data() + text.length());
 }
 
 static void RenderLine(const ImVec2& start, const ImVec2& end, const ImVec4& color, bool shadow = false) noexcept

@@ -112,12 +112,11 @@ void Run(LPVOID lpParam) {
 #endif
 	GAME_STATIC_POINTER(Game::pAmongUsClient, app::AmongUsClient, Instance);
 	GAME_STATIC_POINTER(Game::pGameData, app::GameData, Instance);
-	GAME_STATIC_POINTER(Game::pGameOptionsData, app::PlayerControl, GameOptions);
 	GAME_STATIC_POINTER(Game::pAllPlayerControls, app::PlayerControl, AllPlayerControls);
 	GAME_STATIC_POINTER(Game::pLocalPlayer, app::PlayerControl, LocalPlayer);
 	GAME_STATIC_POINTER(Game::pShipStatus, app::ShipStatus, Instance);
 	GAME_STATIC_POINTER(Game::pLobbyBehaviour, app::LobbyBehaviour, Instance);
-	//GAME_STATIC_POINTER(Game::pRoleManager, app::DestroyableSingleton_1_RoleManager_, _instance);
+	LOG_DEBUG(std::format("Game::RoleManager is {}", static_cast<void*>(Game::RoleManager.GetInstance())));
 	State.userName = GetPlayerName();
 
 	Game::scanGameFunctions();

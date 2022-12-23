@@ -104,18 +104,19 @@ void dMeetingHud_PopulateResults(MeetingHud* __this, Il2CppArraySize* states, Me
 		}
 	}
 
-	auto prevAnonymousVotes = (*Game::pGameOptionsData)->fields.AnonymousVotes;
+	GameOptions options;
+	const auto prevAnonymousVotes = options.GetBool(app::BoolOptionNames__Enum::AnonymousVotes);
 	if (prevAnonymousVotes && State.RevealAnonymousVotes)
-		(*Game::pGameOptionsData)->fields.AnonymousVotes = false;
+		options.SetBool(app::BoolOptionNames__Enum::AnonymousVotes, false);
 	MeetingHud_PopulateResults(__this, states, method);
-	(*Game::pGameOptionsData)->fields.AnonymousVotes = prevAnonymousVotes;
+	options.SetBool(app::BoolOptionNames__Enum::AnonymousVotes, prevAnonymousVotes);
 }
 
 void RevealAnonymousVotes() {
 	if (!State.InMeeting
 		|| !app::MeetingHud__TypeInfo
 		|| !app::MeetingHud__TypeInfo->static_fields->Instance
-		|| !(*Game::pGameOptionsData)->fields.AnonymousVotes)
+		|| !GameOptions().GetBool(app::BoolOptionNames__Enum::AnonymousVotes))
 		return;
 	auto meetingHud = app::MeetingHud__TypeInfo->static_fields->Instance;
 	for (auto votedForArea : il2cpp::Array(meetingHud->fields.playerStates)) {
@@ -143,8 +144,6 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 		app::GameData_PlayerOutfit* outfit = GetPlayerOutfit(playerData);
 
 		if (playerData && localData && outfit) {
-			//Color32 faceColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->Black, NULL);
-			//Color32 roleColor = app::Color32_op_Implicit(Palette__TypeInfo->static_fields->White, NULL);
 			std::string playerName = convert_from_string(GameData_PlayerOutfit_get_PlayerName(outfit, nullptr));
 			if (State.RevealRoles)
 			{
@@ -155,12 +154,13 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 				playerName = std::format("<color=#{:02x}{:02x}{:02x}{:02x}>",
 										 roleColor.r, roleColor.g, roleColor.b,
 										 roleColor.a) + playerName;
+				if (IsColorBlindMode()) {
+					playerName += "\n ";
+				}
 			}
 
 			String* playerNameStr = convert_to_string(playerName);
 			app::TMP_Text_set_text((app::TMP_Text*)playerNameTMP, playerNameStr, NULL);
-			//app::TextMeshPro_SetFaceColor(playerNameTMP, roleColor, NULL);
-			//app::TextMeshPro_SetOutlineColor(playerNameTMP, faceColor, NULL);
 		}
 
 		if (playerData)
@@ -180,9 +180,10 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 
 				// avoid duplicate votes
 				if (isBeforeResultsState) {
-					auto prevAnonymousVotes = (*Game::pGameOptionsData)->fields.AnonymousVotes;
+					GameOptions options;
+					const auto prevAnonymousVotes = options.GetBool(app::BoolOptionNames__Enum::AnonymousVotes);
 					if (prevAnonymousVotes && State.RevealAnonymousVotes)
-						(*Game::pGameOptionsData)->fields.AnonymousVotes = false;
+						options.SetBool(app::BoolOptionNames__Enum::AnonymousVotes, false);
 					if (playerVoteArea->fields.VotedFor != Game::SkippedVote) {
 						for (auto votedForArea : playerStates) {
 							if (votedForArea->fields.TargetPlayerId == playerVoteArea->fields.VotedFor) {
@@ -196,7 +197,7 @@ void dMeetingHud_Update(MeetingHud* __this, MethodInfo* method) {
 						auto transform = app::GameObject_get_transform(__this->fields.SkippedVoting, nullptr);
 						MeetingHud_BloopAVoteIcon(__this, playerData, 0, transform, nullptr);
 					}
-					(*Game::pGameOptionsData)->fields.AnonymousVotes = prevAnonymousVotes;
+					options.SetBool(app::BoolOptionNames__Enum::AnonymousVotes, prevAnonymousVotes);
 				}
 			}
 			else if (!didVote && State.voteMonitor.find(playerData->fields.PlayerId) != State.voteMonitor.end())

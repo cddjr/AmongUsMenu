@@ -75,7 +75,8 @@ namespace PlayersTab {
 				ImGui::SameLine();
 				ImGui::BeginChild("players#actions", ImVec2(200, 0) * State.dpiScale, true);
 
-				if (IsInGame() && !GetPlayerData(*Game::pLocalPlayer)->fields.IsDead) { //Player selection doesn't matter
+				GameOptions options;
+				if (IsInGame() && options.GetGameMode() != GameModes__Enum::HideNSeek && !GetPlayerData(*Game::pLocalPlayer)->fields.IsDead) { //Player selection doesn't matter
 					if (ImGui::Button("Call Meeting")) {
 						State.rpcQueue.push(new RpcReportPlayer(PlayerSelection()));
 					}
@@ -176,15 +177,18 @@ namespace PlayersTab {
 						}
 					}
 
-					if (IsInGame() && PlayerIsImpostor(GetPlayerData(*Game::pLocalPlayer)) && !selectedPlayer.get_PlayerData()->fields.IsDead
+					if (IsInGame() && PlayerIsImpostor(GetPlayerData(*Game::pLocalPlayer))
+						&& !selectedPlayer.get_PlayerData()->fields.IsDead
+						&& !selectedPlayer.get_PlayerControl()->fields.inVent
+						&& !selectedPlayer.get_PlayerControl()->fields.inMovingPlat
 						&& !GetPlayerData(*Game::pLocalPlayer)->fields.IsDead && ((*Game::pLocalPlayer)->fields.killTimer <= 0.0f)
 						&& !selectedPlayer.get_PlayerControl()->fields.protectedByGuardian)
 					{
 						if (ImGui::Button("Kill Player"))
 						{
 							previousPlayerPosition = GetTrueAdjustedPosition(*Game::pLocalPlayer);
-							State.rpcQueue.push(new RpcMurderPlayer(State.selectedPlayer));
-							framesPassed = 14;
+							State.rpcQueue.push(new CmdCheckMurder(State.selectedPlayer));
+							framesPassed = 40;
 						}
 					}
 
