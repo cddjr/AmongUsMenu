@@ -218,7 +218,10 @@ namespace Mods {
 			&& !(_major == 4
 				 && _minor == 0
 				 && _build == 0
-				 && tag == "52463b13(tags/v4.0.0^0)")) {
+				 && tag == "52463b13(tags/v4.0.0^0)")
+			&& !(_major == 4
+				 && _minor == 0
+				 && _build == 1)) {
 			throw std::invalid_argument("Unsupported TOH");
 		}
 	}
