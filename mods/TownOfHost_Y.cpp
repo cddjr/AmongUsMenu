@@ -1,4 +1,5 @@
 #include "pch-il2cpp.h"
+#include <map>
 #include "TownOfHost_Y.h"
 #include "utility.h"
 #include "logger.h"
@@ -225,6 +226,61 @@ namespace Mods {
 	bool TOH_Y::IsImpostor(Game::PlayerId player) const {
 		RoleId role = this->_assignedRoles[player];
 		return role >= (int)v3023::CustomRoles::Impostor && role <= (int)v3023::CustomRoles::LastImpostor;
+	}
+	Color TOH_Y::GetRoleColor(Game::PlayerId player) const {
+		static std::map<v3023::CustomRoles, Color> s_roleColors = {
+			//バニラ役職
+			{ v3023::CustomRoles::Crewmate, ToColor("#ffffff") },
+			{ v3023::CustomRoles::Engineer, ToColor("#b6f0ff") },
+			{ v3023::CustomRoles::Scientist, ToColor("#b6f0ff") },
+			{ v3023::CustomRoles::GuardianAngel, ToColor("#ffffff") },
+			//インポスター、シェイプシフター
+			//特殊インポスター役職
+			//マッドメイト系役職
+				//後で追加
+			//両陣営可能役職
+			{ v3023::CustomRoles::Watcher, ToColor("#800080") },
+			//特殊クルー役職
+			{ v3023::CustomRoles::NiceWatcher, ToColor("#800080") }, //ウォッチャーの派生
+			{ v3023::CustomRoles::Bait, ToColor("#00f7ff") },
+			{ v3023::CustomRoles::SabotageMaster, ToColor("#0000ff") },
+			{ v3023::CustomRoles::Snitch, ToColor("#b8fb4f") },
+			{ v3023::CustomRoles::Mayor, ToColor("#204d42") },
+			{ v3023::CustomRoles::Sheriff, ToColor("#f8cd46") },
+			{ v3023::CustomRoles::Lighter, ToColor("#eee5be") },
+			{ v3023::CustomRoles::SpeedBooster, ToColor("#00ffff") },
+			{ v3023::CustomRoles::Doctor, ToColor("#80ffdd") },
+			{ v3023::CustomRoles::Trapper, ToColor("#5a8fd0") },
+			{ v3023::CustomRoles::Dictator, ToColor("#df9b00") },
+			{ v3023::CustomRoles::CSchrodingerCat, ToColor("#ffffff") }, //シュレディンガーの猫の派生
+			{ v3023::CustomRoles::Seer, ToColor("#61b26c") },
+			//第三陣営役職
+			{ v3023::CustomRoles::Arsonist, ToColor("#ff6633") },
+			{ v3023::CustomRoles::Jester, ToColor("#ec62a5") },
+			{ v3023::CustomRoles::Terrorist, ToColor("#00ff00") },
+			{ v3023::CustomRoles::Executioner, ToColor("#611c3a") },
+			{ v3023::CustomRoles::Opportunist, ToColor("#00ff00") },
+			{ v3023::CustomRoles::SchrodingerCat, ToColor("#696969") },
+			{ v3023::CustomRoles::Egoist, ToColor("#5600ff") },
+			{ v3023::CustomRoles::EgoSchrodingerCat, ToColor("#5600ff") },
+			{ v3023::CustomRoles::Jackal, ToColor("#00b4eb") },
+			{ v3023::CustomRoles::JSchrodingerCat, ToColor("#00b4eb") },
+			//HideAndSeek
+			{ v3023::CustomRoles::HASFox, ToColor("#e478ff") },
+			{ v3023::CustomRoles::HASTroll, ToColor("#00ff00") },
+			// GM
+			{ v3023::CustomRoles::GM, ToColor("#ff5b70") },
+			//サブ役職
+			{ v3023::CustomRoles::NoSubRoleAssigned, ToColor("#ffffff") },
+			{ v3023::CustomRoles::Lovers, ToColor("#ffaaaa") }
+		};
+
+		RoleId role = this->_assignedRoles[player];
+		auto iter = s_roleColors.find((v3023::CustomRoles)role);
+		if (iter != s_roleColors.end())
+			return iter->second;
+		else
+			return ModBase::GetRoleColor(player);
 	}
 	bool TOH_Y::IsMadmate(Game::PlayerId player) const {
 		RoleId role = this->_assignedRoles[player];

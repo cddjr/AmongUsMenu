@@ -138,6 +138,18 @@ namespace Mods {
         }
     }
 
+    Color ToColor(std::string_view str) {
+        if (str.size() < 7 || str[0] != '#')
+            return { 0 };
+        int r, g, b, a;
+        int cnt = sscanf_s(str.data() + 1, "%02x%02x%02x%02x", &r, &g, &b, &a);
+        if (cnt < 3)
+            return { 0 };
+        if (cnt != 4)
+            a = 255;
+        return { r / 255.0F, g / 255.0F, b / 255.0F, a / 255.0F };
+    }
+
     std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated /*false*/) {
         if (current != nullptr) {
             const std::string& name = current->GetRoleName(info->fields.PlayerId);

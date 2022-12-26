@@ -10,6 +10,8 @@ namespace Mods {
 
         virtual bool IsImpostor(Game::PlayerId player) const override;
 
+        virtual Color GetRoleColor(Game::PlayerId player) const override;
+
         virtual std::string GetDeathReason(Game::PlayerId player) const override;
 
         virtual bool IsMadmate(Game::PlayerId player) const override;

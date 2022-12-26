@@ -25,6 +25,8 @@ namespace Mods {
 
     Color GetRoleColor(GameData_PlayerInfo* info);
 
+    Color ToColor(std::string_view str);
+
     std::string GetRoleName(GameData_PlayerInfo* info, bool abbreviated = false);
 
     class ModBase {

@@ -1,4 +1,5 @@
 #include "pch-il2cpp.h"
+#include <map>
 #include "TownOfHost.h"
 #include "utility.h"
 #include "logger.h"
@@ -538,12 +539,61 @@ namespace Mods {
 	}
 
 	Color TOH::GetRoleColor(Game::PlayerId player) const {
-		if (IsNeutral(player)) {
-			return Palette__TypeInfo->static_fields->Orange;
-		}
-		else {
-			return __super::GetRoleColor(player);
-		}
+		static std::map<v400::CustomRoles, Color> s_roleColors = {
+			//バニラ役職
+			{ v400::CustomRoles::Crewmate, ToColor("#ffffff") },
+			{ v400::CustomRoles::Engineer, ToColor("#8cffff") },
+			{ v400::CustomRoles::Scientist, ToColor("#8cffff") },
+			{ v400::CustomRoles::GuardianAngel, ToColor("#ffffff") },
+			//インポスター、シェイプシフター
+			//特殊インポスター役職
+			//マッドメイト系役職
+				//後で追加
+			//両陣営可能役職
+			{ v400::CustomRoles::Watcher, ToColor("#800080") },
+			//特殊クルー役職
+			{ v400::CustomRoles::NiceWatcher, ToColor("#800080") }, //ウォッチャーの派生
+			{ v400::CustomRoles::Bait, ToColor("#00f7ff") },
+			{ v400::CustomRoles::SabotageMaster, ToColor("#0000ff") },
+			{ v400::CustomRoles::Snitch, ToColor("#b8fb4f") },
+			{ v400::CustomRoles::Mayor, ToColor("#204d42") },
+			{ v400::CustomRoles::Sheriff, ToColor("#f8cd46") },
+			{ v400::CustomRoles::Lighter, ToColor("#eee5be") },
+			{ v400::CustomRoles::SpeedBooster, ToColor("#00ffff") },
+			{ v400::CustomRoles::Doctor, ToColor("#80ffdd") },
+			{ v400::CustomRoles::Trapper, ToColor("#5a8fd0") },
+			{ v400::CustomRoles::Dictator, ToColor("#df9b00") },
+			{ v400::CustomRoles::CSchrodingerCat, ToColor("#ffffff") }, //シュレディンガーの猫の派生
+			{ v400::CustomRoles::Seer, ToColor("#61b26c") },
+			//第三陣営役職
+			{ v400::CustomRoles::Arsonist, ToColor("#ff6633") },
+			{ v400::CustomRoles::Jester, ToColor("#ec62a5") },
+			{ v400::CustomRoles::Terrorist, ToColor("#00ff00") },
+			{ v400::CustomRoles::Executioner, ToColor("#611c3a") },
+			{ v400::CustomRoles::Opportunist, ToColor("#00ff00") },
+			{ v400::CustomRoles::SchrodingerCat, ToColor("#696969") },
+			{ v400::CustomRoles::Egoist, ToColor("#5600ff") },
+			{ v400::CustomRoles::EgoSchrodingerCat, ToColor("#5600ff") },
+			{ v400::CustomRoles::Jackal, ToColor("#00b4eb") },
+			{ v400::CustomRoles::JSchrodingerCat, ToColor("#00b4eb") },
+			//HideAndSeek
+			{ v400::CustomRoles::HASFox, ToColor("#e478ff") },
+			{ v400::CustomRoles::HASTroll, ToColor("#00ff00") },
+			// GM
+			{ v400::CustomRoles::GM, ToColor("#ff5b70") },
+			//サブ役職
+			{ v400::CustomRoles::LastImpostor, ToColor("#ff0000") },
+			{ v400::CustomRoles::Lovers, ToColor("#ff6be4") },
+
+			{ v400::CustomRoles::NotAssigned, ToColor("#ffffff") },
+		};
+
+		RoleId role = this->_assignedRoles[player];
+		auto iter = s_roleColors.find((v400::CustomRoles)role);
+		if (iter != s_roleColors.end())
+			return iter->second;
+		else
+			return ModBase::GetRoleColor(player);
 	}
 	std::string TOH::GetDeathReason(Game::PlayerId player) const {
 		DeathReasonId reason = this->_deadPlayers[player];
