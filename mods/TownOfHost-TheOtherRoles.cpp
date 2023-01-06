@@ -1,5 +1,7 @@
 #include "pch-il2cpp.h"
 #include <map>
+#include <set>
+#include <bitset>
 #include "TownOfHost-TheOtherRoles.h"
 #include "utility.h"
 #include "logger.h"
@@ -237,6 +239,8 @@ namespace Mods {
 			psh7,
 			psh8,
 			psh9,
+
+			COUNT
 		};
 		enum class DeathReason
 		{
@@ -259,6 +263,292 @@ namespace Mods {
 			etc = -1
 		};
 	}
+	namespace v0935 {
+		enum class CustomRoles {
+			//Default
+			Crewmate = 0,
+			//Impostor(Vanilla)
+			Impostor,
+			Shapeshifter,
+			CrewmateGhost,
+			ImpostorGhost,
+			Morphling,
+			Mechanic,
+			Physicist,
+			Target,
+			//Impostor
+			BountyHunter,
+			VoteStealer,
+			FireWorks,
+			Mafia,
+			SerialKiller,
+			//ShapeMaster,
+			Sniper,
+			Vampire,
+			Vampress,
+			Witch,
+			Warlock,
+			Mare,
+			Miner,
+			Consort,
+			YingYanger,
+			Grenadier,
+			Disperser,
+			Puppeteer,
+			// EVENT WINNING ROLES
+			IdentityTheft,
+			Manipulator,
+			//    AgiTater,
+			Bomber,
+			// JK NOW //
+			TimeThief,
+			Silencer,
+			Ninja,
+			Swooper,
+			Camouflager,
+			Freezer,
+			Cleaner,
+			EvilGuesser,
+			LastImpostor,
+			//Madmate
+			MadGuardian,
+			Madmate,
+			MadSnitch,
+			CrewPostor,
+			CorruptedSheriff,
+			SKMadmate,
+			Parasite,
+			// SPECIAL ROLES //
+			Cultist,
+			Whisperer,
+			Chameleon,
+			GodFather,
+			Mafioso,
+			Framer,
+			Disguiser,
+			// VANILLA
+			Engineer,
+			GuardianAngel,
+			Scientist,
+			//Crewmate
+			Alturist,
+			Lighter,
+			Medium,
+			Demolitionist,
+			Bastion,
+			NiceGuesser,
+			Escort,
+			Crusader,
+			Psychic,
+			Mystic,
+			Swapper,
+			Mayor,
+			SabotageMaster,
+			Oracle,
+			Medic,
+			Bodyguard,
+			Sheriff,
+			Investigator,
+			Snitch,
+			Transporter,
+			SpeedBooster,
+			Trapper,
+			Dictator,
+			Doctor,
+			Child,
+			Veteran,
+			//Neutral
+			Arsonist,
+			Egoist,
+			PlagueBearer,
+			Pestilence,
+			Vulture,
+			TheGlitch,
+			Postman,
+			Werewolf,
+			NeutWitch,
+			Marksman,
+			GuardianAngelTOU,
+			Jester,
+			Amnesiac,
+			Hacker,
+			PoisonMaster,
+			BloodKnight,
+			Hitman,
+			Phantom,
+			Pirate,
+			Juggernaut,
+			Opportunist,
+			Survivor,
+			Terrorist,
+			Executioner,
+			Jackal,
+			AgiTater,
+			Sidekick,
+			// ALL CAT ROLES //
+			SchrodingerCat,
+			JSchrodingerCat,
+			CSchrodingerCat,
+			MSchrodingerCat,
+			EgoSchrodingerCat,
+			BKSchrodingerCat,
+			CPSchrodingerCat,
+			JugSchrodingerCat,
+			MMSchrodingerCat,
+			PesSchrodingerCat,
+			WWSchrodingerCat,
+			TGSchrodingerCat,
+			//HideAndSeek
+			HASFox,
+			HASTroll,
+			//GM
+			GM,
+			//coven
+			Coven,
+			Poisoner,
+			CovenWitch,
+			HexMaster,
+			PotionMaster,
+			Medusa,
+			Mimic,
+			Necromancer,
+			Conjuror,
+
+			// NEW GAMEMODE ROLES //
+			Painter,
+			Janitor,
+			Supporter,
+
+			// RANDOM ROLE HELPERS //
+			LoversWin,
+			// Sub-roles are After 500. Meaning, all roles under this are Modifiers.
+			NoSubRoleAssigned = 500,
+
+			// GLOBAL MODIFIERS //
+			Lovers,
+			LoversRecode,
+			Flash, // DONE
+			Escalation,
+			TieBreaker, // DONE
+			Oblivious, // DONE
+			Sleuth, // DONE
+			Watcher, // DONE
+			Obvious,
+
+			// CREW MODIFIERS //
+			Bewilder, // DONE
+			Bait, // DONE
+			Torch, // DONE
+			Diseased,
+
+			// TAG COLORS //
+			sns1,
+			sns2,
+			sns3,
+			sns4,
+			sns5,
+			sns6,
+			sns7,
+			sns8,
+			sns9,
+			sns10,
+			rosecolor,
+			// random //
+			thetaa,
+			eevee,
+			serverbooster,
+			// SELF //
+			minaa,
+			ess,
+			// end random //
+			psh1,
+			psh2,
+			psh3,
+			psh4,
+			psh5,
+			psh6,
+			psh7,
+			psh8,
+			psh9,
+
+			//Gurge44
+			gu1,
+			gu2,
+			gu3,
+			gu4,
+			gu5,
+			gu6,
+			gu7,
+			gu8,
+			gu9,
+			gu10,
+			//Pineapple man670
+			pi1,
+			pi2,
+			pi3,
+			pi4,
+			pi5,
+			pi6,
+			pi7,
+			pi8,
+			pi9,
+			pi10,
+			//yoclobo
+			yo1,
+			yo2,
+			yo3,
+			yo4,
+			yo5,
+			yo6,
+			yo7,
+			yo8,
+			yo9,
+			yo10,
+			//Nicky G
+			ni1,
+			ni2,
+			ni3,
+			ni4,
+			ni5,
+			ni6,
+			ni7,
+			//Milk
+			ml1,
+			ml2,
+			ml3,
+			ml4,
+			ml5,
+			ml6,
+			ml7,
+			ml8,
+			ml9,
+			ml10,
+			//Paige
+			pg1,
+			pg2,
+			pg3,
+			pg4,
+			pg5,
+			pg6,
+			pg7,
+			pg8,
+			pg9,
+			pg10,
+			//ck
+			cc1,
+			cc2,
+			cc3,
+			cc4,
+			cc5,
+			cc6,
+			cc7,
+			cc8,
+			cc9,
+			cc10,
+
+			COUNT
+		};
+	}
 
 	TOH_TOR::TOH_TOR(app::Version* version, std::string_view tag) noexcept(false) {
 		SetVersion(version);
@@ -269,7 +559,7 @@ namespace Mods {
 		if (!(_major == 0
 			  && _minor == 9
 			  && _build == 3
-			  && _revision == 4)) {
+			  && (_revision == 4 || _revision == 5))) {
 			throw std::invalid_argument("Unsupported TOH:TOR");
 		}
 	}
@@ -300,30 +590,381 @@ namespace Mods {
 
 	bool TOH_TOR::IsImpostor(Game::PlayerId player) const {
 		RoleId role = this->_assignedRoles[player];
-		return (role >= (int)v0934::CustomRoles::Impostor && role <= (int)v0934::CustomRoles::LastImpostor)
+		if (_revision >= 5)
+			return ((role >= (int)v0935::CustomRoles::Impostor && role <= (int)v0935::CustomRoles::LastImpostor)
+			and (role != (int)v0935::CustomRoles::CrewmateGhost &&
+				 role != (int)v0935::CustomRoles::Mechanic &&
+				 role != (int)v0935::CustomRoles::Physicist &&
+				 role != (int)v0935::CustomRoles::Target)) || role == (int)v0935::CustomRoles::CorruptedSheriff;
+		
+		return ((role >= (int)v0934::CustomRoles::Impostor && role <= (int)v0934::CustomRoles::LastImpostor)
 			and (role != (int)v0934::CustomRoles::Mechanic &&
 				 role != (int)v0934::CustomRoles::Physicist &&
-				 role != (int)v0934::CustomRoles::Target);
+				 role != (int)v0934::CustomRoles::Target)) || role == (int)v0934::CustomRoles::CorruptedSheriff;
 	}
 	bool TOH_TOR::IsMadmate(Game::PlayerId player) const {
 		RoleId role = this->_assignedRoles[player];
-		return role >= (int)v0934::CustomRoles::MadGuardian && role <= (int)v0934::CustomRoles::MSchrodingerCat;
+		if (_revision >= 5)
+			return role == (int)v0935::CustomRoles::Madmate
+			|| role == (int)v0935::CustomRoles::SKMadmate
+			|| role == (int)v0935::CustomRoles::MadGuardian
+			|| role == (int)v0935::CustomRoles::MadSnitch
+			|| role == (int)v0935::CustomRoles::Parasite
+			|| role == (int)v0935::CustomRoles::MSchrodingerCat;
+
+		return role == (int)v0934::CustomRoles::Madmate
+			|| role == (int)v0934::CustomRoles::SKMadmate
+			|| role == (int)v0934::CustomRoles::MadGuardian
+			|| role == (int)v0934::CustomRoles::MadSnitch
+			|| role == (int)v0934::CustomRoles::Parasite
+			|| role == (int)v0934::CustomRoles::MSchrodingerCat;
 	}
 	bool TOH_TOR::IsNeutral(Game::PlayerId player) const {
+		static std::set<RoleId> v0935 {
+			(RoleId)v0935::CustomRoles::Jester, 
+			(RoleId)v0935::CustomRoles::Jester,
+			(RoleId)v0935::CustomRoles::Vulture,
+			(RoleId)v0935::CustomRoles::Opportunist,
+			(RoleId)v0935::CustomRoles::Survivor,
+			(RoleId)v0935::CustomRoles::SchrodingerCat,
+			(RoleId)v0935::CustomRoles::Terrorist,
+			(RoleId)v0935::CustomRoles::Executioner,
+			(RoleId)v0935::CustomRoles::Arsonist,
+			(RoleId)v0935::CustomRoles::Egoist,
+			(RoleId)v0935::CustomRoles::AgiTater,
+			(RoleId)v0935::CustomRoles::EgoSchrodingerCat,
+			(RoleId)v0935::CustomRoles::Hitman,
+			(RoleId)v0935::CustomRoles::CrewPostor,
+			(RoleId)v0935::CustomRoles::Marksman,
+			(RoleId)v0935::CustomRoles::PoisonMaster,
+			(RoleId)v0935::CustomRoles::Pirate,
+			(RoleId)v0935::CustomRoles::Jackal,
+			(RoleId)v0935::CustomRoles::PlagueBearer,
+			(RoleId)v0935::CustomRoles::Pestilence,
+			(RoleId)v0935::CustomRoles::TheGlitch,
+			(RoleId)v0935::CustomRoles::Postman,
+			(RoleId)v0935::CustomRoles::Werewolf,
+			(RoleId)v0935::CustomRoles::Swapper,
+			(RoleId)v0935::CustomRoles::GuardianAngelTOU,
+			(RoleId)v0935::CustomRoles::NeutWitch,
+			(RoleId)v0935::CustomRoles::Amnesiac,
+			(RoleId)v0935::CustomRoles::Juggernaut,
+			(RoleId)v0935::CustomRoles::Sidekick,
+			(RoleId)v0935::CustomRoles::JSchrodingerCat,
+			(RoleId)v0935::CustomRoles::Hacker,
+			(RoleId)v0935::CustomRoles::Phantom,
+			(RoleId)v0935::CustomRoles::BloodKnight,
+			(RoleId)v0935::CustomRoles::HASTroll,
+			(RoleId)v0935::CustomRoles::Painter,
+			(RoleId)v0935::CustomRoles::HASFox, // CAT
+			(RoleId)v0935::CustomRoles::BKSchrodingerCat,
+			(RoleId)v0935::CustomRoles::CPSchrodingerCat,
+			(RoleId)v0935::CustomRoles::JugSchrodingerCat,
+			(RoleId)v0935::CustomRoles::MMSchrodingerCat,
+			(RoleId)v0935::CustomRoles::PesSchrodingerCat,
+			(RoleId)v0935::CustomRoles::WWSchrodingerCat,
+			(RoleId)v0935::CustomRoles::TGSchrodingerCat
+		};
+		static std::set<RoleId> v0934{
+			(RoleId)v0934::CustomRoles::Jester,
+			(RoleId)v0934::CustomRoles::Vulture,
+			(RoleId)v0934::CustomRoles::Opportunist,
+			(RoleId)v0934::CustomRoles::Survivor,
+			(RoleId)v0934::CustomRoles::SchrodingerCat,
+			(RoleId)v0934::CustomRoles::Terrorist,
+			(RoleId)v0934::CustomRoles::Executioner,
+			(RoleId)v0934::CustomRoles::Arsonist,
+			(RoleId)v0934::CustomRoles::Egoist,
+			(RoleId)v0934::CustomRoles::EgoSchrodingerCat,
+			(RoleId)v0934::CustomRoles::Hitman,
+			(RoleId)v0934::CustomRoles::CrewPostor,
+			(RoleId)v0934::CustomRoles::Marksman,
+			(RoleId)v0934::CustomRoles::PoisonMaster,
+			(RoleId)v0934::CustomRoles::Pirate,
+			(RoleId)v0934::CustomRoles::Jackal,
+			(RoleId)v0934::CustomRoles::PlagueBearer,
+			(RoleId)v0934::CustomRoles::Pestilence,
+			(RoleId)v0934::CustomRoles::TheGlitch,
+			(RoleId)v0934::CustomRoles::Postman,
+			(RoleId)v0934::CustomRoles::Werewolf,
+			(RoleId)v0934::CustomRoles::Swapper,
+			(RoleId)v0934::CustomRoles::GuardianAngelTOU,
+			(RoleId)v0934::CustomRoles::NeutWitch,
+			(RoleId)v0934::CustomRoles::Amnesiac,
+			(RoleId)v0934::CustomRoles::Juggernaut,
+			(RoleId)v0934::CustomRoles::Sidekick,
+			(RoleId)v0934::CustomRoles::JSchrodingerCat,
+			(RoleId)v0934::CustomRoles::Hacker,
+			(RoleId)v0934::CustomRoles::Phantom,
+			(RoleId)v0934::CustomRoles::BloodKnight,
+			(RoleId)v0934::CustomRoles::HASTroll,
+			(RoleId)v0934::CustomRoles::Painter,
+			(RoleId)v0934::CustomRoles::HASFox
+		};
 		RoleId role = this->_assignedRoles[player];
-		return role >= (int)v0934::CustomRoles::Arsonist && role <= (int)v0934::CustomRoles::HASTroll;
+		if (_revision >= 5)
+			return v0935.contains(role);
+		return v0934.contains(role);
 	}
 	bool TOH_TOR::IsCoven(Game::PlayerId player) const {
 		RoleId role = this->_assignedRoles[player];
+		if (_revision >= 5)
+			return role >= (int)v0935::CustomRoles::Coven && role <= (int)v0935::CustomRoles::Conjuror;
 		return role >= (int)v0934::CustomRoles::Coven && role <= (int)v0934::CustomRoles::Conjuror;
 	}
 	bool TOH_TOR::IsCrewmate(Game::PlayerId player) const {
 		return __super::IsCrewmate(player) && !IsCoven(player);
 	}
 	bool TOH_TOR::IsImpostorTeam(Game::PlayerId player) const {
+		if (_revision >= 5)
+			return __super::IsImpostorTeam(player) || _assignedRoles[player] == (int)v0935::CustomRoles::CrewPostor;
 		return __super::IsImpostorTeam(player) || _assignedRoles[player] == (int)v0934::CustomRoles::CrewPostor;
 	}
 	std::string TOH_TOR::_GetRoleName(RoleId role) const {
+		if (_revision >= 5)
+			switch (role) {
+			case (int)v0935::CustomRoles::Morphling:
+				return "变形者";
+			case (int)v0935::CustomRoles::Mechanic:
+				return "工程师";
+			case (int)v0935::CustomRoles::Physicist:
+				return "科学家";
+			case (int)v0935::CustomRoles::Target:
+				return "Target";
+			case (int)v0935::CustomRoles::BountyHunter:
+				return "赏金猎人";
+			case (int)v0935::CustomRoles::VoteStealer:
+				return "窃票者";
+			case (int)v0935::CustomRoles::FireWorks:
+				return "烟花商人";
+			case (int)v0935::CustomRoles::Mafia:
+				return "黑手党";
+			case (int)v0935::CustomRoles::SerialKiller:
+				return "嗜血杀手";
+			case (int)v0935::CustomRoles::Sniper:
+				return "狙击手";
+			case (int)v0935::CustomRoles::Vampire:
+				return "吸血鬼";
+			case (int)v0935::CustomRoles::Vampress:
+				return "血族公主";
+			case (int)v0935::CustomRoles::Witch:
+				return "女巫";
+			case (int)v0935::CustomRoles::Warlock:
+				return "术士";
+			case (int)v0935::CustomRoles::Mare:
+				return "梦魇";
+			case (int)v0935::CustomRoles::Miner:
+				return "矿工";
+			case (int)v0935::CustomRoles::Consort:
+				return "邪恶的护卫";
+			case (int)v0935::CustomRoles::YingYanger:
+				return "阴阳师";
+			case (int)v0935::CustomRoles::Grenadier:
+				return "致盲师";
+			case (int)v0935::CustomRoles::Disperser:
+				return "驱散者";
+			case (int)v0935::CustomRoles::Puppeteer:
+				return "傀儡师";
+			case (int)v0935::CustomRoles::TimeThief:
+				return "蚀时者";
+			case (int)v0935::CustomRoles::Silencer:
+				return "沉默者";
+			case (int)v0935::CustomRoles::Ninja:
+				return "忍者";
+			case (int)v0935::CustomRoles::Swooper:
+				return "隐身人";
+			case (int)v0935::CustomRoles::Camouflager:
+				return "伪装师";
+			case (int)v0935::CustomRoles::Freezer:
+				return "冰法师";
+			case (int)v0935::CustomRoles::Cleaner:
+				return "清理工";
+			case (int)v0935::CustomRoles::EvilGuesser:
+				return "邪恶的猜测者";
+			case (int)v0935::CustomRoles::MadGuardian:
+				return "背叛的守卫";
+			case (int)v0935::CustomRoles::Madmate:
+				return "叛徒";
+			case (int)v0935::CustomRoles::MadSnitch:
+				return "背叛的告密者";
+			case (int)v0935::CustomRoles::CrewPostor:
+				return "舰长";
+			case (int)v0935::CustomRoles::CorruptedSheriff:
+				return "背叛的警长";
+			case (int)v0935::CustomRoles::SKMadmate:
+				return "叛徒小弟";
+			case (int)v0935::CustomRoles::Parasite:
+				return "寄居者";
+			case (int)v0935::CustomRoles::MSchrodingerCat:
+			case (int)v0935::CustomRoles::CSchrodingerCat:
+			case (int)v0935::CustomRoles::EgoSchrodingerCat:
+			case (int)v0935::CustomRoles::SchrodingerCat:
+			case (int)v0935::CustomRoles::JSchrodingerCat:
+				return "薛定谔的猫";
+			case (int)v0935::CustomRoles::Alturist:
+				return "祭师";
+			case (int)v0935::CustomRoles::Lighter:
+				return "执灯人";
+			case (int)v0935::CustomRoles::Medium:
+				return "警探";
+			case (int)v0935::CustomRoles::Demolitionist:
+				return "同命爆手";
+			case (int)v0935::CustomRoles::Bastion:
+				return "埋雷兵";
+			case (int)v0935::CustomRoles::NiceGuesser:
+				return "正义的猜测者";
+			case (int)v0935::CustomRoles::Escort:
+				return "护卫";
+			case (int)v0935::CustomRoles::Crusader:
+				return "十字军";
+			case (int)v0935::CustomRoles::Psychic:
+				return "通灵师";
+			case (int)v0935::CustomRoles::Mystic:
+				return "灵媒";
+			case (int)v0935::CustomRoles::Swapper:
+				return "挑衅者";
+			case (int)v0935::CustomRoles::Mayor:
+				return "市长";
+			case (int)v0935::CustomRoles::SabotageMaster:
+				return "修理大师";
+			case (int)v0935::CustomRoles::Oracle:
+				return "神谕者";
+			case (int)v0935::CustomRoles::Medic:
+				return "医师";
+			case (int)v0935::CustomRoles::Bodyguard:
+				return "保镖";
+			case (int)v0935::CustomRoles::Sheriff:
+				return "警长";
+			case (int)v0935::CustomRoles::Investigator:
+				return "调查员";
+			case (int)v0935::CustomRoles::Snitch:
+				return "告密者";
+			case (int)v0935::CustomRoles::Transporter:
+				return "传送师";
+			case (int)v0935::CustomRoles::SpeedBooster:
+				return "增速者";
+			case (int)v0935::CustomRoles::Trapper:
+				return "陷阱师";
+			case (int)v0935::CustomRoles::Dictator:
+				return "独裁者";
+			case (int)v0935::CustomRoles::Doctor:
+				return "医生";
+			case (int)v0935::CustomRoles::Child:
+				return "小孩";
+			case (int)v0935::CustomRoles::Veteran:
+				return "老兵";
+			case (int)v0935::CustomRoles::Arsonist:
+				return "纵火犯";
+			case (int)v0935::CustomRoles::Egoist:
+				return "野心家";
+			case (int)v0935::CustomRoles::PlagueBearer:
+				return "疫医";
+			case (int)v0935::CustomRoles::Pestilence:
+				return "瘟神";
+			case (int)v0935::CustomRoles::Vulture:
+				return "秃鹫";
+			case (int)v0935::CustomRoles::TheGlitch:
+				return "混沌";
+			case (int)v0935::CustomRoles::Postman:
+				return "邮递员";
+			case (int)v0935::CustomRoles::Werewolf:
+				return "狼人";
+			case (int)v0935::CustomRoles::NeutWitch:
+				return "巫女";
+			case (int)v0935::CustomRoles::Marksman:
+				return "神射手";
+			case (int)v0935::CustomRoles::GuardianAngelTOU:
+				return "守护天使";
+			case (int)v0935::CustomRoles::Jester:
+				return "小丑";
+			case (int)v0935::CustomRoles::Amnesiac:
+				return "窃忆者";
+			case (int)v0935::CustomRoles::Hacker:
+				return "黑客";
+			case (int)v0935::CustomRoles::PoisonMaster:
+				return "制毒师";
+			case (int)v0935::CustomRoles::BloodKnight:
+				return "嗜血骑士";
+			case (int)v0935::CustomRoles::Hitman:
+				return "雇佣杀手";
+			case (int)v0935::CustomRoles::Phantom:
+				return "幻影";
+			case (int)v0935::CustomRoles::Pirate:
+				return "海盗";
+			case (int)v0935::CustomRoles::Juggernaut:
+				return "欲望杀手";
+			case (int)v0935::CustomRoles::Opportunist:
+				return "投机者";
+			case (int)v0935::CustomRoles::Survivor:
+				return "求生者";
+			case (int)v0935::CustomRoles::Terrorist:
+				return "恐怖分子";
+			case (int)v0935::CustomRoles::Executioner:
+				return "处刑人";
+			case (int)v0935::CustomRoles::Jackal:
+				return "豺狼";
+			case (int)v0935::CustomRoles::Sidekick:
+				return "跟班";
+			case (int)v0935::CustomRoles::HASFox:
+				return "狐狸";
+			case (int)v0935::CustomRoles::HASTroll:
+				return "猎人";
+			case (int)v0935::CustomRoles::Coven:
+				return "巫师";
+			case (int)v0935::CustomRoles::Poisoner:
+				return "毒师";
+			case (int)v0935::CustomRoles::CovenWitch:
+				return "巫师团领袖";
+			case (int)v0935::CustomRoles::HexMaster:
+				return "魔法师";
+			case (int)v0935::CustomRoles::PotionMaster:
+				return "药剂师";
+			case (int)v0935::CustomRoles::Medusa:
+				return "美杜莎";
+			case (int)v0935::CustomRoles::Mimic:
+				return "模仿师";
+			case (int)v0935::CustomRoles::Necromancer:
+				return "亡灵法师";
+			case (int)v0935::CustomRoles::Conjuror:
+				return "魔术师";
+			case (int)v0935::CustomRoles::Painter:
+				return "喷漆工";
+			case (int)v0935::CustomRoles::Janitor:
+				return "清洁工";
+			case (int)v0935::CustomRoles::Supporter:
+				return "工人";
+			case (int)v0935::CustomRoles::LoversWin:
+			case (int)v0935::CustomRoles::Lovers:
+			case (int)v0935::CustomRoles::LoversRecode:
+				return "恋人";
+			case (int)v0935::CustomRoles::Flash:
+				return "闪电侠";
+			case (int)v0935::CustomRoles::Escalation:
+				return "恐惧者";
+			case (int)v0935::CustomRoles::TieBreaker:
+				return "破局者";
+			case (int)v0935::CustomRoles::Oblivious:
+				return "胆小鬼";
+			case (int)v0935::CustomRoles::Sleuth:
+				return "侦探";
+			case (int)v0935::CustomRoles::Watcher:
+				return "窥视者";
+			case (int)v0935::CustomRoles::Obvious:
+				return "广播员";
+			case (int)v0935::CustomRoles::Bewilder:
+				return "迷幻者";
+			case (int)v0935::CustomRoles::Bait:
+				return "诱饵";
+			case (int)v0935::CustomRoles::Torch:
+				return "火炬手";
+			case (int)v0935::CustomRoles::Diseased:
+				return "患者";
+				// TODO: and more..
+			default:
+				if (role == 0 || role == 1 || role == 2 || role == 500)
+					return __super::_GetRoleName(role);
+				return std::format("{}", role);
+			}
 		switch (role) {
 		case (int)v0934::CustomRoles::Morphling:
 			return "变形者";
@@ -562,11 +1203,9 @@ namespace Mods {
 		case (int)v0934::CustomRoles::Diseased:
 			return "患者";
 		default:
-		{
-			//FIXME:
-			ScopedModVersion ver(3, 0, 2, 0);
-			return __super::_GetRoleName(role);
-		}
+			if (role == 0 || role == 1 || role == 2 || role == 500)
+				return __super::_GetRoleName(role);
+			return std::format("{}", role);
 		}
 	}
 	Color TOH_TOR::GetRoleColor(Game::PlayerId player) const {
@@ -695,10 +1334,10 @@ namespace Mods {
 			{ v0934::CustomRoles::psh8, ToColor("#F1A6D7") },
 			{ v0934::CustomRoles::psh9, ToColor("#EC96CE") },
 		};
-
 		RoleId role = this->_assignedRoles[player];
 		auto iter = s_roleColors.find((v0934::CustomRoles)role);
-		if (iter != s_roleColors.end())
+		// TODO: v0935
+		if (_revision == 4 && iter != s_roleColors.end())
 			return iter->second;
 		else if (IsCoven(player))
 			return ToColor("#bd5dfd");
