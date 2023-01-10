@@ -336,12 +336,17 @@ void dPlayerControl_StartMeeting(PlayerControl* __this, GameData_PlayerInfo* tar
 }
 
 void dPlayerControl_HandleRpc(PlayerControl* __this, uint8_t callId, MessageReader* reader, MethodInfo* method) {
+	int position = reader->fields._position;
+	int readHead = reader->fields.readHead;
 	try {
 		HandleRpc(__this, callId, reader);
 	}
 	catch (...) {
 		LOG_ERROR("Exception");
 	}
+	// restore to original position.
+	reader->fields._position = position;
+	reader->fields.readHead = readHead;
 	PlayerControl_HandleRpc(__this, callId, reader, NULL);
 }
 
