@@ -145,7 +145,7 @@ namespace Mods {
 		LOG_DEBUG(this->GetVersion());
 		if (!(major == 4
 			  && minor == 2
-			  && patch == 0)) {
+			  && (patch == 0 || patch == 1))) {
 			throw std::invalid_argument("Unsupported TOR");
 		}
 	}

@@ -559,7 +559,7 @@ namespace Mods {
 		if (!(_major == 0
 			  && _minor == 9
 			  && _build == 3
-			  && (_revision == 4 || _revision == 5))) {
+			  && (_revision == 4 || _revision == 5 || _revision == 6))) {
 			throw std::invalid_argument("Unsupported TOH:TOR");
 		}
 	}
