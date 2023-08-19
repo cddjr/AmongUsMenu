@@ -325,6 +325,9 @@
     <ClCompile Include="mods\TheOtherRoles.cpp">
       <Filter>mods</Filter>
     </ClCompile>
+    <ClCompile Include="rpc\CmdCheckMurder.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appdata\il2cpp-api-functions.h">
