@@ -4,6 +4,8 @@
 #include "main.h"
 #include <filesystem>
 
+using namespace std::literals;
+
 HMODULE version_dll;
 
 #define WRAPPER_GENFUNC(name) \
@@ -82,7 +84,24 @@ DWORD WINAPI Load(LPVOID lpParam) {
 
 	if (applicationPath.filename() != "Among Us.exe") return 0;
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+	HWND hWnd = nullptr;
+	while (true) {
+		hWnd = FindWindowEx(nullptr, hWnd, TEXT("UnityWndClass"), nullptr);
+		if (hWnd) {
+			DWORD pid = 0;
+			GetWindowThreadProcessId(hWnd, &pid);
+			if (pid == GetCurrentProcessId()) {
+				break;
+			}
+			continue;
+		}
+		// waiting for Unity.PlayerInitEngineNoGraphics
+		std::this_thread::sleep_for(500ms);
+	}
+	while (!IsWindowVisible(hWnd)) {
+		// waiting for Unity.PlayerInitEngineGraphics
+		std::this_thread::sleep_for(500ms);
+	}
 	Run(lpParam);
 
 	return 0;
